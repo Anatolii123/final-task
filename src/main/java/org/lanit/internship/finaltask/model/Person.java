@@ -13,12 +13,13 @@ import java.sql.Date;
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID", nullable = false, precision = 0)
     private long id;
+    @Column(name = "NAME", nullable = false, length = 45)
     private String name;
+    @Column(name = "BIRTH_DATE", nullable = false)
     private Date birthDate;
 
-
-//    @Column(name = "ID", nullable = false, precision = 0)
     public long getId() {
         return id;
     }
@@ -27,7 +28,7 @@ public class Person {
         this.id = id;
     }
 
-//    @Column(name = "NAME", nullable = false, length = 45)
+
     public String getName() {
         return name;
     }
@@ -36,7 +37,7 @@ public class Person {
         this.name = name;
     }
 
-//    @Column(name = "BIRTH_DATE", nullable = false)
+
     public Date getBirthDate() {
         return birthDate;
     }
