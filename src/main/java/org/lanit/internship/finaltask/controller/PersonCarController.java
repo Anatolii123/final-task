@@ -54,6 +54,13 @@ public class PersonCarController {
         return personFromDb;
     }
 
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable String id) {
+        Map<String, String> person = getOne(id);
+
+        persons.remove(person);
+    }
+
     @PostMapping(value = "/person")
     public void savePerson(@RequestBody Map<String,String> person) {
 
