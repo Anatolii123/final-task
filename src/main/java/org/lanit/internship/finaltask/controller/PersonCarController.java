@@ -115,8 +115,8 @@ public class PersonCarController {
 
     @GetMapping(value = "/clear")
     public void clearDB() {
-        personRepo.deleteAll();
         carRepo.deleteAll();
+        personRepo.deleteAll();
     }
 
 }
