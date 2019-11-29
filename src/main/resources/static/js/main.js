@@ -59,17 +59,25 @@ Vue.component('person-form', {
 });
 
 Vue.component('person-row', {
-    props: ['person', 'editMethod'],
+    props: ['person', 'editMethod','persons'],
     template:
         '<div>' +
         '<i>({{person.id}})</i> | {{person.name}} | {{person.birthdate}}' +
         '<span style="position: absolute; right: 0;">' +
             '<input type="button" value="Edit" @click="edit"/>' +
+            '<input type="button" value="X" @click="del"/>' +
         '</span>' +
         '</div>',
     methods: {
         edit: function () {
             this.editMethod(this.person);
+        },
+        del: function () {
+            personApi.remove({id: this.person.id}).then(result => {
+                if (result.ok) {
+                    this.persons.splice(this.persons.indexOf(this.person), 1)
+                }
+            })
         }
     }
 });
@@ -84,7 +92,8 @@ Vue.component('persons-list', {
     template:
         '<div style="position: relative; width: 300px;">' +
         '<person-form :persons="persons" :personAttr="person"/>' +
-        '<person-row v-for="person in persons" :key="person.id" :person="person" :editMethod="editMethod"/>' +
+        '<person-row v-for="person in persons" :key="person.id" :person="person"' +
+            ':editMethod="editMethod" :persons="persons"/>' +
         '</div>',
     created: function () {
         personApi.get().then(result =>
