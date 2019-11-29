@@ -1,6 +1,11 @@
+Vue.component('person-row', {
+    props: ['person'],
+    template: '<div><i>({{person.id}})</i> | {{person.name}} | {{person.birthdate}}</div>'
+});
+
 Vue.component('persons-list', {
     props: ['persons'],
-    template: '<div><div v-for="person in persons">{{person.name}} {{person.birthdate}}</div></div>'
+    template: '<div><person-row v-for="person in persons" :person="person"/></div>'
 })
 
 var app = new Vue({
@@ -13,4 +18,4 @@ var app = new Vue({
             {id: '3', name: 'C', birthdate: '1990-05-05'},
         ]
     }
-})
+});
