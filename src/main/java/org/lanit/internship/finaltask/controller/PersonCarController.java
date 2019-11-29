@@ -3,13 +3,12 @@ package org.lanit.internship.finaltask.controller;
 import org.lanit.internship.finaltask.exceptions.NotFoundException;
 import org.lanit.internship.finaltask.model.Car;
 import org.lanit.internship.finaltask.model.Person;
+import org.lanit.internship.finaltask.model.PersonWithCars;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("")
@@ -64,13 +63,22 @@ public class PersonCarController {
         return cars;
     }
 
-//    @GetMapping("{id}")
-//    public Map<String,String> getOne(@PathVariable String id) {
-//        return persons.stream()
-//                .filter(person -> person.getId().equals(id))
-//                .findFirst()
-//                .orElseThrow(NotFoundException::new);
-//    }
+    @GetMapping(value = "/personwithcars")
+    public PersonWithCars getPerson(@RequestParam String personid) {
+        PersonWithCars personWithCars = new PersonWithCars();
+        Person person1 = persons.stream()
+                .filter(person -> person.getId() == Long.parseLong(personid))
+                .findFirst()
+                .orElseThrow(NotFoundException::new);
+        personWithCars.setId(person1.getId());
+        personWithCars.setName(person1.getName());
+        personWithCars.setBirthDate(person1.getBirthDate());
+        personWithCars.setCars(cars,Long.parseLong(personid));
+
+        return personWithCars;
+    }
+
+
 
 //    @PutMapping("{id}")
 //    public Map<String,String> update(@PathVariable String id, @RequestBody Map<String,String> person) {

@@ -68,16 +68,16 @@ public class Car {
         this.ownerId = ownerId;
     }
 
-    @Transient
-    public String getVendorModel() {
-        String vendor = this.model.substring(0,this.model.indexOf("-"));
-        return vendor;
-    }
-
-    @Transient
-    public String getModelModel() {
-        String model = this.model.substring(this.model.indexOf("-") + 1, this.model.length());
-        return model;
-    }
+//    @Transient
+//    public String getVendorModel() {
+//        String vendor = this.model.substring(0,this.model.indexOf("-"));
+//        return vendor;
+//    }
+//
+//    @Transient
+//    public String getModelModel() {
+//        String model = this.model.substring(this.model.indexOf("-") + 1, this.model.length());
+//        return model;
+//    }
 
 }
