@@ -107,7 +107,8 @@ public class PersonCarController {
 
     @GetMapping(value = "/clear")
     public void clearDB() {
-
+        persons.clear();
+        cars.clear();
     }
 
 }
