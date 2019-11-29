@@ -41,7 +41,8 @@ Vue.component('person-form', {
                         var index = getIndex(this.persons, data.id);
                         this.persons.splice(index, 1, data);
                         this.name = '';
-                        this.birthdate = ''
+                        this.birthdate = '';
+                        this.id = '';
                     })
                 )
             } else {
@@ -62,8 +63,8 @@ Vue.component('person-row', {
     template:
         '<div>' +
         '<i>({{person.id}})</i> | {{person.name}} | {{person.birthdate}}' +
-        '<span>' +
-        '<input type="button" value="Edit" @click="edit"/>' +
+        '<span style="position: absolute; right: 0;">' +
+            '<input type="button" value="Edit" @click="edit"/>' +
         '</span>' +
         '</div>',
     methods: {
@@ -81,7 +82,7 @@ Vue.component('persons-list', {
         }
     },
     template:
-        '<div>' +
+        '<div style="position: relative; width: 300px;">' +
         '<person-form :persons="persons" :personAttr="person"/>' +
         '<person-row v-for="person in persons" :key="person.id" :person="person" :editMethod="editMethod"/>' +
         '</div>',
