@@ -21,6 +21,8 @@ Vue.component('person-form', {
             personApi.save({},person).then(result =>
                 result.json().then(data => {
                     this.persons.push(data);
+                    this.name = '';
+                    this.birthdate = ''
                 })
             )
         }
