@@ -1,6 +1,7 @@
 var personApi = Vue.resource('/person{/id}')
 
 Vue.component('person-form', {
+    props: ['persons'],
     data: function () {
         return {
             name: '',
@@ -9,10 +10,21 @@ Vue.component('person-form', {
     },
     template:
         '<div>' +
-            '<input type="text" placeholder="write name" v-model="text" />' +
-            '<input type="date"/>' +
-            '<input type="button" value="Save" v-on:click=""/>' +
-        '</div>'
+            '<input type="text" placeholder="write name" v-model="name"/>' +
+            '<input type="date" v-model="birthdate"/>' +
+            '<input type="button" value="Save" @click="save"/>' +
+        '</div>',
+    methods: {
+        save: function () {
+            var person = {name: this.name, birthdate: this.birthdate};
+
+            personApi.save({},person).then(result =>
+                result.json().then(data => {
+                    this.persons.push(data);
+                })
+            )
+        }
+    }
 });
 
 Vue.component('person-row', {
@@ -24,6 +36,7 @@ Vue.component('persons-list', {
     props: ['persons'],
     template:
         '<div>'+
+            '<person-form :persons="persons"/>'+
             '<person-row v-for="person in persons" :key="person.id" :person="person"/>'+
         '</div>',
     created: function () {
