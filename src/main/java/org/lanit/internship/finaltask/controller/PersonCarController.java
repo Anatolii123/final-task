@@ -107,7 +107,7 @@ public class PersonCarController {
         statistics.setCarcount((long)cars.size());
         HashSet<String> vendors = new HashSet<String>();
         for (Car car:cars) {
-            vendors.add(car.getVendorModel());
+            vendors.add(car.getModel());
         }
         statistics.setUniquevendorcount((long)vendors.size());
         return statistics;

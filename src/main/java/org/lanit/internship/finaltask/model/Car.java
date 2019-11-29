@@ -75,14 +75,14 @@ public class Car {
         this.ownerId = ownerId;
     }
 
-    public String getVendorModel() {
-        String vendor = this.model.substring(0,this.model.indexOf("-"));
-        return vendor;
-    }
-
-    public String getModelModel() {
-        String model = this.model.substring(this.model.indexOf("-") + 1, this.model.length());
-        return model;
-    }
+//    public String getVendorModel() {
+//        String vendor = this.model.substring(0,this.model.indexOf("-"));
+//        return vendor;
+//    }
+//
+//    public String getModelModel() {
+//        String model = this.model.substring(this.model.indexOf("-") + 1, this.model.length());
+//        return model;
+//    }
 
 }
