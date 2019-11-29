@@ -88,14 +88,14 @@ public class PersonCarController {
     @GetMapping(value = "/personwithcars")
     public PersonWithCars getPerson(@RequestParam String personid) {
         PersonWithCars personWithCars = new PersonWithCars();
-        Person person1 = persons.stream()
+        Person person1 = personRepo.findAll().stream()
                 .filter(person -> person.getId() == Long.parseLong(personid))
                 .findFirst()
                 .orElseThrow(NotFoundException::new);
         personWithCars.setId(person1.getId());
         personWithCars.setName(person1.getName());
         personWithCars.setBirthDate(person1.getBirthDate());
-        personWithCars.setCars(cars,Long.parseLong(personid));
+        personWithCars.setCars(carRepo.findAll(),Long.parseLong(personid));
 
         return personWithCars;
     }
@@ -103,11 +103,11 @@ public class PersonCarController {
     @GetMapping(value = "/statistics")
     public Statistics getStatistics() {
         Statistics statistics = new Statistics();
-        statistics.setPersoncount((long)persons.size());
-        statistics.setCarcount((long)cars.size());
+        statistics.setPersoncount((long)personRepo.findAll().size());
+        statistics.setCarcount((long)carRepo.findAll().size());
         HashSet<String> vendors = new HashSet<String>();
-        for (Car car:cars) {
-            vendors.add(car.getModel());
+        for (Car car:carRepo.findAll()) {
+            vendors.add(car.getVendorModel());
         }
         statistics.setUniquevendorcount((long)vendors.size());
         return statistics;
