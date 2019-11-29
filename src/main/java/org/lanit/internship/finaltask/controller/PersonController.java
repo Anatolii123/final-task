@@ -1,6 +1,7 @@
 package org.lanit.internship.finaltask.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,4 +23,13 @@ public class PersonController {
     public List<Map<String,String>> list() {
         return persons;
     }
+
+    @GetMapping("{id}")
+    public Map<String,String> getOne(@PathVariable String id) {
+        return persons.stream()
+                .filter(person -> person.get("id").equals(id))
+                .findFirst()
+                .orElseThrow();
+    }
+
 }
