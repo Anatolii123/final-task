@@ -76,13 +76,13 @@ public class PersonCarController {
     @PostMapping(value = "/person")
     public void savePerson(@RequestBody Person person) {
         person.setId((long)personCounter++);
-        persons.add(person);
+        personRepo.save(person);
     }
 
     @PostMapping(value = "/car")
     public void saveCar(@RequestBody Car car) {
         car.setId((long)carCounter++);
-        cars.add(car);
+        carRepo.save(car);
     }
 
     @GetMapping(value = "/personwithcars")
