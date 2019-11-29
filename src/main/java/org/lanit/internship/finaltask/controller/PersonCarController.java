@@ -49,7 +49,7 @@ public class PersonCarController {
 
     }
 
-    @PostMapping("{id}")
+    @PutMapping("{id}")
     public void getPerson(@RequestBody Map<String,String> person) {
 
     }
