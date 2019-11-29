@@ -1,5 +1,20 @@
 var personApi = Vue.resource('/person{/id}')
 
+Vue.component('person-form', {
+    data: function () {
+        return {
+            name: '',
+            birthdate: ''
+        }
+    },
+    template:
+        '<div>' +
+            '<input type="text" placeholder="write name" v-model="text" />' +
+            '<input type="date"/>' +
+            '<input type="button" value="Save" v-on:click=""/>' +
+        '</div>'
+});
+
 Vue.component('person-row', {
     props: ['person'],
     template: '<div><i>({{person.id}})</i> | {{person.name}} | {{person.birthdate}}</div>'
