@@ -1,10 +1,8 @@
 package org.lanit.internship.finaltask.controller;
 
 import org.lanit.internship.finaltask.exceptions.NotFoundException;
-import org.lanit.internship.finaltask.model.Car;
-import org.lanit.internship.finaltask.model.Person;
-import org.lanit.internship.finaltask.model.PersonWithCars;
-import org.lanit.internship.finaltask.model.Statistics;
+import org.lanit.internship.finaltask.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -34,6 +32,7 @@ public class PersonCarController {
         person3.setBirthDate(Date.valueOf("1970-03-06"));
         add(person3);
     }};
+
     private List<Car> cars = new ArrayList<Car>(){{
         Car car1 = new Car();
         car1.setId(1L);
@@ -55,9 +54,16 @@ public class PersonCarController {
         add(car3);
     }};
 
+    private final PersonRepo personRepo;
+
+    @Autowired
+    public PersonCarController(PersonRepo personRepo) {
+        this.personRepo = personRepo;
+    }
+
     @GetMapping("/persons")
     public List<Person> personsList() {
-        return persons;
+        return personRepo.findAll();
     }
 
     @GetMapping("/cars")

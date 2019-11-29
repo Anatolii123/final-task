@@ -1,15 +1,23 @@
 package org.lanit.internship.finaltask.model;
 
-import java.sql.Date;
-import java.util.Collection;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+import javax.persistence.*;
+import java.sql.Date;
+
+@Entity
+@Table
+@ToString(of = {"id","name","birthdate"})
+@EqualsAndHashCode(of = {"id"})
 public class Person {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
     private Date birthDate;
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+
 //    @Column(name = "ID", nullable = false, precision = 0)
     public long getId() {
         return id;
