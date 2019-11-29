@@ -103,8 +103,8 @@ public class PersonCarController {
     @GetMapping(value = "/statistics")
     public Statistics getStatistics() {
         Statistics statistics = new Statistics();
-        statistics.setPersoncount((long)personRepo.findAll().size());
-        statistics.setCarcount((long)carRepo.findAll().size());
+        statistics.setPersoncount(personRepo.count());
+        statistics.setCarcount(carRepo.count());
         HashSet<String> vendors = new HashSet<String>();
         for (Car car:carRepo.findAll()) {
             vendors.add(car.getVendorModel());
@@ -115,8 +115,8 @@ public class PersonCarController {
 
     @GetMapping(value = "/clear")
     public void clearDB() {
-        persons.clear();
-        cars.clear();
+        personRepo.deleteAll();
+        carRepo.deleteAll();
     }
 
 }
