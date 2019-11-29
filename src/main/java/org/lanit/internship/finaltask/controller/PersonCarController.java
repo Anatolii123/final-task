@@ -74,7 +74,7 @@ public class PersonCarController {
     @PostMapping(value = "/person")
     public void savePerson(@RequestBody Person person) {
         person.setId((long)personCounter++);
-        personRepo.save(person);
+        persons.add(person);
     }
 
     @PostMapping(value = "/car")
