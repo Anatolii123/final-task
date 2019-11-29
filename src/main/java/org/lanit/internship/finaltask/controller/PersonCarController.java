@@ -13,9 +13,14 @@ import java.util.Map;
 public class PersonCarController {
     private int counter = 4;
     private List<Map<String,String>> persons = new ArrayList<Map<String,String>>() {{
-        add(new HashMap<String, String>() {{put("id","1"); put("name", "Ivan"); put("birthdate","2000-05-25");}});
+        add(new HashMap<String, String>() {{put("id","1"); put("name", "Ivan"); put("birthdate","2006-05-25");}});
         add(new HashMap<String, String>() {{put("id","2"); put("name", "Pavel"); put("birthdate","1989-01-17");}});
         add(new HashMap<String, String>() {{put("id","3"); put("name", "Anton"); put("birthdate","1970-03-06");}});
+    }};
+    private List<Map<String,String>> cars = new ArrayList<Map<String,String>>() {{
+        add(new HashMap<String, String>() {{put("id","1"); put("model", "BMW-X5"); put("horsepower","381"); put("ownerId","3");}});
+        add(new HashMap<String, String>() {{put("id","2"); put("model", "Audi-R8"); put("horsepower","540"); put("ownerId","2");}});
+        add(new HashMap<String, String>() {{put("id","3"); put("model", "Ford-GT"); put("horsepower","700"); put("ownerId","3");}});
     }};
 
     @GetMapping
