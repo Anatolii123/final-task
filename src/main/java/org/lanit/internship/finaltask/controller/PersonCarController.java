@@ -55,10 +55,12 @@ public class PersonCarController {
     }};
 
     private final PersonRepo personRepo;
+    private final CarRepo carRepo;
 
     @Autowired
-    public PersonCarController(PersonRepo personRepo) {
+    public PersonCarController(PersonRepo personRepo, CarRepo carRepo) {
         this.personRepo = personRepo;
+        this.carRepo = carRepo;
     }
 
     @GetMapping("/persons")
@@ -68,7 +70,7 @@ public class PersonCarController {
 
     @GetMapping("/cars")
     public List<Car> carsList() {
-        return cars;
+        return carRepo.findAll();
     }
 
     @PostMapping(value = "/person")

@@ -1,16 +1,26 @@
 package org.lanit.internship.finaltask.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import javax.persistence.*;
 
+@Entity
+@Table
+@ToString(of = {"id","model","horsepower","ownerId"})
+@EqualsAndHashCode(of = {"id"})
 public class Car {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID", nullable = false, precision = 0)
     private Long id;
+    @Column(name = "MODEL", nullable = false, precision = 0)
     private String model;
+    @Column(name = "HORSEPOWER", nullable = false, precision = 0)
     private Long horsepower;
+    @Column(name = "OWNER_ID", nullable = false, precision = 0)
     private Long ownerId;
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Column(name = "ID", nullable = false, precision = 0)
     public Long getId() {
         return this.id;
     }
@@ -19,7 +29,6 @@ public class Car {
         this.id = id;
     }
 
-//    @Column(name = "MODEL", nullable = true, length = 45)
     public String getModel() {
         return model;
     }
@@ -28,7 +37,6 @@ public class Car {
         this.model = model;
     }
 
-//    @Column(name = "HORSEPOWER", nullable = false, precision = 0)
     public Long getHorsepower() {
         return this.horsepower;
     }
@@ -59,7 +67,6 @@ public class Car {
         return result;
     }
 
-    @Column(name = "OWNER_ID", nullable = false, precision = 0)
     public Long getOwnerId() {
         return this.ownerId;
     }
