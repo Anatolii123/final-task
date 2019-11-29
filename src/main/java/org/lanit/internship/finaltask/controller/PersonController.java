@@ -34,7 +34,6 @@ public class PersonController {
     @PostMapping
     public Map<String,String> create(@RequestBody Map<String,String> person) {
         person.put("id", String.valueOf(counter++));
-
         persons.add(person);
 
         return person;
