@@ -1,3 +1,12 @@
+function getIndex(list, id) {
+    for (var i = 0; i < list.length; i++) {
+        if (list[i].id === id) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 var personApi = Vue.resource('/person{/id}')
 
 Vue.component('person-form', {
@@ -6,11 +15,11 @@ Vue.component('person-form', {
         return {
             name: '',
             birthdate: '',
-            id:''
+            id: ''
         }
     },
     watch: {
-        personAttr: function(newVal, oldVal) {
+        personAttr: function (newVal, oldVal) {
             this.name = newVal.name;
             this.birthdate = newVal.birthdate;
             this.id = newVal.id;
@@ -18,9 +27,9 @@ Vue.component('person-form', {
     },
     template:
         '<div>' +
-            '<input type="text" placeholder="write name" v-model="name"/>' +
-            '<input type="date" v-model="birthdate"/>' +
-            '<input type="button" value="Save" @click="save"/>' +
+        '<input type="text" placeholder="write name" v-model="name"/>' +
+        '<input type="date" v-model="birthdate"/>' +
+        '<input type="button" value="Save" @click="save"/>' +
         '</div>',
     methods: {
         save: function () {
@@ -29,8 +38,10 @@ Vue.component('person-form', {
             if (this.id) {
                 personApi.update({id: this.id}, person).then(result =>
                     result.json().then(data => {
-
-                        this.person.push(data);
+                        var index = getIndex(this.persons, data.id);
+                        this.persons.splice(index, 1, data);
+                        this.name = '';
+                        this.birthdate = ''
                     })
                 )
             } else {
@@ -47,13 +58,13 @@ Vue.component('person-form', {
 });
 
 Vue.component('person-row', {
-    props: ['person','editMethod'],
+    props: ['person', 'editMethod'],
     template:
-        '<div>'+
-        '<i>({{person.id}})</i> | {{person.name}} | {{person.birthdate}}'+
-        '<span>'+
+        '<div>' +
+        '<i>({{person.id}})</i> | {{person.name}} | {{person.birthdate}}' +
+        '<span>' +
         '<input type="button" value="Edit" @click="edit"/>' +
-        '</span>'+
+        '</span>' +
         '</div>',
     methods: {
         edit: function () {
@@ -64,15 +75,15 @@ Vue.component('person-row', {
 
 Vue.component('persons-list', {
     props: ['persons'],
-    data: function() {
-      return {
-          person: null
-      }
+    data: function () {
+        return {
+            person: null
+        }
     },
     template:
-        '<div>'+
-            '<person-form :persons="persons" :personAttr="person"/>'+
-            '<person-row v-for="person in persons" :key="person.id" :person="person" :editMethod="editMethod"/>'+
+        '<div>' +
+        '<person-form :persons="persons" :personAttr="person"/>' +
+        '<person-row v-for="person in persons" :key="person.id" :person="person" :editMethod="editMethod"/>' +
         '</div>',
     created: function () {
         personApi.get().then(result =>
@@ -82,7 +93,7 @@ Vue.component('persons-list', {
         )
     },
     methods: {
-        editMethod: function () {
+        editMethod: function (person) {
             this.person = person;
         }
     }
