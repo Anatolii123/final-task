@@ -4,10 +4,12 @@ import org.lanit.internship.finaltask.exceptions.NotFoundException;
 import org.lanit.internship.finaltask.model.Car;
 import org.lanit.internship.finaltask.model.Person;
 import org.lanit.internship.finaltask.model.PersonWithCars;
+import org.lanit.internship.finaltask.model.Statistics;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -91,8 +93,16 @@ public class PersonCarController {
     }
 
     @GetMapping(value = "/statistics")
-    public void getStatistics() {
-
+    public Statistics getStatistics() {
+        Statistics statistics = new Statistics();
+        statistics.setPersoncount((long)persons.size());
+        statistics.setCarcount((long)cars.size());
+        HashSet<String> vendors = new HashSet<String>();
+        for (Car car:cars) {
+            vendors.add(car.getVendorModel());
+        }
+        statistics.setUniquevendorcount((long)vendors.size());
+        return statistics;
     }
 
     @GetMapping(value = "/clear")
