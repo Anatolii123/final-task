@@ -1,21 +1,22 @@
 package org.lanit.internship.finaltask.entities;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Collection;
 
 @Entity
-@Table(name = "person")
-@NamedQuery(name = "Person.getAll", query = "select p from Person p")
+@Table
+@ToString(of = {"id","name","birthDate"})
+@EqualsAndHashCode(of = {"id"})
 public class Person {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
     private Date birthDate;
-    private Collection<Car> cars;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", nullable = false, precision = 0)
     public long getId() {
         return id;
     }
@@ -24,7 +25,6 @@ public class Person {
         this.id = id;
     }
 
-    @Column(name = "NAME", nullable = false, length = 45)
     public String getName() {
         return name;
     }
@@ -33,22 +33,8 @@ public class Person {
         this.name = name;
     }
 
-    @Column(name = "BIRTH_DATE", nullable = false)
     public Date getBirthDate() {
         return birthDate;
-    }
-
-    @OneToMany(mappedBy = "personByPersonId")
-    public Collection<Car> getCars() {
-        return cars;
-    }
-
-    public void setCars(Collection<Car> cars) {
-        this.cars = cars;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
     }
 
     @Override
