@@ -36,9 +36,7 @@ public class PersonCarController {
 
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable String id) {
-        Map<String, String> message = getMessage(id);
-
-        messages.remove(message);
+    public void delete(@PathVariable("id") Person person) {
+        personRepository.delete(person);
     }
 }
