@@ -1,11 +1,19 @@
 var personApi = Vue.resource('/person{/id}')
 
 Vue.component('person-form', {
-    props: ['persons'],
+    props: ['persons', 'personAttr'],
     data: function () {
         return {
             name: '',
-            birthdate: ''
+            birthdate: '',
+            id:''
+        }
+    },
+    watch: {
+        personAttr: function(newVal, oldVal) {
+            this.name = newVal.name;
+            this.birthdate = newVal.birthdate;
+            this.id = newVal.id;
         }
     },
     template:
@@ -18,28 +26,48 @@ Vue.component('person-form', {
         save: function () {
             var person = {name: this.name, birthdate: this.birthdate};
 
-            personApi.save({},person).then(result =>
-                result.json().then(data => {
-                    this.persons.push(data);
-                    this.name = '';
-                    this.birthdate = ''
-                })
-            )
+            if (this.id) {
+                personApi.update({id: this.id}, person)
+            } else {
+                personApi.save({}, person).then(result =>
+                    result.json().then(data => {
+                        this.persons.push(data);
+                        this.name = '';
+                        this.birthdate = ''
+                    })
+                )
+            }
         }
     }
 });
 
 Vue.component('person-row', {
-    props: ['person'],
-    template: '<div><i>({{person.id}})</i> | {{person.name}} | {{person.birthdate}}</div>'
+    props: ['person','editMethod'],
+    template:
+        '<div>'+
+        '<i>({{person.id}})</i> | {{person.name}} | {{person.birthdate}}'+
+        '<span>'+
+        '<input type="button" value="Edit" @click="edit"/>' +
+        '</span>'+
+        '</div>',
+    methods: {
+        edit: function () {
+            this.editMethod(this.person);
+        }
+    }
 });
 
 Vue.component('persons-list', {
     props: ['persons'],
+    data: function() {
+      return {
+          person: null
+      }
+    },
     template:
         '<div>'+
-            '<person-form :persons="persons"/>'+
-            '<person-row v-for="person in persons" :key="person.id" :person="person"/>'+
+            '<person-form :persons="persons" :personAttr="person"/>'+
+            '<person-row v-for="person in persons" :key="person.id" :person="person" :editMethod="editMethod"/>'+
         '</div>',
     created: function () {
         personApi.get().then(result =>
@@ -47,8 +75,13 @@ Vue.component('persons-list', {
                 data.forEach(person => this.persons.push(person))
             )
         )
+    },
+    methods: {
+        editMethod: function () {
+            this.person = person;
+        }
     }
-})
+});
 
 var app = new Vue({
     el: '#app',

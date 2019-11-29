@@ -44,6 +44,16 @@ public class PersonCarController {
         return person;
     }
 
+    @PutMapping("{id}")
+    public Map<String,String> update(@PathVariable String id, @RequestBody Map<String,String> person) {
+        Map<String,String> personFromDb = getOne(id);
+
+        personFromDb.putAll(person);
+        personFromDb.put("id",id);
+
+        return personFromDb;
+    }
+
     @PostMapping(value = "/person")
     public void savePerson(@RequestBody Map<String,String> person) {
 
@@ -54,10 +64,10 @@ public class PersonCarController {
 
     }
 
-    @PutMapping("{id}")
-    public void getPerson(@RequestBody Map<String,String> person) {
-
-    }
+//    @PutMapping("{id}")
+//    public void getPerson(@RequestBody Map<String,String> person) {
+//
+//    }
 
     @GetMapping(value = "/statistics")
     public void getStatistics() {
