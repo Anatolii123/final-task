@@ -5,7 +5,7 @@ Vue.component('person-row', {
 
 Vue.component('persons-list', {
     props: ['persons'],
-    template: '<div><person-row v-for="person in persons" :person="person"/></div>'
+    template: '<div><person-row v-for="person in persons" :key="person.id" :person="person"/></div>'
 })
 
 var app = new Vue({

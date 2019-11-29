@@ -10,7 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("person")
-public class PersonController {
+public class PersonCarController {
     private int counter = 4;
     private List<Map<String,String>> persons = new ArrayList<Map<String,String>>() {{
         add(new HashMap<String, String>() {{put("id","1"); put("name", "Ivan"); put("birthdate","2000-05-25");}});
@@ -37,6 +37,31 @@ public class PersonController {
         persons.add(person);
 
         return person;
+    }
+
+    @PostMapping(value = "/person")
+    public void savePerson(@RequestBody Map<String,String> person) {
+
+    }
+
+    @PostMapping(value = "/car")
+    public void saveCar(@RequestBody Map<String,String> person) {
+
+    }
+
+    @PostMapping("{id}")
+    public void getPerson(@RequestBody Map<String,String> person) {
+
+    }
+
+    @GetMapping(value = "/statistics")
+    public void getStatistics() {
+
+    }
+
+    @GetMapping(value = "/clear")
+    public void clearDB() {
+
     }
 
 }
