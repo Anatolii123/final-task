@@ -1,5 +1,6 @@
 package org.lanit.internship.finaltask.controller;
 
+import org.lanit.internship.finaltask.exceptions.BadRequestException;
 import org.lanit.internship.finaltask.exceptions.NotFoundException;
 import org.lanit.internship.finaltask.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+//import java.util.Date;
 
 @RestController
 @RequestMapping("")
@@ -31,23 +33,23 @@ public class PersonCarController {
         add(person3);
     }};
 
-    private List<Car> cars = new ArrayList<Car>(){{
+    private List<Car> cars = new ArrayList<Car>() {{
         Car car1 = new Car();
         car1.setId(1L);
         car1.setModel("BMW-X5");
-        car1.setHorsepower(381);
+        car1.setHorsepower(381L);
         car1.setOwnerId(3L);
         add(car1);
         Car car2 = new Car();
         car2.setId(2L);
         car2.setModel("Audi-R8");
-        car2.setHorsepower(540);
+        car2.setHorsepower(540L);
         car2.setOwnerId(2L);
         add(car2);
         Car car3 = new Car();
         car3.setId(3L);
         car3.setModel("Ford-GT");
-        car3.setHorsepower(700);
+        car3.setHorsepower(700L);
         car3.setOwnerId(3L);
         add(car3);
     }};
@@ -73,11 +75,23 @@ public class PersonCarController {
 
     @PostMapping(value = "/person")
     public void savePerson(@RequestBody Person person) {
+        if (!(person.getId() instanceof Long) || person.getId() == null ||
+                !(person.getName() instanceof String) || person.getName() == null ||
+                !(person.getBirthDate() instanceof Date) || person.getBirthDate() == null ||
+                !person.getBirthDate().before(new java.util.Date())){
+            throw new BadRequestException();
+        }
         personRepo.save(person);
     }
 
     @PostMapping(value = "/car")
     public void saveCar(@RequestBody Car car) {
+        if (!(car.getId() instanceof Long) || car.getId() == null ||
+                !(car.getModel() instanceof String) || car.getModel() == null ||
+                !(car.getHorsepower() instanceof Long) || car.getHorsepower() == null ||
+                !(car.getOwnerId() instanceof Long) || car.getOwnerId() == null) {
+            throw new BadRequestException();
+        }
         carRepo.save(car);
     }
 
@@ -91,7 +105,7 @@ public class PersonCarController {
         personWithCars.setId(person1.getId());
         personWithCars.setName(person1.getName());
         personWithCars.setBirthDate(person1.getBirthDate());
-        personWithCars.setCars(carRepo.findAll(),Long.parseLong(personid));
+        personWithCars.setCars(carRepo.findAll(), Long.parseLong(personid));
 
         return personWithCars;
     }
@@ -102,10 +116,10 @@ public class PersonCarController {
         statistics.setPersoncount(personRepo.count());
         statistics.setCarcount(carRepo.count());
         HashSet<String> vendors = new HashSet<String>();
-        for (Car car:carRepo.findAll()) {
+        for (Car car : carRepo.findAll()) {
             vendors.add(car.getVendorModel());
         }
-        statistics.setUniquevendorcount((long)vendors.size());
+        statistics.setUniquevendorcount((long) vendors.size());
         return statistics;
     }
 

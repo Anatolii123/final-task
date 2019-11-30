@@ -14,17 +14,17 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", nullable = false, precision = 0)
-    private long id;
+    private Long id;
     @Column(name = "NAME", nullable = false, length = 45)
     private String name;
     @Column(name = "BIRTH_DATE", nullable = false)
     private Date birthDate;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

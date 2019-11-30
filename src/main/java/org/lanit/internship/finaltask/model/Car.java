@@ -25,7 +25,7 @@ public class Car {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -41,7 +41,7 @@ public class Car {
         return this.horsepower;
     }
 
-    public void setHorsepower(long horsepower) {
+    public void setHorsepower(Long horsepower) {
         this.horsepower = horsepower;
     }
 
@@ -71,7 +71,7 @@ public class Car {
         return this.ownerId;
     }
 
-    public void setOwnerId(long ownerId) {
+    public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
     }
 
