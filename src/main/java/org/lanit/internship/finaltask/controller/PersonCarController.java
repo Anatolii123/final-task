@@ -89,7 +89,12 @@ public class PersonCarController {
         if (!(car.getId() instanceof Long) || car.getId() == null ||
                 !(car.getModel() instanceof String) || car.getModel() == null ||
                 !(car.getHorsepower() instanceof Long) || car.getHorsepower() == null ||
-                !(car.getOwnerId() instanceof Long) || car.getOwnerId() == null) {
+                !(car.getOwnerId() instanceof Long) || car.getOwnerId() == null ||
+                car.getHorsepower() <= 0 || !personRepo.findAll().stream()
+                    .filter(person -> person.getId() == car.getOwnerId()).findFirst().isPresent() ||
+                (new java.util.Date().getYear() - personRepo.findAll().stream()
+                        .filter(person -> person.getId() == car.getOwnerId()).findFirst()
+                        .orElseThrow(BadRequestException::new).getBirthDate().getYear() < 18)) {
             throw new BadRequestException();
         }
         carRepo.save(car);
