@@ -13,8 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("")
 public class PersonCarController {
-    private int personCounter = 4;
-    private int carCounter = 4;
     private List<Person> persons = new ArrayList<Person>() {{
         Person person1 = new Person();
         person1.setId(1L);
@@ -75,13 +73,11 @@ public class PersonCarController {
 
     @PostMapping(value = "/person")
     public void savePerson(@RequestBody Person person) {
-        person.setId((long)personCounter++);
         personRepo.save(person);
     }
 
     @PostMapping(value = "/car")
     public void saveCar(@RequestBody Car car) {
-        car.setId((long)carCounter++);
         carRepo.save(car);
     }
 
