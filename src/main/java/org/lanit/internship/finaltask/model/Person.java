@@ -5,6 +5,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 @Entity
 @Table
@@ -35,7 +36,6 @@ public class Person {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public Date getBirthDate() {
         return birthDate;

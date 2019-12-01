@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-//import java.util.Date;
 
 @RestController
 @RequestMapping("")
@@ -63,6 +64,23 @@ public class PersonCarController {
         this.carRepo = carRepo;
     }
 
+    static boolean isValid(String value, String datePattern) {
+
+        if (value == null || datePattern == null || datePattern.length() <= 0) {
+            return false;
+        }
+
+        SimpleDateFormat formatter = new SimpleDateFormat(datePattern);
+        formatter.setLenient(false);
+
+        try {
+            formatter.parse(value);
+        } catch (ParseException e) {
+            return false;
+        }
+        return true;
+    }
+
     @GetMapping("/persons")
     public List<Person> personsList() {
         return personRepo.findAll();
@@ -78,6 +96,7 @@ public class PersonCarController {
         if (!(person.getId() instanceof Long) || person.getId() == null ||
                 !(person.getName() instanceof String) || person.getName() == null ||
                 !(person.getBirthDate() instanceof Date) || person.getBirthDate() == null ||
+                !isValid(person.getBirthDate().toString(), "dd.MM.yyyy") ||
                 !person.getBirthDate().before(new java.util.Date())){
             throw new BadRequestException();
         }
