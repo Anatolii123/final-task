@@ -82,6 +82,32 @@ public class PersonCarController {
         return true;
     }
 
+    static boolean carIsValid(Car car, PersonRepo personRepo) {
+        if (!(car.getId() instanceof Long) || car.getId() == null ||
+                        !(car.getModel() instanceof String) || car.getModel() == null ||
+                        car.getVendorModel().equals("") || car.getModelModel().equals("") ||
+                        !(car.getHorsepower() instanceof Long) || car.getHorsepower() == null ||
+                        !(car.getOwnerId() instanceof Long) || car.getOwnerId() == null ||
+                        car.getHorsepower() <= 0 || !personRepo.findAll().stream()
+                        .filter(person -> person.getId() == car.getOwnerId()).findFirst().isPresent() ||
+                        (new java.util.Date().getYear() - personRepo.findAll().stream()
+                                .filter(person -> person.getId() == car.getOwnerId()).findFirst()
+                                .orElseThrow(BadRequestException::new).getBirthDate().getYear() < 18)) {
+            return false;
+        }
+        return true;
+    }
+
+    static boolean personIsValid(Person person) {
+        if (!(person.getId() instanceof Long) || person.getId() == null ||
+                        !(person.getName() instanceof String) || person.getName() == null ||
+                        !(person.getBirthDate() instanceof Date) || person.getBirthDate() == null ||
+                        !person.getBirthDate().before(new Date())) {
+            return false;
+        }
+        return true;
+    }
+
     @GetMapping("/persons")
     public List<Person> personsList() {
         return personRepo.findAll();
@@ -94,10 +120,7 @@ public class PersonCarController {
 
     @PostMapping(value = "/person")
     public void savePerson(@RequestBody Person person) {
-        if (!(person.getId() instanceof Long) || person.getId() == null ||
-                !(person.getName() instanceof String) || person.getName() == null ||
-                !(person.getBirthDate() instanceof Date) || person.getBirthDate() == null ||
-                !person.getBirthDate().before(new Date())){
+        if (!personIsValid(person)) {
             throw new BadRequestException();
         }
         personRepo.save(person);
@@ -105,15 +128,7 @@ public class PersonCarController {
 
     @PostMapping(value = "/car")
     public void saveCar(@RequestBody Car car) {
-        if (!(car.getId() instanceof Long) || car.getId() == null ||
-                !(car.getModel() instanceof String) || car.getModel() == null ||
-                !(car.getHorsepower() instanceof Long) || car.getHorsepower() == null ||
-                !(car.getOwnerId() instanceof Long) || car.getOwnerId() == null ||
-                car.getHorsepower() <= 0 || !personRepo.findAll().stream()
-                    .filter(person -> person.getId() == car.getOwnerId()).findFirst().isPresent() ||
-                (new java.util.Date().getYear() - personRepo.findAll().stream()
-                        .filter(person -> person.getId() == car.getOwnerId()).findFirst()
-                        .orElseThrow(BadRequestException::new).getBirthDate().getYear() < 18)) {
+        if (!carIsValid(car, personRepo)) {
             throw new BadRequestException();
         }
         carRepo.save(car);
