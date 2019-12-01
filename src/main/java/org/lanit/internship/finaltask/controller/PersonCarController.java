@@ -6,7 +6,7 @@ import org.lanit.internship.finaltask.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,23 +16,23 @@ import java.util.List;
 @RestController
 @RequestMapping("")
 public class PersonCarController {
-    private List<Person> persons = new ArrayList<Person>() {{
-        Person person1 = new Person();
-        person1.setId(1L);
-        person1.setName("Ivan");
-        person1.setBirthDate(Date.valueOf("2006-05-25"));
-        add(person1);
-        Person person2 = new Person();
-        person2.setId(2L);
-        person2.setName("Pavel");
-        person2.setBirthDate(Date.valueOf("1989-01-17"));
-        add(person2);
-        Person person3 = new Person();
-        person3.setId(3L);
-        person3.setName("Anton");
-        person3.setBirthDate(Date.valueOf("1970-03-06"));
-        add(person3);
-    }};
+//    private List<Person> persons = new ArrayList<Person>() {{
+//        Person person1 = new Person();
+//        person1.setId(1L);
+//        person1.setName("Ivan");
+//        person1.setBirthDate(Date.valueOf("2006-05-25"));
+//        add(person1);
+//        Person person2 = new Person();
+//        person2.setId(2L);
+//        person2.setName("Pavel");
+//        person2.setBirthDate(Date.valueOf("1989-01-17"));
+//        add(person2);
+//        Person person3 = new Person();
+//        person3.setId(3L);
+//        person3.setName("Anton");
+//        person3.setBirthDate(Date.valueOf("1970-03-06"));
+//        add(person3);
+//    }};
 
     private List<Car> cars = new ArrayList<Car>() {{
         Car car1 = new Car();
@@ -57,6 +57,7 @@ public class PersonCarController {
 
     private final PersonRepo personRepo;
     private final CarRepo carRepo;
+    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     @Autowired
     public PersonCarController(PersonRepo personRepo, CarRepo carRepo) {
@@ -64,7 +65,7 @@ public class PersonCarController {
         this.carRepo = carRepo;
     }
 
-    static boolean isValid(String value, String datePattern) {
+    static boolean isValid(Date value, String datePattern) {
 
         if (value == null || datePattern == null || datePattern.length() <= 0) {
             return false;
@@ -74,8 +75,8 @@ public class PersonCarController {
         formatter.setLenient(false);
 
         try {
-            formatter.parse(value);
-        } catch (ParseException e) {
+            formatter.format(value);
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -96,8 +97,7 @@ public class PersonCarController {
         if (!(person.getId() instanceof Long) || person.getId() == null ||
                 !(person.getName() instanceof String) || person.getName() == null ||
                 !(person.getBirthDate() instanceof Date) || person.getBirthDate() == null ||
-                !isValid(person.getBirthDate().toString(), "dd.MM.yyyy") ||
-                !person.getBirthDate().before(new java.util.Date())){
+                !person.getBirthDate().before(new Date())){
             throw new BadRequestException();
         }
         personRepo.save(person);
@@ -120,7 +120,7 @@ public class PersonCarController {
     }
 
     @GetMapping(value = "/personwithcars")
-    public PersonWithCars getPerson(@RequestParam String personid) {
+    public PersonWithCars getPerson(@RequestParam String personid) throws ParseException {
         PersonWithCars personWithCars = new PersonWithCars();
         Person person1 = personRepo.findAll().stream()
                 .filter(person -> person.getId() == Long.parseLong(personid))
