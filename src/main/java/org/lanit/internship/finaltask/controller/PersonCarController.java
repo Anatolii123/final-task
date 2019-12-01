@@ -57,7 +57,6 @@ public class PersonCarController {
 
     private final PersonRepo personRepo;
     private final CarRepo carRepo;
-    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     @Autowired
     public PersonCarController(PersonRepo personRepo, CarRepo carRepo) {
