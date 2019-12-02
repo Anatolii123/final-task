@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -62,23 +60,6 @@ public class PersonCarController {
     public PersonCarController(PersonRepo personRepo, CarRepo carRepo) {
         this.personRepo = personRepo;
         this.carRepo = carRepo;
-    }
-
-    static boolean isValid(Date value, String datePattern) {
-
-        if (value == null || datePattern == null || datePattern.length() <= 0) {
-            return false;
-        }
-
-        SimpleDateFormat formatter = new SimpleDateFormat(datePattern);
-        formatter.setLenient(false);
-
-        try {
-            formatter.format(value);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
     }
 
     static boolean carIsValid(Car car, PersonRepo personRepo) {
