@@ -1,3 +1,10 @@
+var personApi = Vue.resource('/persons');
+
+Vue.component('person-row', {
+    props: ['person'],
+    template: '<tr><th scope="row">{{person.id}}</th><td>{{person.name}}</td><td>{{person.birthDate}}</td></tr>'
+});
+
 Vue.component('person-form', {
     props: ['persons', 'personAttr'],
     data: function () {
@@ -34,15 +41,29 @@ Vue.component('person-form', {
 
 Vue.component('persons-list', {
     props: ['persons'],
-    data: function () {
-        return {
-            person: null
-        }
-    },
     template:
         '<div align="center" style="width: 300px;">' +
-        '<person-form :persons="persons" :personAttr="person"/>' +
+        '<person-form :persons="persons" :personAttr="person"/><br>' +
+        '<table class="table" align="center" style="text-align: center">\n' +
+        '  <thead>\n' +
+        '    <tr>\n' +
+        '      <th>ID</th>\n' +
+        '      <th>Name</th>\n' +
+        '      <th>Birthday</th>\n' +
+        '    </tr>\n' +
+        '  </thead>\n' +
+        '  <tbody>\n' +
+        '<person-row v-for="person in persons" :key="person.id" :person="person"/>' +
+        '  </tbody>\n' +
+        '</table>' +
         '</div>',
+    created: function () {
+        personApi.get().then(result =>
+            result.json().then(data =>
+                data.forEach(person => this.persons.push(person))
+            )
+        )
+    }
 });
 
 var app = new Vue({
