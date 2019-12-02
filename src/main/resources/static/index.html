@@ -16,9 +16,8 @@
         <input type="submit" class="btn btn-outline-primary" formaction="/cars" formmethod="get" value="Show all cars">
         <input type="submit" class="btn btn-outline-primary" formaction="/statistics" formmethod="get" value="Show statistics"><br><br>
         <input type="text" placeholder="write person's ID" class="form-control" id="personId" style="width: 150px"><br>
-        <input type="submit" class="btn btn-outline-primary" onclick="sendRequest()" value="Show person and his/her cars">
-        <input type="submit" class="btn btn-outline-primary" formaction="/cars" formmethod="get" value="Add person">
-        <input type="submit" class="btn btn-outline-primary" formaction="/cars" formmethod="get" value="Add car">
+        <input type="submit" class="btn btn-outline-primary"  value="Show person and his/her cars">
+        <input type="submit" class="btn btn-outline-primary" formaction="/clear" formmethod="get" value="Clear all">
     </form>
 </div>
 <div id="app" align="center">{{ message }}</div>

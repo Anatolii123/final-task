@@ -34,40 +34,10 @@ Vue.component('person-form', {
         '</div>',
     methods: {
         save: function () {
-            // var xhr = new XMLHttpRequest();
             var person = {id: 5, name: this.name, birthDate: this.birthDate};
-            // xhr.open('post', 'http://localhost:8080/person', true);
-            // xhr.setRequestHeader("Content-Type","application/json");
-            // xhr.send(person.json);
-            // fetch('http://localhost:8080/person', {
-            //     method: 'post',
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     },
-            //     body: {
-            //         "id":4,
-            //         "name":"Name",
-            //         "birthDate":"2006-05-25"
-            //     }
-            // })
-            //     .then(
-            //         function(response) {
-            //             if (response.status !== 200) {
-            //                 return;
-            //             }
-            //         }
-            //     )
-            //     .catch(function(err) {
-            //         console.log(err);
-            //     });
             this.$http.post('http://localhost:8080/person', person).then(response => {
                 response.status;
             });
-            // personApi.save(person.json, person).then(result =>
-            //     result.then(data => {
-            //         this.persons.add(data);
-            //     })
-            // )
         }
     }
 });
@@ -75,7 +45,7 @@ Vue.component('person-form', {
 Vue.component('person-row', {
     props: ['person', 'editMethod','persons'],
     template:
-        '<div align="center">' +
+        '<div align="center" class="table-row-cell">' +
         '<i>({{person.id}})</i> | {{person.name}} | {{person.birthDate}}' +
         '</div>'
 });
