@@ -31,7 +31,7 @@ Vue.component('car-form', {
             });
             this.model = '';
             this.horsepower = '';
-            this.ownerId = ''
+            this.ownerId = '';
         }
     }
 });
