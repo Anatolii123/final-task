@@ -1,3 +1,10 @@
+var carApi = Vue.resource('/cars');
+
+Vue.component('car-row', {
+    props: ['car'],
+    template: '<tr><th scope="row">{{car.id}}</th><td>{{car.model}}</td><td>{{car.horsepower}}</td><td>{{car.ownerId}}</td></tr>'
+});
+
 Vue.component('car-form', {
     props: ['cars', 'carAttr'],
     data: function () {
@@ -27,7 +34,7 @@ Vue.component('car-form', {
         save: function () {
             var car = {id: 5, model: this.model, horsepower: this.horsepower, ownerId: this.ownerId};
             this.$http.post('http://localhost:8080/car', car).then(response => {
-                response.status;
+                this.cars.push(car);
             });
             this.model = '';
             this.horsepower = '';
@@ -38,15 +45,30 @@ Vue.component('car-form', {
 
 Vue.component('cars-list', {
     props: ['cars'],
-    data: function () {
-        return {
-            car: null
-        }
-    },
     template:
-        '<div align="center" style="width: 300px;">' +
-        '<car-form :cars="cars" :carAttr="car"/>' +
+        '<div align="center" style="width: 400px;">' +
+        '<car-form :cars="cars" :carAttr="car"/><br>' +
+        '<table class="table" align="center" style="text-align: center">\n' +
+        '  <thead>\n' +
+        '    <tr>\n' +
+        '      <th>ID</th>\n' +
+        '      <th>Model</th>\n' +
+        '      <th>Horsepower</th>\n' +
+        '      <th>Owner ID</th>\n' +
+        '    </tr>\n' +
+        '  </thead>\n' +
+        '  <tbody>\n' +
+        '<car-row v-for="car in cars" :key="car.id" :car="car"/>' +
+        '  </tbody>\n' +
+        '</table>' +
         '</div>',
+    created: function () {
+        carApi.get().then(result =>
+            result.json().then(data =>
+                data.forEach(car => this.cars.push(car))
+            )
+        )
+    }
 });
 
 var app = new Vue({

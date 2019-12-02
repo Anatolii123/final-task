@@ -31,7 +31,7 @@ Vue.component('person-form', {
         save: function () {
             var person = {id: 5, name: this.name, birthDate: this.birthDate};
             this.$http.post('http://localhost:8080/person', person).then(response => {
-                this.personas.push(person);
+                this.persons.push(person);
             });
             this.name = '';
             this.birthDate = ''
@@ -42,7 +42,7 @@ Vue.component('person-form', {
 Vue.component('persons-list', {
     props: ['persons'],
     template:
-        '<div align="center" style="width: 300px;">' +
+        '<div align="center" style="width: 400px;">' +
         '<person-form :persons="persons" :personAttr="person"/><br>' +
         '<table class="table" align="center" style="text-align: center">\n' +
         '  <thead>\n' +

@@ -125,6 +125,11 @@ public class PersonCarController {
         personRepo.save(person);
     }
 
+    @PostMapping(value = "/getId")
+    public Long maxId() {
+        return (long)personRepo.findAll(Sort.by("id")).size() + 1;
+    }
+
     @PostMapping(value = "/car")
     public void saveCar(@RequestBody Car car) {
         if (!carIsValid(car, personRepo)) {
@@ -160,6 +165,8 @@ public class PersonCarController {
         statistics.setUniquevendorcount((long) vendors.size());
         return statistics;
     }
+
+
 
     @GetMapping(value = "/clear")
     public void clearDB() {
