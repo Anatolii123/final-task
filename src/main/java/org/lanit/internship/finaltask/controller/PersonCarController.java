@@ -114,7 +114,7 @@ public class PersonCarController {
 
     @GetMapping("/cars")
     public List<Car> carsList() {
-        return carRepo.findAll();
+        return carRepo.findAll(Sort.by("id"));
     }
 
     @PostMapping(value = "/person")

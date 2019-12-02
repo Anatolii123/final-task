@@ -24,8 +24,10 @@ Vue.component('person-form', {
         save: function () {
             var person = {id: 5, name: this.name, birthDate: this.birthDate};
             this.$http.post('http://localhost:8080/person', person).then(response => {
-                response.status;
+                this.personas.push(person);
             });
+            this.name = '';
+            this.birthDate = ''
         }
     }
 });

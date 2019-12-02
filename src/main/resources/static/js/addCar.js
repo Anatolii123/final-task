@@ -29,6 +29,9 @@ Vue.component('car-form', {
             this.$http.post('http://localhost:8080/car', car).then(response => {
                 response.status;
             });
+            this.model = '';
+            this.horsepower = '';
+            this.ownerId = ''
         }
     }
 });
