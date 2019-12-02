@@ -15,46 +15,59 @@ Vue.component('person-form', {
     data: function () {
         return {
             name: '',
-            birthdate: '',
+            birthDate: '',
             id: ''
         }
     },
     watch: {
         personAttr: function (newVal, oldVal) {
             this.name = newVal.name;
-            this.birthdate = newVal.birthdate;
+            this.birthDate = newVal.birthDate;
             this.id = newVal.id;
         }
     },
     template:
         '<div align="center">' +
         '<input type="text" class="form-control" placeholder="write name" v-model="name"/>' +
-        '<input type="date" class="form-control" v-model="birthdate"/>' +
+        '<input type="date" class="form-control" v-model="birthDate"/>' +
         '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/>' +
         '</div>',
     methods: {
         save: function () {
-            var person = {name: this.name, birthdate: this.birthdate};
-
-            if (this.id) {
-                personApi.update({id: this.id}, person).then(result =>
-                    result.json().then(data => {
-                        var index = getIndex(this.persons, data.id);
-                        this.persons.splice(index, 1, data);
-                        this.name = '';
-                        this.birthdate = '';
-                        this.id = '';
-                    })
-                )
-            } else {
-                personApi.save({}, person).then(result =>
-                    result.json().then(data => {
-                        this.persons.push(data);
-                        this.name = '';
-                        this.birthdate = ''
-                    })
-                )
-            }
+            // var xhr = new XMLHttpRequest();
+            var person = {id: 5, name: this.name, birthDate: this.birthDate};
+            // xhr.open('post', 'http://localhost:8080/person', true);
+            // xhr.setRequestHeader("Content-Type","application/json");
+            // xhr.send(person.json);
+            // fetch('http://localhost:8080/person', {
+            //     method: 'post',
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: {
+            //         "id":4,
+            //         "name":"Name",
+            //         "birthDate":"2006-05-25"
+            //     }
+            // })
+            //     .then(
+            //         function(response) {
+            //             if (response.status !== 200) {
+            //                 return;
+            //             }
+            //         }
+            //     )
+            //     .catch(function(err) {
+            //         console.log(err);
+            //     });
+            this.$http.post('http://localhost:8080/person', person).then(response => {
+                response.status;
+            });
+            // personApi.save(person.json, person).then(result =>
+            //     result.then(data => {
+            //         this.persons.add(data);
+            //     })
+            // )
         }
     }
 });
@@ -62,25 +75,9 @@ Vue.component('person-form', {
 Vue.component('person-row', {
     props: ['person', 'editMethod','persons'],
     template:
-        '<div>' +
-        '<i>({{person.id}})</i> | {{person.name}} | {{person.birthdate}}' +
-        '<span style="position: absolute; right: 0;">' +
-            '<input type="button" value="Edit" @click="edit"/>' +
-            '<input type="button" value="X" @click="del"/>' +
-        '</span>' +
-        '</div>',
-    methods: {
-        edit: function () {
-            this.editMethod(this.person);
-        },
-        del: function () {
-            personApi.remove({id: this.person.id}).then(result => {
-                if (result.ok) {
-                    this.persons.splice(this.persons.indexOf(this.person), 1)
-                }
-            })
-        }
-    }
+        '<div align="center">' +
+        '<i>({{person.id}})</i> | {{person.name}} | {{person.birthDate}}' +
+        '</div>'
 });
 
 Vue.component('persons-list', {
