@@ -126,18 +126,12 @@ public class PersonCarController {
     @GetMapping(value = "/personwithcars")
     public PersonWithCars getPerson(@RequestParam Long personid) throws ParseException {
         PersonWithCars personWithCars = new PersonWithCars();
-        Person person1 = personRepo.findAll().stream()
-                .filter(person -> person.getId() == personid)
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
         Optional<Person> personById = personRepo.findById(personid);
-        personWithCars.setId(person1.getId());
-        personWithCars.setName(person1.getName());
-        personWithCars.setBirthDate(person1.getBirthDate());
-        personWithCars.setCars(carRepo.findAll(), personid);
-
+        personWithCars.setId(personById.get().getId());
+        personWithCars.setName(personById.get().getName());
+        personWithCars.setBirthDate(personById.get().getBirthDate());
         List<Optional<Car>> carsByOwnerId = carRepo.findByOwnerId(personid);
-
+        personWithCars.setCars(carsByOwnerId);
         return personWithCars;
     }
 
