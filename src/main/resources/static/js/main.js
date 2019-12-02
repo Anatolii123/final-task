@@ -28,9 +28,9 @@ Vue.component('person-form', {
     },
     template:
         '<div align="center">' +
-        '<input type="text" class="form-control" placeholder="write name" v-model="name"/>' +
-        '<input type="date" class="form-control" v-model="birthDate"/>' +
-        '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/>' +
+        '<input type="text" class="form-control" placeholder="write name" v-model="name"/><br>' +
+        '<input type="date" class="form-control" v-model="birthDate"/><br>' +
+        '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/><br><br>' +
         '</div>',
     methods: {
         save: function () {
@@ -45,8 +45,23 @@ Vue.component('person-form', {
 Vue.component('person-row', {
     props: ['person', 'editMethod','persons'],
     template:
-        '<div align="center" class="table-row-cell">' +
-        '<i>({{person.id}})</i> | {{person.name}} | {{person.birthDate}}' +
+        '<div align="center">' +
+        '<table class="table">\n' +
+        '  <thead>\n' +
+        '    <tr>\n' +
+        '      <th>ID</th>\n' +
+        '      <th>Name</th>\n' +
+        '      <th>Birthday</th>\n' +
+        '    </tr>\n' +
+        '  </thead>\n' +
+        '  <tbody>\n' +
+        '    <tr>\n' +
+        '      <th scope="row">{{person.id}}</th>\n' +
+        '      <td>{{person.name}}</td>\n' +
+        '      <td>{{person.birthDate}}</td>\n' +
+        '    </tr>\n' +
+        '  </tbody>\n' +
+        '</table>' +
         '</div>'
 });
 
@@ -61,7 +76,7 @@ Vue.component('persons-list', {
         '<div style="position: relative; width: 300px;">' +
         '<person-form :persons="persons" :personAttr="person"/>' +
         '<person-row v-for="person in persons" :key="person.id" :person="person"' +
-            ':editMethod="editMethod" :persons="persons"/>' +
+            ':persons="persons"/>' +
         '</div>',
     created: function () {
         personApi.get().then(result =>
@@ -69,11 +84,6 @@ Vue.component('persons-list', {
                 data.forEach(person => this.persons.push(person))
             )
         )
-    },
-    methods: {
-        editMethod: function (person) {
-            this.person = person;
-        }
     }
 });
 
