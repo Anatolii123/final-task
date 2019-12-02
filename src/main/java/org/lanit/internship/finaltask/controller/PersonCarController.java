@@ -123,6 +123,14 @@ public class PersonCarController {
         carRepo.save(car);
     }
 
+    @PostMapping(value = "/car2")
+    public Car saveCar2(@RequestBody Car car) {
+        if (!carIsValid(car, personRepo)) {
+            throw new BadRequestException();
+        }
+        return carRepo.save(car);
+    }
+
     @GetMapping(value = "/personwithcars")
     public PersonWithCars getPerson(@RequestParam Long personid) throws ParseException {
         PersonWithCars personWithCars = new PersonWithCars();
