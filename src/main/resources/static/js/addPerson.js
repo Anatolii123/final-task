@@ -1,15 +1,3 @@
-function getIndex(list, id) {
-    for (var i = 0; i < list.length; i++) {
-        if (list[i].id === id) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-var personApi = Vue.resource('/persons');
-var carApi = Vue.resource('/cars');
-
 Vue.component('person-form', {
     props: ['persons', 'personAttr'],
     data: function () {
@@ -28,8 +16,8 @@ Vue.component('person-form', {
     },
     template:
         '<div align="center">' +
-        '<input type="text" class="form-control" placeholder="write name" v-model="name"/><br>' +
-        '<input type="date" class="form-control" v-model="birthDate"/><br>' +
+        'Name: <input type="text" class="form-control" placeholder="Write name" v-model="name"/><br>' +
+        'Birthday: <input type="date" class="form-control" v-model="birthDate"/><br>' +
         '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/><br><br>' +
         '</div>',
     methods: {
@@ -57,7 +45,7 @@ Vue.component('persons-list', {
 
 var app = new Vue({
     el: '#app',
-    template: '<persons-list :persons="persons" />',
+    template: '<div align="center"><persons-list :persons="persons" /></div>',
     data: {
         persons: []
     }

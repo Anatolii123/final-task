@@ -1,4 +1,4 @@
-var personaApi = Vue.resource('/persons')
+var personaApi = Vue.resource('/persons');
 
 Vue.component('persona-row', {
     props: ['persona'],
@@ -8,7 +8,7 @@ Vue.component('persona-row', {
 Vue.component('personas-list', {
     props: ['personas'],
     template: '<div align="center" style="align-content:center; width: 400px">' +
-        '<table class="table" align="center">\n' +
+        '<table class="table" align="center" style="text-align: center">\n' +
         '  <thead>\n' +
         '    <tr>\n' +
         '      <th>ID</th>\n' +
@@ -32,7 +32,7 @@ Vue.component('personas-list', {
 
 var app = new Vue({
     el: '#app2',
-    template: '<personas-list :personas="personas"/>',
+    template: '<div align="center"><personas-list :personas="personas"/></div>',
     data: {
         personas: []
     }

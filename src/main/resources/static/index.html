@@ -18,12 +18,35 @@
         <input type="submit" class="btn btn-outline-primary" formaction="/clear" formmethod="get" value="Clear all"><br><br>
         <input type="text" placeholder="write person's ID" class="form-control" name="personid" id="personid" style="width: 150px"><br>
         <input type="submit" class="btn btn-outline-primary" formaction="/personwithcars" formmethod="get" value="Show person and his/her cars">
-        <output id="personWithCars"></output>
-    </form>
+    </form><br>
 </div>
-<div align="center" id="app">{{ message }}</div>
-<div align="center" id="app2">{{ persona }}</div>
-<script src="js/main.js"></script>
-<script src="js/new.js"></script>
+<div align="center">
+    <div align="center" style="width: 1600px">
+        <table class="table" align="center" style="text-align: center">
+            <thead>
+            <tr>
+                <th>All persons</th>
+                <th>All cars</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <div align="center" id="app"></div>
+                    <div align="center" id="app2"></div>
+                </td>
+                <td>
+                    <div align="center" id="app3"></div>
+                    <div align="center" id="app4"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="js/addPerson.js"></script>
+<script src="js/showPersons.js"></script>
+<script src="js/addCar.js"></script>
+<script src="js/showCars.js"></script>
 </body>
 </html>

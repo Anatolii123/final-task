@@ -4,6 +4,7 @@ import org.lanit.internship.finaltask.exceptions.BadRequestException;
 import org.lanit.internship.finaltask.exceptions.NotFoundException;
 import org.lanit.internship.finaltask.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -109,7 +110,7 @@ public class PersonCarController {
 
     @GetMapping("/persons")
     public List<Person> personsList() {
-        return personRepo.findAll();
+        return personRepo.findAll(Sort.by("id"));
     }
 
     @GetMapping("/cars")
