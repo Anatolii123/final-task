@@ -34,7 +34,6 @@ public class PersonCarController {
 //        person3.setBirthDate(Date.valueOf("1970-03-06"));
 //        add(person3);
 //    }};
-
 //    private List<Car> cars = new ArrayList<Car>() {{
 //        Car car1 = new Car();
 //        car1.setId(1L);
