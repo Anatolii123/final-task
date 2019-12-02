@@ -17,7 +17,7 @@ public class Car {
     @Column(name = "MODEL", nullable = false, precision = 0)
     private String model;
     @Column(name = "HORSEPOWER", nullable = false, precision = 0)
-    private Long horsepower;
+    private Integer horsepower;
     @Column(name = "OWNER_ID", nullable = false, precision = 0)
     private Long ownerId;
 
@@ -37,11 +37,11 @@ public class Car {
         this.model = model;
     }
 
-    public Long getHorsepower() {
+    public Integer getHorsepower() {
         return this.horsepower;
     }
 
-    public void setHorsepower(Long horsepower) {
+    public void setHorsepower(Integer horsepower) {
         this.horsepower = horsepower;
     }
 
