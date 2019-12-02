@@ -15,12 +15,10 @@
         <input type="submit" class="btn btn-outline-primary" formaction="/persons" formmethod="get" value="Show persons">
         <input type="submit" class="btn btn-outline-primary" formaction="/cars" formmethod="get" value="Show cars">
         <input type="submit" class="btn btn-outline-primary" formaction="/statistics" formmethod="get" value="Show statistics">
-        <input type="submit" class="btn btn-outline-primary" formaction="/clear" formmethod="get" value="Clear all">
-    </form><br>
-    <form action="/personwithcars" method="get">
-        <div id="app2">{{personId}}</div>
-        <input type="text" placeholder="write person's ID" class="form-control" id="personid" style="width: 150px"><br>
-        <input type="submit" class="btn btn-outline-primary" value="Show person and his/her cars">
+        <input type="submit" class="btn btn-outline-primary" formaction="/clear" formmethod="get" value="Clear all"><br><br>
+        <input type="text" placeholder="write person's ID" class="form-control" name="personid" id="personid" style="width: 150px"><br>
+        <input type="submit" class="btn btn-outline-primary" formaction="/personwithcars" formmethod="get" value="Show person and his/her cars">
+        <output id="personWithCars"></output>
     </form>
 </div>
 <div align="center" id="app">{{ message }}</div>
