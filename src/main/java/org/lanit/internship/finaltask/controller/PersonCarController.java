@@ -7,7 +7,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.util.HashSet;
 import java.util.List;
 
 @RestController
