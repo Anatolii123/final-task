@@ -42,29 +42,6 @@ Vue.component('person-form', {
     }
 });
 
-Vue.component('person-row', {
-    props: ['person', 'editMethod','persons'],
-    template:
-        '<div align="center">' +
-        '<table class="table">\n' +
-        '  <thead>\n' +
-        '    <tr>\n' +
-        '      <th>ID</th>\n' +
-        '      <th>Name</th>\n' +
-        '      <th>Birthday</th>\n' +
-        '    </tr>\n' +
-        '  </thead>\n' +
-        '  <tbody>\n' +
-        '    <tr>\n' +
-        '      <th scope="row">{{person.id}}</th>\n' +
-        '      <td>{{person.name}}</td>\n' +
-        '      <td>{{person.birthDate}}</td>\n' +
-        '    </tr>\n' +
-        '  </tbody>\n' +
-        '</table>' +
-        '</div>'
-});
-
 Vue.component('persons-list', {
     props: ['persons'],
     data: function () {
@@ -73,18 +50,9 @@ Vue.component('persons-list', {
         }
     },
     template:
-        '<div style="position: relative; width: 300px;">' +
+        '<div align="center" style="width: 300px;">' +
         '<person-form :persons="persons" :personAttr="person"/>' +
-        '<person-row v-for="person in persons" :key="person.id" :person="person"' +
-            ':persons="persons"/>' +
         '</div>',
-    created: function () {
-        personApi.get().then(result =>
-            result.json().then(data =>
-                data.forEach(person => this.persons.push(person))
-            )
-        )
-    }
 });
 
 var app = new Vue({
