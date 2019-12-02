@@ -12,7 +12,7 @@ import java.util.Date;
 public class PersonCarServiceImpl implements PersonCarService {
 
     @Override
-    public boolean carIsValid(Car car, PersonRepo personRepo) {
+    public Car carIsValid(Car car, PersonRepo personRepo) throws BadRequestException {
         if (!(car.getId() instanceof Long) || car.getId() == null ||
                 !(car.getModel() instanceof String) || car.getModel() == null ||
                 car.getVendorModel().equals("") || car.getModelModel().equals("") ||
@@ -23,18 +23,18 @@ public class PersonCarServiceImpl implements PersonCarService {
                         .orElseThrow(BadRequestException::new).getBirthDate().getYear() < 18)) {
             throw new BadRequestException();
         }
-        return true;
+        return car;
     }
 
     @Override
-    public boolean personIsValid(Person person) {
+    public Person personIsValid(Person person) throws BadRequestException {
         if (!(person.getId() instanceof Long) || person.getId() == null ||
                 !(person.getName() instanceof String) || person.getName() == null ||
                 !(person.getBirthDate() instanceof Date) || person.getBirthDate() == null ||
                 !person.getBirthDate().before(new Date())) {
-            return false;
+            throw new BadRequestException();
         }
-        return true;
+        return person;
     }
 
 }

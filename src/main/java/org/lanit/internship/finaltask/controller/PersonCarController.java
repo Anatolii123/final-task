@@ -3,6 +3,7 @@ package org.lanit.internship.finaltask.controller;
 import org.lanit.internship.finaltask.exceptions.BadRequestException;
 import org.lanit.internship.finaltask.exceptions.NotFoundException;
 import org.lanit.internship.finaltask.model.*;
+import org.lanit.internship.finaltask.service.PersonCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
@@ -53,40 +54,42 @@ public class PersonCarController {
 //        car3.setOwnerId(3L);
 //        add(car3);
 //    }};
+//    static boolean carIsValid(Car car, PersonRepo personRepo) {
+//        if (!(car.getId() instanceof Long) || car.getId() == null ||
+//                        !(car.getModel() instanceof String) || car.getModel() == null ||
+//                        car.getVendorModel().equals("") || car.getModelModel().equals("") ||
+//                        !(car.getHorsepower() instanceof Integer) || car.getHorsepower() == null ||
+//                        !(car.getOwnerId() instanceof Long) || car.getOwnerId() == null ||
+//                        car.getHorsepower() <= 0 || !personRepo.findAll().stream()
+//                        .filter(person -> person.getId() == car.getOwnerId()).findFirst().isPresent() ||
+//                        (new java.util.Date().getYear() - personRepo.findAll().stream()
+//                                .filter(person -> person.getId() == car.getOwnerId()).findFirst()
+//                                .orElseThrow(BadRequestException::new).getBirthDate().getYear() < 18)) {
+//            return false;
+//        }
+//        return true;
+//    }
+//
+//    static boolean personIsValid(Person person) {
+//        if (!(person.getId() instanceof Long) || person.getId() == null ||
+//                        !(person.getName() instanceof String) || person.getName() == null ||
+//                        !(person.getBirthDate() instanceof Date) || person.getBirthDate() == null ||
+//                        !person.getBirthDate().before(new Date())) {
+//            return false;
+//        }
+//        return true;
+//    }
 
     private final PersonRepo personRepo;
     private final CarRepo carRepo;
 
     @Autowired
+    private PersonCarService personCarService;
+
+    @Autowired
     public PersonCarController(PersonRepo personRepo, CarRepo carRepo) {
         this.personRepo = personRepo;
         this.carRepo = carRepo;
-    }
-
-    static boolean carIsValid(Car car, PersonRepo personRepo) {
-        if (!(car.getId() instanceof Long) || car.getId() == null ||
-                        !(car.getModel() instanceof String) || car.getModel() == null ||
-                        car.getVendorModel().equals("") || car.getModelModel().equals("") ||
-                        !(car.getHorsepower() instanceof Integer) || car.getHorsepower() == null ||
-                        !(car.getOwnerId() instanceof Long) || car.getOwnerId() == null ||
-                        car.getHorsepower() <= 0 || !personRepo.findAll().stream()
-                        .filter(person -> person.getId() == car.getOwnerId()).findFirst().isPresent() ||
-                        (new java.util.Date().getYear() - personRepo.findAll().stream()
-                                .filter(person -> person.getId() == car.getOwnerId()).findFirst()
-                                .orElseThrow(BadRequestException::new).getBirthDate().getYear() < 18)) {
-            return false;
-        }
-        return true;
-    }
-
-    static boolean personIsValid(Person person) {
-        if (!(person.getId() instanceof Long) || person.getId() == null ||
-                        !(person.getName() instanceof String) || person.getName() == null ||
-                        !(person.getBirthDate() instanceof Date) || person.getBirthDate() == null ||
-                        !person.getBirthDate().before(new Date())) {
-            return false;
-        }
-        return true;
     }
 
     @GetMapping("/persons")
@@ -101,34 +104,22 @@ public class PersonCarController {
 
     @PostMapping(value = "/person")
     public void savePerson(@RequestBody Person person) {
-        if (!personIsValid(person)) {
-            throw new BadRequestException();
-        }
-        personRepo.save(person);
+        personRepo.save(personCarService.personIsValid(person));
     }
 
     @PostMapping(value = "/person2")
     public Person savePerson2(@RequestBody Person person) {
-        if (!personIsValid(person)) {
-            throw new BadRequestException();
-        }
-        return personRepo.save(person);
+        return personRepo.save(personCarService.personIsValid(person));
     }
 
     @PostMapping(value = "/car")
     public void saveCar(@RequestBody Car car) {
-        if (!carIsValid(car, personRepo)) {
-            throw new BadRequestException();
-        }
-        carRepo.save(car);
+        carRepo.save(personCarService.carIsValid(car,personRepo));
     }
 
     @PostMapping(value = "/car2")
     public Car saveCar2(@RequestBody Car car) {
-        if (!carIsValid(car, personRepo)) {
-            throw new BadRequestException();
-        }
-        return carRepo.save(car);
+        return carRepo.save(personCarService.carIsValid(car,personRepo));
     }
 
     @GetMapping(value = "/personwithcars")
