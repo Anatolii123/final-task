@@ -1,18 +1,14 @@
 package org.lanit.internship.finaltask.controller;
 
-import org.lanit.internship.finaltask.exceptions.BadRequestException;
-import org.lanit.internship.finaltask.exceptions.NotFoundException;
 import org.lanit.internship.finaltask.model.*;
 import org.lanit.internship.finaltask.service.PersonCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.text.ParseException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("")
@@ -114,45 +110,27 @@ public class PersonCarController {
 
     @PostMapping(value = "/car")
     public void saveCar(@RequestBody Car car) {
-        carRepo.save(personCarService.carIsValid(car,personRepo));
+        carRepo.save(personCarService.carIsValid(car, personRepo));
     }
 
     @PostMapping(value = "/car2")
     public Car saveCar2(@RequestBody Car car) {
-        return carRepo.save(personCarService.carIsValid(car,personRepo));
+        return carRepo.save(personCarService.carIsValid(car, personRepo));
     }
 
     @GetMapping(value = "/personwithcars")
     public PersonWithCars getPerson(@RequestParam Long personid) throws ParseException {
-        PersonWithCars personWithCars = new PersonWithCars();
-        Optional<Person> personById = personRepo.findById(personid);
-        personWithCars.setId(personById.get().getId());
-        personWithCars.setName(personById.get().getName());
-        personWithCars.setBirthDate(personById.get().getBirthDate());
-        List<Optional<Car>> carsByOwnerId = carRepo.findByOwnerId(personid);
-        personWithCars.setCars(carsByOwnerId);
-        return personWithCars;
+        return personCarService.getPersonWithCars(personid, personRepo, carRepo);
     }
 
     @GetMapping(value = "/statistics")
     public Statistics getStatistics() {
-        Statistics statistics = new Statistics();
-        statistics.setPersoncount(personRepo.count());
-        statistics.setCarcount(carRepo.count());
-        HashSet<String> vendors = new HashSet<String>();
-        for (Car car : carRepo.findAll()) {
-            vendors.add(car.getVendorModel());
-        }
-        statistics.setUniquevendorcount((long) vendors.size());
-        return statistics;
+        return personCarService.getStatisticsObject(personRepo, carRepo);
     }
-
-
 
     @GetMapping(value = "/clear")
     public void clearDB() {
         carRepo.deleteAll();
         personRepo.deleteAll();
     }
-
 }
