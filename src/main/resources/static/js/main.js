@@ -7,7 +7,8 @@ function getIndex(list, id) {
     return -1;
 }
 
-var personApi = Vue.resource('/person{/id}')
+var personApi = Vue.resource('/persons');
+var carApi = Vue.resource('/cars');
 
 Vue.component('person-form', {
     props: ['persons', 'personAttr'],
@@ -26,10 +27,10 @@ Vue.component('person-form', {
         }
     },
     template:
-        '<div>' +
-        '<input type="text" placeholder="write name" v-model="name"/>' +
-        '<input type="date" v-model="birthdate"/>' +
-        '<input type="button" value="Save" @click="save"/>' +
+        '<div align="center">' +
+        '<input type="text" class="form-control" placeholder="write name" v-model="name"/>' +
+        '<input type="date" class="form-control" v-model="birthdate"/>' +
+        '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/>' +
         '</div>',
     methods: {
         save: function () {
