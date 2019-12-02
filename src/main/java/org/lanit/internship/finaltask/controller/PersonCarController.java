@@ -11,6 +11,7 @@ import java.util.Date;
 import java.text.ParseException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("")
@@ -106,9 +107,12 @@ public class PersonCarController {
         personRepo.save(person);
     }
 
-    @PostMapping(value = "/getId")
-    public Long maxId() {
-        return (long)personRepo.findAll(Sort.by("id")).size() + 1;
+    @PostMapping(value = "/person2")
+    public Person savePerson2(@RequestBody Person person) {
+        if (!personIsValid(person)) {
+            throw new BadRequestException();
+        }
+        return personRepo.save(person);
     }
 
     @PostMapping(value = "/car")
@@ -126,10 +130,13 @@ public class PersonCarController {
                 .filter(person -> person.getId() == personid)
                 .findFirst()
                 .orElseThrow(NotFoundException::new);
+        Optional<Person> personById = personRepo.findById(personid);
         personWithCars.setId(person1.getId());
         personWithCars.setName(person1.getName());
         personWithCars.setBirthDate(person1.getBirthDate());
         personWithCars.setCars(carRepo.findAll(), personid);
+
+        List<Optional<Car>> carsByOwnerId = carRepo.findByOwnerId(personid);
 
         return personWithCars;
     }

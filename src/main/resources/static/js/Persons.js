@@ -30,8 +30,8 @@ Vue.component('person-form', {
     methods: {
         save: function () {
             var person = {id: 5, name: this.name, birthDate: this.birthDate};
-            this.$http.post('http://localhost:8080/person', person).then(response => {
-                this.persons.push(person);
+            this.$http.post('http://localhost:8080/person2', person).then(response => {
+                this.persons.push(response.body);
             });
             this.name = '';
             this.birthDate = ''
