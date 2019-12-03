@@ -77,8 +77,18 @@ public class PersonCarServiceImpl implements PersonCarService {
     }
 
     @Override
+    public Person savePerson(Person person) {
+        return personRepo.save(personIsValid(person));
+    }
+
+    @Override
     public void save(Car car) {
         carRepo.save(carIsValid(car));
+    }
+
+    @Override
+    public Car saveCar(Car car) {
+        return carRepo.save(carIsValid(car));
     }
 
     @Override

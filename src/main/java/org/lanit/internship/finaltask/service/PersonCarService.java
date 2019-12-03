@@ -12,7 +12,9 @@ public interface PersonCarService {
     PersonWithCars getPersonWithCars(Long personid) throws ParseException;
     Statistics getStatisticsObject();
     void save(Person person);
+    Person savePerson(Person person);
     void save(Car car);
+    Car saveCar(Car car);
     List<Person> findAllPersons();
     List<Car> findAllCars();
     void deleteAll();
