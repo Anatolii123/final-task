@@ -23,6 +23,7 @@ import java.sql.Date;
 import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -97,10 +98,20 @@ class PersonCarControllerTest {
 
     @Test
     void savePerson() throws Exception {
-        clearDataB();
-        savePersonMethod();
+        Person person = new Person();
+        person.setId(1L);
+        person.setName("Name");
+        person.setBirthDate(Date.valueOf("2000-05-25"));
+        this.mockMvc.perform(post("/person")
+                .header("Content-Type","application/json").content("{\n" +
+                        "    \"id\":1,\n" +
+                        "    \"name\":\"Name\",\n" +
+                        "    \"birthDate\":\"2000-05-25\"\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().isOk());
         Person person2 = personRepo.findAll().get(0);
-        Assert.assertEquals("Name", person2.getName());
+        Assert.assertEquals(person, person2);
         Assert.assertEquals(Date.valueOf("2000-05-25"), person2.getBirthDate());
     }
 
