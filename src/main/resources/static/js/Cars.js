@@ -28,7 +28,7 @@ Vue.component('car-form', {
         '<input type="text" class="form-control" placeholder="Write model (e.g., BMW-X5)" v-model="model"/><br>' +
         '<input type="text" class="form-control" placeholder="Write horsepower" v-model="horsepower"/><br>' +
         '<input type="text" class="form-control" placeholder="Write owner ID" v-model="ownerId"/><br>' +
-        '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/><br><br>' +
+        '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/><br>' +
         '</div>',
     methods: {
         save: function () {
@@ -73,8 +73,12 @@ Vue.component('cars-list', {
 
 var app = new Vue({
     el: '#app2',
-    template: '<div align="center"><cars-list :cars="cars" /></div>',
+    template: '<div align="center">' +
+        '<cars-list :cars="cars" />' +
+        '<personas-list :personas="personas" />' +
+        '</div>',
     data: {
-        cars: []
+        cars: [],
+        personas: []
     }
 });
