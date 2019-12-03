@@ -10,7 +10,7 @@ Vue.component('persono-row', {
 Vue.component('personos-list', {
     props: ['personos'],
     template:
-        '   <select class="form-control" v-model="ownerId" style="width: 150px">' +
+        '   <select class="form-control" v-model="ownerId" value="1" style="width: 150px">' +
         '       <persono-row v-for="persono in personos" :key="persono.id" :persono="persono"/>' +
         '   </select>',
     created: function () {
