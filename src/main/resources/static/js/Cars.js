@@ -16,7 +16,7 @@ Vue.component('car-form', {
         }
     },
     watch: {
-        personAttr: function (newVal, oldVal) {
+        carAttr: function (newVal, oldVal) {
             this.model = newVal.model;
             this.horsepower = newVal.horsepower;
             this.ownerId = newVal.ownerId;
@@ -28,8 +28,7 @@ Vue.component('car-form', {
         '<input type="text" class="form-control" placeholder="Write model (e.g., BMW-X5)" v-model="model"/><br>' +
         '<input type="text" class="form-control" placeholder="Write horsepower" v-model="horsepower"/><br>' +
         '<input type="text" class="form-control" placeholder="Write owner ID" v-model="ownerId"/><br>' +
-        '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/><br>' +
-        '</div>',
+        '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/><br>',
     methods: {
         save: function () {
             var car = {id: 5, model: this.model, horsepower: this.horsepower, ownerId: this.ownerId};
