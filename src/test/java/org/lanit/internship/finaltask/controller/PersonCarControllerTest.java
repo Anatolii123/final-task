@@ -42,9 +42,10 @@ class PersonCarControllerTest {
     private PersonRepo personRepo;
 
     @AfterEach
-    public void clearDataB() {
+    public void clearDataB() throws Exception {
         carRepo.deleteAll();
         personRepo.deleteAll();
+        clearDatabase();
     }
 
     @BeforeEach
@@ -120,11 +121,7 @@ class PersonCarControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"id\":"
                         + personRepo.findAll().get(0).getId().toString()
-                        +",\"name\":\"Name\",\"birthDate\":\"2000-05-25\",\"cars\": " +
-                        "[{\"id\":" +
-                        carRepo.findAll().get(0).getId().toString() +
-                        ",\"model\":\"VAZ-Lada\",\"horsepower\":380,\"ownerId\":1,\"vendorModel\":\"VAZ\",\"modelModel\":\"Lada\"}]" +
-                        "}"));
+                        +",\"name\":\"Name\",\"birthDate\":\"2000-05-25\",\"cars\":[]}"));
     }
 
     @Test
