@@ -1,45 +1,30 @@
 var carApi = Vue.resource('/cars');
 
+var personoApi = Vue.resource('/persons');
+
+Vue.component('persono-row', {
+    props: ['persono'],
+    template: '<option v-bind:value="persono.id">{{persono.id}} - {{persono.name}}</option>'
+});
+
+Vue.component('personos-list', {
+    props: ['personos'],
+    template:
+        '   <select class="form-control" v-model="ownerId" style="width: 150px">' +
+        '       <persono-row v-for="persono in personos" :key="persono.id" :persono="persono"/>' +
+        '   </select>',
+    created: function () {
+        personoApi.get().then(result =>
+            result.json().then(data =>
+                data.forEach(persono => this.personos.push(persono))
+            )
+        )
+    }
+});
+
 Vue.component('car-row', {
     props: ['car'],
     template: '<tr><th scope="row">{{car.id}}</th><td>{{car.model}}</td><td>{{car.horsepower}}</td><td>{{car.ownerId}}</td></tr>'
-});
-
-Vue.component('car-form', {
-    props: ['cars', 'carAttr'],
-    data: function () {
-        return {
-            model: '',
-            horsepower: '',
-            ownerId: '',
-            id: ''
-        }
-    },
-    watch: {
-        carAttr: function (newVal, oldVal) {
-            this.model = newVal.model;
-            this.horsepower = newVal.horsepower;
-            this.ownerId = newVal.ownerId;
-            this.id = newVal.id;
-        }
-    },
-    template:
-        '<div align="center">' +
-        '<input type="text" class="form-control" placeholder="Write model (e.g., BMW-X5)" v-model="model"/><br>' +
-        '<input type="text" class="form-control" placeholder="Write horsepower" v-model="horsepower"/><br>' +
-        '<input type="text" class="form-control" placeholder="Write owner ID" v-model="ownerId"/><br>' +
-        '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/><br>',
-    methods: {
-        save: function () {
-            var car = {id: 5, model: this.model, horsepower: this.horsepower, ownerId: this.ownerId};
-            this.$http.post('http://localhost:8080/2/car', car).then(response => {
-                this.cars.push(response.body);
-            });
-            this.model = '';
-            this.horsepower = '';
-            this.ownerId = '';
-        }
-    }
 });
 
 Vue.component('cars-list', {
@@ -71,13 +56,44 @@ Vue.component('cars-list', {
 
 var app = new Vue({
     el: '#app2',
+    data: function () {
+        return {
+            model: '',
+            horsepower: '',
+            ownerId: '',
+            id: ''
+        }
+    },
+    watch: {
+        carAttr: function (newVal) {
+            this.model = newVal.model;
+            this.horsepower = newVal.horsepower;
+            this.ownerId = newVal.ownerId;
+            this.id = newVal.id;
+        }
+    },
     template: '<div align="center">' +
-        '<car-form :cars="cars" :carAttr="car" style="width: 400px" /><br>' +
+        '<div align="center" style="width: 400px">' +
+        '<input type="text" class="form-control" placeholder="Write model (e.g., BMW-X5)" required="required" v-model="model"/><br>' +
+        '<input type="text" class="form-control" placeholder="Write horsepower" required="required" v-model="horsepower"/><br>' +
+        '<personos-list placeholder="Choose person" :personos="personos" required="required" style="width: 400px"/><br>' +
+        '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/>' +
+        '</div><br>' +
         '<cars-list :cars="cars" />' +
-        '<personas-list :personas="personas" />' +
         '</div>',
+    methods: {
+        save: function () {
+            var car = {id: 5, model: this.model, horsepower: this.horsepower, ownerId: this.$children[0].ownerId};
+            this.$http.post('http://localhost:8080/2/car', car).then(response => {
+                this.cars.push(response.body);
+            });
+            this.model = '';
+            this.horsepower = '';
+            this.ownerId = '';
+        }
+    },
     data: {
         cars: [],
-        personas: []
+        personos: []
     }
 });
