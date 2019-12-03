@@ -2,6 +2,8 @@ package org.lanit.internship.finaltask.service;
 
 import org.lanit.internship.finaltask.exceptions.BadRequestException;
 import org.lanit.internship.finaltask.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -13,8 +15,14 @@ import java.util.Optional;
 @Service
 public class PersonCarServiceImpl implements PersonCarService {
 
+    @Autowired
+    private PersonRepo personRepo;
+
+    @Autowired
+    private CarRepo carRepo;
+
     @Override
-    public Car carIsValid(Car car, PersonRepo personRepo) throws BadRequestException {
+    public Car carIsValid(Car car) throws BadRequestException {
         if (!(car.getId() instanceof Long) || car.getId() == null ||
                 !(car.getModel() instanceof String) || car.getModel() == null ||
                 car.getVendorModel().equals("") || car.getModelModel().equals("") ||
@@ -40,7 +48,7 @@ public class PersonCarServiceImpl implements PersonCarService {
     }
 
     @Override
-    public PersonWithCars getPersonWithCars(Long personid, PersonRepo personRepo, CarRepo carRepo) throws ParseException {
+    public PersonWithCars getPersonWithCars(Long personid) throws ParseException {
         PersonWithCars personWithCars = new PersonWithCars();
         Optional<Person> personById = personRepo.findById(personid);
         personWithCars.setId(personById.get().getId());
@@ -52,7 +60,7 @@ public class PersonCarServiceImpl implements PersonCarService {
     }
 
     @Override
-    public Statistics getStatisticsObject(PersonRepo personRepo, CarRepo carRepo) {
+    public Statistics getStatisticsObject() {
         Statistics statistics = new Statistics();
         statistics.setPersoncount(personRepo.count());
         statistics.setCarcount(carRepo.count());
@@ -62,5 +70,31 @@ public class PersonCarServiceImpl implements PersonCarService {
         }
         statistics.setUniquevendorcount((long) vendors.size());
         return statistics;
+    }
+
+    @Override
+    public void save(Person person) {
+        personRepo.save(personIsValid(person));
+    }
+
+    @Override
+    public void save(Car car) {
+        carRepo.save(carIsValid(car));
+    }
+
+    @Override
+    public List<Person> findAllPersons() {
+        return personRepo.findAll(Sort.by("id"));
+    }
+
+    @Override
+    public List<Car> findAllCars() {
+        return carRepo.findAll(Sort.by("id"));
+    }
+
+    @Override
+    public void deleteAll() {
+        personRepo.deleteAll();
+        carRepo.deleteAll();
     }
 }

@@ -3,7 +3,6 @@ package org.lanit.internship.finaltask.controller;
 import org.lanit.internship.finaltask.model.*;
 import org.lanit.internship.finaltask.service.PersonCarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.util.List;
@@ -88,17 +87,17 @@ public class PersonCarController {
 
     @GetMapping("/persons")
     public List<Person> personsList() {
-        return personRepo.findAll(Sort.by("id"));
+        return personCarService.findAllPersons();
     }
 
     @GetMapping("/cars")
     public List<Car> carsList() {
-        return carRepo.findAll(Sort.by("id"));
+        return personCarService.findAllCars();
     }
 
     @PostMapping(value = "/person")
     public void savePerson(@RequestBody Person person) {
-        personRepo.save(personCarService.personIsValid(person));
+        personCarService.save(person);
     }
 
     @PostMapping(value = "/person2")
@@ -108,27 +107,26 @@ public class PersonCarController {
 
     @PostMapping(value = "/car")
     public void saveCar(@RequestBody Car car) {
-        carRepo.save(personCarService.carIsValid(car, personRepo));
+        personCarService.save(car);
     }
 
     @PostMapping(value = "/car2")
     public Car saveCar2(@RequestBody Car car) {
-        return carRepo.save(personCarService.carIsValid(car, personRepo));
+        return carRepo.save(personCarService.carIsValid(car));
     }
 
     @GetMapping(value = "/personwithcars")
     public PersonWithCars getPerson(@RequestParam Long personid) throws ParseException {
-        return personCarService.getPersonWithCars(personid, personRepo, carRepo);
+        return personCarService.getPersonWithCars(personid);
     }
 
     @GetMapping(value = "/statistics")
     public Statistics getStatistics() {
-        return personCarService.getStatisticsObject(personRepo, carRepo);
+        return personCarService.getStatisticsObject();
     }
 
     @GetMapping(value = "/clear")
     public void clearDB() {
-        carRepo.deleteAll();
-        personRepo.deleteAll();
+        personCarService.deleteAll();
     }
 }
