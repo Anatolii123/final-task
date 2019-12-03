@@ -73,17 +73,8 @@ public class PersonCarController {
 //        return true;
 //    }
 
-    private final PersonRepo personRepo;
-    private final CarRepo carRepo;
-
     @Autowired
     private PersonCarService personCarService;
-
-    @Autowired
-    public PersonCarController(PersonRepo personRepo, CarRepo carRepo) {
-        this.personRepo = personRepo;
-        this.carRepo = carRepo;
-    }
 
     @GetMapping("/persons")
     public List<Person> personsList() {
