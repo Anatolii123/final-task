@@ -28,6 +28,9 @@ Vue.component('car-form', {
         '<input type="text" class="form-control" placeholder="Write model (e.g., BMW-X5)" v-model="model"/><br>' +
         '<input type="text" class="form-control" placeholder="Write horsepower" v-model="horsepower"/><br>' +
         '<input type="text" class="form-control" placeholder="Write owner ID" v-model="ownerId"/><br>' +
+        '   <select class="form-control" name="personid" id="personid" style="width: 150px">' +
+        '       <persona-row v-for="persona in personas" :key="persona.id" :persona="persona"/>' +
+        '   </select>' +
         '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/><br><br>' +
         '</div>',
     methods: {

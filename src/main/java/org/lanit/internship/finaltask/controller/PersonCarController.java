@@ -97,8 +97,8 @@ public class PersonCarController {
     }
 
     @GetMapping(value = "/personwithcars")
-    public PersonWithCars getPerson(@RequestParam Long personId) throws ParseException {
-        return personCarService.getPersonWithCars(personId);
+    public PersonWithCars getPerson(@RequestParam Long personid) throws ParseException {
+        return personCarService.getPersonWithCars(personid);
     }
 
     @GetMapping(value = "/statistics")

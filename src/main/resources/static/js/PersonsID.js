@@ -1,22 +1,20 @@
-var idApi = Vue.resource('/persons');
+var personaApi = Vue.resource('/persons');
 
-Vue.component('id-row', {
-    props: ['id'],
-    template: '<option value="{{id}}">{{id}}</option>'
+Vue.component('persona-row', {
+    props: ['persona'],
+    template: '<option v-bind:value="persona.id">{{persona.id}} - {{persona.name}}</option>'
 });
 
-Vue.component('ids-list', {
-    props: ['ids'],
+Vue.component('personas-list', {
+    props: ['personas'],
     template:
-        '<div align="center" style="width: 400px;">' +
-        '   <select name="ids">' +
-        '       <id-row v-for="id in ids" :key="id" :id="id"/>' +
-        '   </select>' +
-        '</div>',
+        '   <select class="form-control" name="personid" id="personid" style="width: 150px">' +
+        '       <persona-row v-for="persona in personas" :key="persona.id" :persona="persona"/>' +
+        '   </select>',
     created: function () {
-        idApi.get().then(result =>
+        personaApi.get().then(result =>
             result.json().then(data =>
-                data.forEach(id => this.ids.push(id))
+                data.forEach(persona => this.personas.push(persona))
             )
         )
     }
@@ -24,8 +22,8 @@ Vue.component('ids-list', {
 
 var app = new Vue({
     el: '#app3',
-    template: '<div align="center"><ids-list :ids="ids" /></div>',
+    template: '<personas-list :personas="personas" />',
     data: {
-        ids: []
+        personas: []
     }
 });
