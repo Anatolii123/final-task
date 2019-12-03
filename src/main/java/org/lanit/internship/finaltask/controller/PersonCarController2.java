@@ -22,7 +22,7 @@ public class PersonCarController2 {
     }
 
     @PostMapping(value = "/car")
-    public Car saveCar2(@RequestBody Car car) {
+    public Car saveCar(@RequestBody Car car) {
         return personCarService.saveCar(car);
     }
 

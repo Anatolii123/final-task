@@ -21,6 +21,10 @@ import javax.annotation.Resource;
 import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,49 +38,75 @@ class PersonCarController2Test {
     private PersonCarService personCarService;
 
     @AfterEach
-    public void clearDataB() throws Exception {
-        personCarService.deleteAll();
-        personCarService.deleteAll();
+    public void clearDataBase() {
+        personCarService.findAllPersons().clear();
+        personCarService.findAllCars().clear();
     }
 
-    public void savePersonMethod() throws Exception {
+    @BeforeEach
+    public void prepareDataBase() throws Exception {
+        savePersonMethod();
+        saveCarMethod();
+    }
+
+    public Person createPerson() throws Exception {
         Person person = new Person();
         person.setId(1L);
         person.setName("Name");
         person.setBirthDate(Date.valueOf("2000-05-25"));
+        return person;
     }
 
-    public void saveCarMethod() {
+    public Car createCar() throws Exception {
         Car car = new Car();
-        car.setId(1L);
-        car.setModel("VAZ-Lada");
+        car.setId(2L);
+        car.setModel("Lada-Kalina");
         car.setHorsepower(380);
-        car.setOwnerId(1L);
+        car.setOwnerId(personCarService.findAllPersons().get(0).getId());
+        return car;
+    }
+
+    public void savePersonMethod() throws Exception {
+        personCarService.save(createPerson());
+    }
+
+    public void saveCarMethod() throws Exception {
+        personCarService.save(createCar());
     }
 
     @Test
     void savePerson() throws Exception {
-        Person person = new Person();
-        person.setId(1L);
-        person.setName("Name");
-        person.setBirthDate(Date.valueOf("2000-05-25"));
-        savePersonMethod();
-        assertEquals(person,personCarService.savePerson(person));
+        this.mockMvc.perform(post("/2/person")
+                .header("Content-Type","application/json").content("{\n" +
+                        "    \"id\":1,\n" +
+                        "    \"name\":\"Name\",\n" +
+                        "    \"birthDate\":\"2000-05-25\"\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\n" +
+                        "    \"id\":1,\n" +
+                        "    \"name\":\"Name\",\n" +
+                        "    \"birthDate\":\"2000-05-25\"\n" +
+                        "}"));
     }
 
     @Test
-    void saveCar2() throws Exception {
-        Person person = new Person();
-        person.setId(1L);
-        person.setName("Name");
-        person.setBirthDate(Date.valueOf("2000-05-25"));
-        personCarService.save(person);
-        Car car = new Car();
-        car.setId(2L);
-        car.setModel("VAZ-Lada");
-        car.setHorsepower(380);
-        car.setOwnerId(1L);
-        saveCarMethod();
-        assertEquals(car,personCarService.saveCar(car));
+    void saveCar() throws Exception {
+        this.mockMvc.perform(post("/2/car")
+                .header("Content-Type","application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"model\":\"Lada-Kalina\",\n" +
+                        "    \"horsepower\":380,\n" +
+                        "    \"ownerId\":" + personCarService.findAllPersons().get(0).getId() + "\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"model\":\"Lada-Kalina\",\n" +
+                        "    \"horsepower\":380,\n" +
+                        "    \"ownerId\":" + personCarService.findAllPersons().get(0).getId() + "\n" +
+                        "}"));
     }
 }
