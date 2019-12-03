@@ -55,6 +55,14 @@ class PersonCarControllerTest {
         saveCarMethod();
     }
 
+    public Person createPerson() throws Exception {
+        Person person = new Person();
+        person.setId(1L);
+        person.setName("Name");
+        person.setBirthDate(Date.valueOf("2000-05-25"));
+        return person;
+    }
+
     public void savePersonMethod() throws Exception {
         Person person = new Person();
         person.setId(1L);
@@ -98,10 +106,6 @@ class PersonCarControllerTest {
 
     @Test
     void savePerson() throws Exception {
-        Person person = new Person();
-        person.setId(1L);
-        person.setName("Name");
-        person.setBirthDate(Date.valueOf("2000-05-25"));
         this.mockMvc.perform(post("/person")
                 .header("Content-Type","application/json").content("{\n" +
                         "    \"id\":1,\n" +
@@ -111,8 +115,7 @@ class PersonCarControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
         Person person2 = personRepo.findAll().get(0);
-        Assert.assertEquals(person, person2);
-        Assert.assertEquals(Date.valueOf("2000-05-25"), person2.getBirthDate());
+        Assert.assertEquals(createPerson(), person2);
     }
 
     @Test
