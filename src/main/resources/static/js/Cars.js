@@ -33,7 +33,7 @@ Vue.component('car-form', {
     methods: {
         save: function () {
             var car = {id: 5, model: this.model, horsepower: this.horsepower, ownerId: this.ownerId};
-            this.$http.post('http://localhost:8080/car2', car).then(response => {
+            this.$http.post('http://localhost:8080/2/car', car).then(response => {
                 this.cars.push(response.body);
             });
             this.model = '';

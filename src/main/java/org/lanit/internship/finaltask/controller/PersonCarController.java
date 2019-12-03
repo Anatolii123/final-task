@@ -100,19 +100,9 @@ public class PersonCarController {
         personCarService.save(person);
     }
 
-    @PostMapping(value = "/person2")
-    public Person savePerson2(@RequestBody Person person) {
-        return personRepo.save(personCarService.personIsValid(person));
-    }
-
     @PostMapping(value = "/car")
     public void saveCar(@RequestBody Car car) {
         personCarService.save(car);
-    }
-
-    @PostMapping(value = "/car2")
-    public Car saveCar2(@RequestBody Car car) {
-        return carRepo.save(personCarService.carIsValid(car));
     }
 
     @GetMapping(value = "/personwithcars")
