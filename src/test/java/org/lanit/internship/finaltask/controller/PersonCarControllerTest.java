@@ -120,7 +120,11 @@ class PersonCarControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"id\":"
                         + personRepo.findAll().get(0).getId().toString()
-                        +",\"name\":\"Name\",\"birthDate\":\"2000-05-25\",\"cars\":[]}"));
+                        +",\"name\":\"Name\",\"birthDate\":\"2000-05-25\",\"cars\": " +
+                        "[{\"id\":" +
+                        carRepo.findAll().get(0).getId().toString() +
+                        ",\"model\":\"VAZ-Lada\",\"horsepower\":380,\"ownerId\":1,\"vendorModel\":\"VAZ\",\"modelModel\":\"Lada\"}]" +
+                        "}"));
     }
 
     @Test
