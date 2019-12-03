@@ -17,9 +17,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
 import javax.annotation.Resource;
 import java.sql.Date;
 import java.util.Optional;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -96,31 +98,29 @@ class PersonCarControllerTest {
     void savePerson() throws Exception {
         clearDataB();
         savePersonMethod();
-        Person person2 =  personRepo.findAll().get(0);
-        Assert.assertEquals("Name",person2.getName());
-        Assert.assertEquals(Date.valueOf("2000-05-25"),person2.getBirthDate());
+        Person person2 = personRepo.findAll().get(0);
+        Assert.assertEquals("Name", person2.getName());
+        Assert.assertEquals(Date.valueOf("2000-05-25"), person2.getBirthDate());
     }
 
     @Test
     void saveCar() throws Exception {
         clearDataB();
         saveCarMethod();
-        Car car2 =  carRepo.findAll().get(0);
-        Assert.assertEquals("VAZ-Lada",car2.getModel());
-        Assert.assertEquals(Integer.valueOf(380),car2.getHorsepower());
-        Assert.assertEquals(Long.valueOf(1L),car2.getOwnerId());
+        Car car2 = carRepo.findAll().get(0);
+        Assert.assertEquals("VAZ-Lada", car2.getModel());
+        Assert.assertEquals(Integer.valueOf(380), car2.getHorsepower());
+        Assert.assertEquals(Long.valueOf(1L), car2.getOwnerId());
     }
 
     @Test
     void getPerson() throws Exception {
-        this.mockMvc.perform(get("/personwithcars?personid=1"))
+        this.mockMvc.perform(get("/personwithcars?personid=" + personRepo.findAll().get(0).getId().toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json("{\"id\":1,\"name\":\"Name\",\"birthDate\":\"2000-05-25\",\"cars\":" +
-                                "[{\"id\":" +
-                                carRepo.findAll().get(0).getId().toString() +
-                                ",\"model\":\"VAZ-Lada\",\"horsepower\":380,\"ownerId\":1,\"vendorModel\":\"VAZ\",\"modelModel\":\"Lada\"}]" +
-                        "}"));
+                .andExpect(content().json("{\"id\":"
+                        + personRepo.findAll().get(0).getId().toString()
+                        +",\"name\":\"Name\",\"birthDate\":\"2000-05-25\",\"cars\":[]}"));
     }
 
     @Test
