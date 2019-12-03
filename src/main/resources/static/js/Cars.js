@@ -72,7 +72,7 @@ Vue.component('cars-list', {
 });
 
 var app = new Vue({
-    el: '#app3',
+    el: '#app2',
     template: '<div align="center"><cars-list :cars="cars" /></div>',
     data: {
         cars: []
