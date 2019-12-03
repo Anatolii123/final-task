@@ -3,6 +3,9 @@ package org.lanit.internship.finaltask.controller;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.lanit.internship.finaltask.model.Car;
@@ -36,6 +39,18 @@ class PersonCarControllerTest {
     @Resource
     private PersonRepo personRepo;
 
+    @AfterEach
+    public void clearDataB() {
+        carRepo.deleteAll();
+        personRepo.deleteAll();
+    }
+
+    @BeforeEach
+    public void prepareDB() throws Exception {
+        savePersonMethod();
+        saveCarMethod();
+    }
+
     public void savePersonMethod() throws Exception {
         Person person = new Person();
         person.setId(1L);
@@ -64,7 +79,7 @@ class PersonCarControllerTest {
         this.mockMvc.perform(get("/persons"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json("[]"));
+                .andExpect(content().json("[{\"id\":1,\"name\":\"Name\",\"birthDate\":\"2000-05-25\"}]"));
     }
 
     @Test
@@ -72,36 +87,40 @@ class PersonCarControllerTest {
         this.mockMvc.perform(get("/cars"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{\"id\":2,\"model\":\"VAZ-Lada\",\"horsepower\":380,\"ownerId\":1,\"vendorModel\":\"VAZ\",\"modelModel\":\"Lada\"}]"));
+                .andExpect(content().json("[{\"id\":" +
+                        carRepo.findAll().get(0).getId().toString() +
+                        ",\"model\":\"VAZ-Lada\",\"horsepower\":380,\"ownerId\":1,\"vendorModel\":\"VAZ\",\"modelModel\":\"Lada\"}]"));
     }
 
     @Test
     void savePerson() throws Exception {
+        clearDataB();
         savePersonMethod();
-        Optional<Person> person2 =  personRepo.findById(4L);
-        Assert.assertEquals(Long.valueOf(4L),person2.get().getId());
-        Assert.assertEquals("Name",person2.get().getName());
-        Assert.assertEquals(Date.valueOf("2000-05-25"),person2.get().getBirthDate());
+        Person person2 =  personRepo.findAll().get(0);
+        Assert.assertEquals("Name",person2.getName());
+        Assert.assertEquals(Date.valueOf("2000-05-25"),person2.getBirthDate());
     }
 
     @Test
     void saveCar() throws Exception {
+        clearDataB();
         saveCarMethod();
-        Optional<Car> car2 =  carRepo.findById(5L);
-        Assert.assertEquals("VAZ-Lada",car2.get().getModel());
-        Assert.assertEquals(Integer.valueOf(380),car2.get().getHorsepower());
-        Assert.assertEquals(Long.valueOf(1L),car2.get().getOwnerId());
+        Car car2 =  carRepo.findAll().get(0);
+        Assert.assertEquals("VAZ-Lada",car2.getModel());
+        Assert.assertEquals(Integer.valueOf(380),car2.getHorsepower());
+        Assert.assertEquals(Long.valueOf(1L),car2.getOwnerId());
     }
 
     @Test
-    void getPerson() {
-
+    void getPerson() throws Exception {
+//        this.mockMvc.perform(get("/personwithcars?personid=1"))
+//                .andDo(print())
+//                .andExpect(status().isOk())
+//                .andExpect(content().json());
     }
 
     @Test
     void getStatistics() throws Exception {
-        savePersonMethod();
-        saveCarMethod();
         this.mockMvc.perform(get("/statistics"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -110,8 +129,6 @@ class PersonCarControllerTest {
 
     @Test
     void clearDB() throws Exception {
-        savePersonMethod();
-        saveCarMethod();
         clearDatabase();
     }
 }
