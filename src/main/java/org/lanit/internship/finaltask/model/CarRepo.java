@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CarRepo extends JpaRepository<Car,Long> {
-    List<Optional<Car>> findByOwnerId(Long ownerId);
+    List<Optional<Car>> findByOwnerId(Long ownerId) ;
 }

@@ -1,6 +1,7 @@
 package org.lanit.internship.finaltask.service;
 
 import org.lanit.internship.finaltask.exceptions.BadRequestException;
+import org.lanit.internship.finaltask.exceptions.NotFoundException;
 import org.lanit.internship.finaltask.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -49,6 +50,9 @@ public class PersonCarServiceImpl implements PersonCarService {
     @Override
     public PersonWithCars getPersonWithCars(Long personid) throws ParseException {
         PersonWithCars personWithCars = new PersonWithCars();
+        if (!personRepo.findById(personid).isPresent()) {
+            throw new NotFoundException();
+        }
         Optional<Person> personById = personRepo.findById(personid);
         personWithCars.setId(personById.get().getId());
         personWithCars.setName(personById.get().getName());
