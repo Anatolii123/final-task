@@ -46,7 +46,6 @@ Vue.component('cars-list', {
     props: ['cars'],
     template:
         '<div align="center" style="width: 400px;">' +
-        '<car-form :cars="cars" :carAttr="car"/><br>' +
         '<table class="table" align="center" style="text-align: center">\n' +
         '  <thead>\n' +
         '    <tr>\n' +
@@ -73,6 +72,7 @@ Vue.component('cars-list', {
 var app = new Vue({
     el: '#app2',
     template: '<div align="center">' +
+        '<car-form :cars="cars" :carAttr="car" style="width: 400px" /><br>' +
         '<cars-list :cars="cars" />' +
         '<personas-list :personas="personas" />' +
         '</div>',
