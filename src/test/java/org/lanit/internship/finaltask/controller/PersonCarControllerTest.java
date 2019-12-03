@@ -112,7 +112,7 @@ class PersonCarControllerTest {
                 .andExpect(status().isOk());
         Person person2 = personCarService.findAllPersons().get(0);
         Person person = createPerson();
-        person.setId(3L);
+        person.setId(personCarService.findAllPersons().get(0).getId());
         Assert.assertEquals(person, person2);
     }
 
