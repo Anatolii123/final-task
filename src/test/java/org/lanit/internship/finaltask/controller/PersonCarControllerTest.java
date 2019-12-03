@@ -113,10 +113,14 @@ class PersonCarControllerTest {
 
     @Test
     void getPerson() throws Exception {
-//        this.mockMvc.perform(get("/personwithcars?personid=1"))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(content().json());
+        this.mockMvc.perform(get("/personwithcars?personid=1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\"id\":1,\"name\":\"Name\",\"birthDate\":\"2000-05-25\",\"cars\":" +
+                                "[{\"id\":" +
+                                carRepo.findAll().get(0).getId().toString() +
+                                ",\"model\":\"VAZ-Lada\",\"horsepower\":380,\"ownerId\":1,\"vendorModel\":\"VAZ\",\"modelModel\":\"Lada\"}]" +
+                        "}"));
     }
 
     @Test
