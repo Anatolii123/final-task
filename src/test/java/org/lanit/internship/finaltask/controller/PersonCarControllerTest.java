@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.lanit.internship.finaltask.model.Car;
 import org.lanit.internship.finaltask.model.Person;
 import org.lanit.internship.finaltask.service.PersonCarService;
+import org.lanit.internship.finaltask.service.PersonCarServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,13 +36,13 @@ class PersonCarControllerTest {
     private PersonCarService personCarService;
 
     @AfterEach
-    public void clearDataB() {
+    public void clearDataBase() {
         personCarService.findAllPersons().clear();
         personCarService.findAllCars().clear();
     }
 
     @BeforeEach
-    public void prepareDB() throws Exception {
+    public void prepareDataBase() throws Exception {
         savePersonMethod();
         saveCarMethod();
     }
@@ -54,12 +55,12 @@ class PersonCarControllerTest {
         return person;
     }
 
-    public Car createCar() {
+    public Car createCar() throws Exception {
         Car car = new Car();
         car.setId(2L);
         car.setModel("Lada-Kalina");
         car.setHorsepower(380);
-        car.setOwnerId(1L);
+        car.setOwnerId(personCarService.findAllPersons().get(0).getId());
         return car;
     }
 
@@ -67,7 +68,7 @@ class PersonCarControllerTest {
         personCarService.save(createPerson());
     }
 
-    public void saveCarMethod() {
+    public void saveCarMethod() throws Exception {
         personCarService.save(createCar());
     }
 
@@ -110,7 +111,9 @@ class PersonCarControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
         Person person2 = personCarService.findAllPersons().get(0);
-        Assert.assertEquals(createPerson(), person2);
+        Person person = createPerson();
+        person.setId(3L);
+        Assert.assertEquals(person, person2);
     }
 
     @Test
@@ -120,15 +123,15 @@ class PersonCarControllerTest {
                         "    \"id\":2,\n" +
                         "    \"model\":\"Lada-Kalina\",\n" +
                         "    \"horsepower\":380,\n" +
-                        "    \"ownerId\":1\n" +
+                        "    \"ownerId\":" + personCarService.findAllPersons().get(0).getId() + "\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().isOk());
         Car car2 = personCarService.findAllCars().get(0);
-        Assert.assertEquals(createCar().getId(), car2.getId());
+        Assert.assertEquals(personCarService.findAllCars().get(0).getId(), car2.getId());
         Assert.assertEquals(createCar().getModel(), car2.getModel());
         Assert.assertEquals(createCar().getHorsepower(), car2.getHorsepower());
-        Assert.assertEquals(createCar().getOwnerId(), car2.getOwnerId());
+        Assert.assertEquals(personCarService.findAllPersons().get(0).getId(), car2.getOwnerId());
     }
 
     @Test
@@ -151,10 +154,6 @@ class PersonCarControllerTest {
 
     @Test
     void getStatistics() throws Exception {
-        savePersonMethod();
-        if (!personCarService.findAllPersons().isEmpty()) {
-            saveCarMethod();
-        }
         this.mockMvc.perform(get("/statistics"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -166,6 +165,5 @@ class PersonCarControllerTest {
          this.mockMvc.perform(get("/clear"))
                 .andDo(print())
                 .andExpect(status().isOk());
-         savePersonMethod();
     }
 }
