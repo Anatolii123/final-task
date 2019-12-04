@@ -1,9 +1,13 @@
 package org.lanit.internship.finaltask.controller;
 
-import org.lanit.internship.finaltask.model.*;
+import org.lanit.internship.finaltask.model.Car;
+import org.lanit.internship.finaltask.model.Person;
+import org.lanit.internship.finaltask.model.PersonWithCars;
+import org.lanit.internship.finaltask.model.Statistics;
 import org.lanit.internship.finaltask.service.PersonCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.text.ParseException;
 import java.util.List;
 

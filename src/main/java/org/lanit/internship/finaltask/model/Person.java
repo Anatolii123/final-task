@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -44,9 +44,8 @@ public class Person {
         return this.birthDate;
     }
 
-    public void setBirthDate(Date birthDate) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        this.birthDate = new Date(simpleDateFormat.parse(simpleDateFormat.format(birthDate)).getTime());
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     @Override

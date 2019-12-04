@@ -24,9 +24,13 @@ Vue.component('person-form', {
     template:
         '<div align="center">' +
         '<div style="display: table-cell"><b style="margin-right: 2px">Name:</b></div> ' +
-        '<div style="display: table-cell"><input type="text" style="margin-left: 2px; width: 347px" class="form-control" placeholder="Write name" v-model="name"/></div><br>' +
+        '<div style="display: table-cell">' +
+        '<input type="text" style="margin-left: 2px; width: 347px" class="form-control" placeholder="Write name" v-model="name"/>' +
+        '</div><br>' +
         '<div style="display: table-cell"><b style="margin-right: 2px">Birthday:  </b></div> ' +
-        '<div style="display: table-cell"><input style="margin-left: 2px; width: 327px" type="date" class="form-control" v-model="birthDate"/></div><br>' +
+        '<div style="display: table-cell">' +
+        '<input style="margin-left: 2px; width: 327px" pattern="[0-9]{2}.[0-9]{2}.[0-9]{4}" type="date" class="form-control" v-model="birthDate"/>' +
+        '</div><br>' +
         '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/><br>' +
         '</div>',
     methods: {
