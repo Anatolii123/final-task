@@ -57,7 +57,9 @@ Vue.component('statistics-list', {
             this.showTable = false;
         },
         clear: function () {
-            this.$http.get('http://localhost:8080/clear').then();
+            this.$http.get('http://localhost:8080/clear').then(response =>
+                console.log(response)
+            );
         }
     }
 });
