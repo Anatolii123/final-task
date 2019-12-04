@@ -162,7 +162,7 @@ class PersonCarControllerTest {
      **/
 
     @Test
-    void savePersonFailedTest() throws Exception {
+    void savePersonBadRequest() throws Exception {
         this.mockMvc.perform(post("/person")
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":1,\n" +
@@ -174,7 +174,7 @@ class PersonCarControllerTest {
     }
 
     @Test
-    void saveCarFailedTest() throws Exception {
+    void saveCarBadRequest() throws Exception {
         this.mockMvc.perform(post("/car")
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":2,\n" +
@@ -199,12 +199,4 @@ class PersonCarControllerTest {
                 .andDo(print())
                 .andExpect(status().is(400));
     }
-
-//    @Test
-//    void getStatistics() throws Exception {
-//        this.mockMvc.perform(get("/statistics"))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(content().json("{\"personcount\":1,\"carcount\":1,\"uniquevendorcount\":1}"));
-//    }
 }

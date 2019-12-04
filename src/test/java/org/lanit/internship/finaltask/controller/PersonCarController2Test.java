@@ -66,4 +66,34 @@ class PersonCarController2Test {
                         "    \"ownerId\":1\n" +
                         "}"));
     }
+
+    /**
+     *WrongExecutionTests
+     **/
+
+    @Test
+    void savePersonBadRequest() throws Exception {
+        this.mockMvc.perform(post("/2/person")
+                .header("Content-Type","application/json").content("{\n" +
+                        "    \"id\":1,\n" +
+                        "    \"name\":\"Name\",\n" +
+                        "    \"birthDate\":\"2020-05-25\"\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(400));
+    }
+
+    @Test
+    void saveCarBadRequest() throws Exception {
+        this.mockMvc.perform(post("/2/car")
+                .header("Content-Type","application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"model\":\"Lada-Kalina\",\n" +
+                        "    \"horsepower\":-380,\n" +
+                        "    \"ownerId\":1\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(400));
+    }
+
 }
