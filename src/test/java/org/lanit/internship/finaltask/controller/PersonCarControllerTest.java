@@ -195,7 +195,7 @@ class PersonCarControllerTest {
 
     @Test
     void getPersonBadRequest() throws Exception {
-        this.mockMvc.perform(get("/personwithcars?personid=dasdasdasd"))
+        this.mockMvc.perform(get("/personwithcars?personid="))
                 .andDo(print())
                 .andExpect(status().is(400));
     }

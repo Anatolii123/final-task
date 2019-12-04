@@ -1,5 +1,6 @@
 package org.lanit.internship.finaltask.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -19,6 +20,7 @@ public class Person {
     private Long id;
     @Column(name = "NAME", nullable = false, length = 45)
     private String name;
+    @JsonIgnore
     @Column(name = "BIRTH_DATE", nullable = false)
     private Date birthDate;
 

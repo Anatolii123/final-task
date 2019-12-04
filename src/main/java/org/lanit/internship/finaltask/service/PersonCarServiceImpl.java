@@ -60,12 +60,13 @@ public class PersonCarServiceImpl implements PersonCarService {
     @Override
     public PersonWithCars getPersonWithCars(Long personid) throws ParseException {
         PersonWithCars personWithCars = new PersonWithCars();
-        if (!personRepo.findById(personid).isPresent()) {
-            throw new NotFoundException();
-        }
         if (personid == null) {
             throw new BadRequestException();
         }
+        if (!personRepo.findById(personid).isPresent()) {
+            throw new NotFoundException();
+        }
+
         Optional<Person> personById = personRepo.findById(personid);
         personWithCars.setId(personById.get().getId());
         personWithCars.setName(personById.get().getName());
