@@ -28,9 +28,9 @@ Vue.component('statistics-list', {
         '  </thead>\n' +
         '  <tbody>\n' +
         '    <tr>\n' +
-        '      <th>{{statistics.personcount}}</th>\n' +
-        '      <th>{{statistics.carcount}}</th>\n' +
-        '      <th>{{statistics.uniquevendorcount}}</th>\n' +
+        '      <td>{{statistics.personcount}}</td>\n' +
+        '      <td>{{statistics.carcount}}</td>\n' +
+        '      <td>{{statistics.uniquevendorcount}}</td>\n' +
         '    </tr>\n' +
         '  </tbody>\n' +
         '</table>' +
