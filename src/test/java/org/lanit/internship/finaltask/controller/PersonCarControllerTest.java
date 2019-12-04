@@ -14,8 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.annotation.Resource;
-import java.sql.Date;
-import java.time.Instant;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -63,8 +62,12 @@ class PersonCarControllerTest {
 
     public Person createPerson() throws Exception {
         Person person = new Person();
+        Date date = new Date();
+        date.setYear(100);
+        date.setMonth(04);
+        date.setDate(26);
         person.setName("Name");
-        person.setBirthDate(Date.valueOf("2000-05-25"));
+        person.setBirthDate(date);
         return person;
     }
 
@@ -84,7 +87,7 @@ class PersonCarControllerTest {
                 .andExpect(content().json("[{" +
                         "\"id\":" + thePerson.getId() + "," +
                         "\"name\":\"Name\"," +
-                        "\"birthDate\":\"24.05.2000\"}]"));
+                        "\"birthDate\":\"25.05.2000\"}]"));
     }
 
     @Test
@@ -165,7 +168,7 @@ class PersonCarControllerTest {
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":1,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"2020-05-25\"\n" +
+                        "    \"birthDate\":\"25.05.2020\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(400));
