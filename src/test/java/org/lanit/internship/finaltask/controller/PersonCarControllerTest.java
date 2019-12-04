@@ -86,7 +86,7 @@ class PersonCarControllerTest {
                 .andExpect(content().json("[{" +
                         "\"id\":" + thePerson.getId() + "," +
                         "\"name\":\"Name\"," +
-                        "\"birthDate\":\"2000-05-25\"}]"));
+                        "\"birthDate\":\"24.05.2000\"}]"));
     }
 
     @Test
@@ -107,7 +107,7 @@ class PersonCarControllerTest {
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":1,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"2000-05-25\"\n" +
+                        "    \"birthDate\":\"25.05.2000\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -134,7 +134,7 @@ class PersonCarControllerTest {
                 .andExpect(content().json("{" +
                         "\"id\":" + thePerson.getId() + "," +
                         "\"name\":\"Name\"," +
-                        "\"birthDate\":\"2000-05-25\"," +
+                        "\"birthDate\":\"24.05.2000\"," +
                         "\"cars\":[{" +
                         "   \"id\":" + theCar.getId() + "," +
                         "   \"model\":\"Lada-Kalina\"," +
