@@ -76,14 +76,6 @@ class PersonCarControllerTest {
         return car;
     }
 
-    public void savePersonMethod() throws Exception {
-        personCarService.save(createPerson());
-    }
-
-    public void saveCarMethod() throws Exception {
-        personCarService.save(createCar());
-    }
-
     @Test
     void personsList() throws Exception {
         this.mockMvc.perform(get("/persons"))
@@ -162,4 +154,6 @@ class PersonCarControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+
 }

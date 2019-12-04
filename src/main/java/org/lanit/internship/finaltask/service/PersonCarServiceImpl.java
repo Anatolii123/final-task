@@ -50,8 +50,7 @@ public class PersonCarServiceImpl implements PersonCarService {
 
     @Override
     public Person personIsValid(Person person) throws BadRequestException {
-        if (/*!(person.getId() instanceof Long) || person.getId() == null ||*/
-                !(person.getName() instanceof String) || person.getName() == null ||
+        if (!(person.getName() instanceof String) || person.getName() == null ||
                 !(person.getBirthDate() instanceof Date) || person.getBirthDate() == null ||
                 !person.getBirthDate().before(new Date())) {
             throw new BadRequestException();

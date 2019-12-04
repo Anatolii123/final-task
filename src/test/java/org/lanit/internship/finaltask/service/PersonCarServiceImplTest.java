@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.lanit.internship.finaltask.exceptions.BadRequestException;
 import org.lanit.internship.finaltask.model.Car;
 import org.lanit.internship.finaltask.model.Person;
 import org.lanit.internship.finaltask.model.PersonWithCars;
@@ -63,6 +64,27 @@ class PersonCarServiceImplTest {
         return car;
     }
 
+    public Person createWrongPerson() throws Exception {
+        Person person = new Person();
+        person.setName("Ivan");
+        person.setBirthDate(Date.valueOf("2027-01-06"));
+        return person;
+    }
+
+    public Car createWrongCar() {
+        Car car = new Car();
+        car.setModel("Chevrolet Lacetti");
+        car.setHorsepower(160);
+        car.setOwnerId(90L);
+        return car;
+    }
+
+    @Test
+    void personIsValid() {
+        Person person = personCarService.personIsValid(thePerson);
+        Assert.assertEquals(thePerson, person);
+    }
+
     @Test
     void carIsValid() {
         Car car = personCarService.carIsValid(createCar());
@@ -70,12 +92,6 @@ class PersonCarServiceImplTest {
         Assert.assertEquals(createCar().getModel(),car.getModel());
         Assert.assertEquals(createCar().getHorsepower(),car.getHorsepower());
         Assert.assertEquals(createCar().getOwnerId(),car.getOwnerId());
-    }
-
-    @Test
-    void personIsValid() throws Exception {
-        Person person = personCarService.personIsValid(thePerson);
-        Assert.assertEquals(thePerson, person);
     }
 
     @Test
@@ -113,7 +129,7 @@ class PersonCarServiceImplTest {
     }
 
     @Test
-    void save2() throws Exception {
+    void save2() {
         int size = personCarService.findAllCars().size();
         Assert.assertEquals(1, size);
 
@@ -140,17 +156,14 @@ class PersonCarServiceImplTest {
     }
 
     @Test
-    void findAllPersons() throws Exception {
-        // к этому моменту в БД уже что-то есть
+    void findAllPersons() {
         Assert.assertEquals(persons.size(), personCarService.findAllPersons().size());
-
-        //Проверим, что thePerson есть среди того, что есть в БД и ровно один
         Assert.assertEquals(1, personCarService.findAllPersons().stream().filter(person -> thePerson.getId().equals(person.getId())).count());
     }
 
     @Test
     void findAllCars() {
-        Assert.assertEquals(1, personCarService.findAllCars().size());
+        Assert.assertEquals(cars.size(), personCarService.findAllCars().size());
         Assert.assertEquals(theCar.getId(), personCarService.findAllCars().get(0).getId());
         Assert.assertEquals(theCar.getModel(), personCarService.findAllCars().get(0).getModel());
         Assert.assertEquals(theCar.getHorsepower(), personCarService.findAllCars().get(0).getHorsepower());
@@ -166,5 +179,107 @@ class PersonCarServiceImplTest {
 
     //checkWrongExecution
 
+    @Test
+    void personIsInvalid() throws Exception {
+        try {
+            Person person = personCarService.personIsValid(createWrongPerson());
+        } catch (BadRequestException b) {
+            Assert.assertTrue(true);
+            return;
+        }
+        Assert.assertTrue(false);
+    }
+
+    @Test
+    void carIsInvalid() {
+        try {
+            Car car = personCarService.carIsValid(createWrongCar());
+        } catch (BadRequestException b) {
+            Assert.assertTrue(true);
+        }
+    }
+
+//    @Test
+//    void getPersonWithCars() throws Exception {
+//        PersonWithCars personWithCars = personCarService.getPersonWithCars(thePerson.getId());
+//        Assert.assertEquals(thePerson.getId(),personWithCars.getId());
+//        Assert.assertEquals(thePerson.getName(),personWithCars.getName());
+//        Assert.assertEquals(thePerson.getBirthDate(),personWithCars.getBirthDate());
+//        Assert.assertEquals(1,personWithCars.getCars().size());
+//        Assert.assertEquals(theCar.getId(),personWithCars.getCars().get(0).get().getId());
+//        Assert.assertEquals(theCar.getModel(),personWithCars.getCars().get(0).get().getModel());
+//        Assert.assertEquals(theCar.getHorsepower(),personWithCars.getCars().get(0).get().getHorsepower());
+//        Assert.assertEquals(theCar.getOwnerId(),personWithCars.getCars().get(0).get().getOwnerId());
+//    }
+//
+//    @Test
+//    void getStatisticsObject() {
+//        Statistics statistics = new Statistics();
+//        statistics.setPersoncount(1L);
+//        statistics.setCarcount(1L);
+//        statistics.setUniquevendorcount(1L);
+//        Statistics statistics2 = personCarService.getStatisticsObject();
+//        Assert.assertEquals(statistics.getPersoncount(),statistics2.getPersoncount());
+//        Assert.assertEquals(statistics.getCarcount(),statistics2.getCarcount());
+//        Assert.assertEquals(statistics.getUniquevendorcount(),statistics2.getUniquevendorcount());
+//    }
+//
+//    @Test
+//    void save() throws Exception {
+//        int size = personCarService.findAllPersons().size();
+//        Assert.assertEquals(1, size);
+//
+//        personCarService.save(createPerson());
+//        Assert.assertTrue(personCarService.findAllPersons().size() > size);
+//    }
+//
+//    @Test
+//    void save2() {
+//        int size = personCarService.findAllCars().size();
+//        Assert.assertEquals(1, size);
+//
+//        personCarService.save(createCar());
+//        Assert.assertTrue(personCarService.findAllCars().size() > size);
+//    }
+//
+//    @Test
+//    void savePerson() throws Exception {
+//        int size = personCarService.findAllPersons().size();
+//        Assert.assertEquals(1, size);
+//
+//        personCarService.savePerson(createPerson());
+//        Assert.assertTrue(personCarService.findAllPersons().size() > size);
+//    }
+//
+//    @Test
+//    void saveCar() {
+//        int size = personCarService.findAllCars().size();
+//        Assert.assertEquals(1, size);
+//
+//        personCarService.saveCar(createCar());
+//        Assert.assertTrue(personCarService.findAllCars().size() > size);
+//    }
+//
+//    @Test
+//    void findAllPersons() {
+//        Assert.assertEquals(persons.size(), personCarService.findAllPersons().size());
+//        Assert.assertEquals(1, personCarService.findAllPersons().stream().filter(person -> thePerson.getId().equals(person.getId())).count());
+//    }
+//
+//    @Test
+//    void findAllCars() {
+//        Assert.assertEquals(cars.size(), personCarService.findAllCars().size());
+//        Assert.assertEquals(theCar.getId(), personCarService.findAllCars().get(0).getId());
+//        Assert.assertEquals(theCar.getModel(), personCarService.findAllCars().get(0).getModel());
+//        Assert.assertEquals(theCar.getHorsepower(), personCarService.findAllCars().get(0).getHorsepower());
+//        Assert.assertEquals(theCar.getOwnerId(), personCarService.findAllCars().get(0).getOwnerId());
+//    }
+//
+//    @Test
+//    void deleteAll() {
+//        personCarService.deleteAll();
+//        Assert.assertEquals(0,personCarService.findAllCars().size());
+//        Assert.assertEquals(0,personCarService.findAllPersons().size());
+//    }
 
 }

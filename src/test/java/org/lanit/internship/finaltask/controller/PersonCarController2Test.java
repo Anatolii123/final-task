@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.annotation.Resource;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -28,46 +30,6 @@ class PersonCarController2Test {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Resource
-    private PersonCarService personCarService;
-
-    @AfterEach
-    public void clearDataBase() {
-        personCarService.findAllPersons().clear();
-        personCarService.findAllCars().clear();
-    }
-
-    @BeforeEach
-    public void prepareDataBase() throws Exception {
-        savePersonMethod();
-        saveCarMethod();
-    }
-
-    public Person createPerson() throws Exception {
-        Person person = new Person();
-        person.setId(1L);
-        person.setName("Name");
-        person.setBirthDate(Date.valueOf("2000-05-25"));
-        return person;
-    }
-
-    public Car createCar() throws Exception {
-        Car car = new Car();
-        car.setId(2L);
-        car.setModel("Lada-Kalina");
-        car.setHorsepower(380);
-        car.setOwnerId(personCarService.findAllPersons().get(0).getId());
-        return car;
-    }
-
-    public void savePersonMethod() throws Exception {
-        personCarService.save(createPerson());
-    }
-
-    public void saveCarMethod() throws Exception {
-        personCarService.save(createCar());
-    }
 
     @Test
     void savePerson() throws Exception {
@@ -93,7 +55,7 @@ class PersonCarController2Test {
                         "    \"id\":2,\n" +
                         "    \"model\":\"Lada-Kalina\",\n" +
                         "    \"horsepower\":380,\n" +
-                        "    \"ownerId\":" + personCarService.findAllPersons().get(0).getId() + "\n" +
+                        "    \"ownerId\":1\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -101,7 +63,7 @@ class PersonCarController2Test {
                         "    \"id\":2,\n" +
                         "    \"model\":\"Lada-Kalina\",\n" +
                         "    \"horsepower\":380,\n" +
-                        "    \"ownerId\":" + personCarService.findAllPersons().get(0).getId() + "\n" +
+                        "    \"ownerId\":1\n" +
                         "}"));
     }
 }
