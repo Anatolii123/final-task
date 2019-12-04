@@ -119,7 +119,7 @@ public class PersonCarServiceImpl implements PersonCarService {
 
     @Override
     public void deleteAll() {
-        personRepo.deleteAll();
-        carRepo.deleteAll();
+        personRepo.findAll().clear();
+        carRepo.findAll().clear();
     }
 }
