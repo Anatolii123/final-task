@@ -1,19 +1,19 @@
-var statisticsApi = Vue.resource('/statistics');
-
-Vue.component('statistics-list', {
-    props: ['statistics', 'statisticsAttr', 'showTable'],
+Vue.component('pwcs-list', {
+    props: ['pwcs', 'pwcsAttr', 'showTable'],
     data: function () {
         return {
-            personcount: '',
-            carcount: '',
-            uniquevendorcount: ''
+            name: '',
+            birthDate: '',
+            id: '',
+            cars: ''
         }
     },
     watch: {
-        statisticsAttr: function (newVal) {
-            this.personcount = newVal.personcount;
-            this.carcount = newVal.carcount;
-            this.uniquevendorcount = newVal.uniquevendorcount;
+        pwcsAttr: function (newVal) {
+            this.name = newVal.name;
+            this.birthDate = newVal.birthDate;
+            this.id = newVal.id;
+            this.cars = newVal.cars
         }
     },
     template:
@@ -21,9 +21,12 @@ Vue.component('statistics-list', {
         '<table class="table" align="center" v-if="showTable" style="text-align: center">\n' +
         '  <thead>\n' +
         '    <tr>\n' +
-        '      <th>Number of persons</th>\n' +
-        '      <th>Number of cars</th>\n' +
-        '      <th>Number of unique vendors</th>\n' +
+        '      <th>ID</th>\n' +
+        '      <th>Name</th>\n' +
+        '      <th>Birthday</th>\n' +
+        '      <th>Car ID</th>\n' +
+        '      <th>Car model</th>\n' +
+        '      <th>Car horsepower</th>\n' +
         '    </tr>\n' +
         '  </thead>\n' +
         '  <tbody>\n' +
@@ -48,25 +51,22 @@ Vue.component('statistics-list', {
     methods: {
         show: function () {
             this.showTable = true;
-            this.$http.get('http://localhost:8080/statistics').then(response =>
+            this.$http.get('http://localhost:8080/personwithcars?personid=1').then(response =>
                 response.json().then(data =>
-                    this.statistics = data
-            ));
+                    this.pwcs = data
+                ));
         },
         hide: function () {
             this.showTable = false;
         },
-        clear: function () {
-            this.$http.get('http://localhost:8080/clear').then();
-        }
     }
 });
 
 var app = new Vue({
-    el: '#app4',
-    template: '<div align="center"><statistics-list :statistics="statistics" /></div>',
+    el: '#app5',
+    template: '<div align="center"><pwcs-list :pwcs="pwcs" /></div>',
     data: {
         showTable: false,
-        statistics: []
+        pwcs: []
     }
 });
