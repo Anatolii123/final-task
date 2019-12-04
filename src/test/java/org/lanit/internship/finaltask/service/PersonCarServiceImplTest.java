@@ -214,7 +214,7 @@ class PersonCarServiceImplTest {
     }
 
     @Test
-    void getPersonWithCarsBadRequest() throws Exception {
+    void getPersonWithCarsBadRequest() {
         try {
             personCarService.getPersonWithCars(null);
         } catch (Exception b) {
@@ -223,37 +223,41 @@ class PersonCarServiceImplTest {
         }
         Assert.assertTrue(false);
     }
-//
-//    @Test
-//    void getStatisticsObject() {
-//        Statistics statistics = new Statistics();
-//        statistics.setPersoncount(1L);
-//        statistics.setCarcount(1L);
-//        statistics.setUniquevendorcount(1L);
-//        Statistics statistics2 = personCarService.getStatisticsObject();
-//        Assert.assertEquals(statistics.getPersoncount(),statistics2.getPersoncount());
-//        Assert.assertEquals(statistics.getCarcount(),statistics2.getCarcount());
-//        Assert.assertEquals(statistics.getUniquevendorcount(),statistics2.getUniquevendorcount());
-//    }
-//
-//    @Test
-//    void save() throws Exception {
-//        int size = personCarService.findAllPersons().size();
-//        Assert.assertEquals(1, size);
-//
-//        personCarService.save(createPerson());
-//        Assert.assertTrue(personCarService.findAllPersons().size() > size);
-//    }
-//
-//    @Test
-//    void save2() {
-//        int size = personCarService.findAllCars().size();
-//        Assert.assertEquals(1, size);
-//
-//        personCarService.save(createCar());
-//        Assert.assertTrue(personCarService.findAllCars().size() > size);
-//    }
-//
+
+    @Test
+    void getStatisticsObjectFailedTest() {
+        Statistics statistics = new Statistics();
+        statistics.setPersoncount(2L);
+        statistics.setCarcount(2L);
+        statistics.setUniquevendorcount(2L);
+        Statistics statistics2 = personCarService.getStatisticsObject();
+        Assert.assertNotEquals(statistics.getPersoncount(),statistics2.getPersoncount());
+        Assert.assertNotEquals(statistics.getCarcount(),statistics2.getCarcount());
+        Assert.assertNotEquals(statistics.getUniquevendorcount(),statistics2.getUniquevendorcount());
+    }
+
+    @Test
+    void saveFailedTest() throws Exception {
+        try {
+            personCarService.save(createWrongPerson());
+        } catch (BadRequestException b) {
+            Assert.assertTrue(true);
+            return;
+        }
+        Assert.assertTrue(false);
+    }
+
+    @Test
+    void save2FailedTest() {
+        try {
+            personCarService.save(createWrongCar());
+        } catch (BadRequestException b) {
+            Assert.assertTrue(true);
+            return;
+        }
+        Assert.assertTrue(false);
+    }
+
 //    @Test
 //    void savePerson() throws Exception {
 //        int size = personCarService.findAllPersons().size();
