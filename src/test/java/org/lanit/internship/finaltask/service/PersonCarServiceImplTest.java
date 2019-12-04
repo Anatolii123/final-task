@@ -105,26 +105,6 @@ class PersonCarServiceImplTest {
 
     @Test
     void save() throws Exception {
-        clearDataBase();
-        personCarService.save(createPerson());
-        Assert.assertEquals(1, personCarService.findAllPersons().size());
-        //Assert.assertEquals(createPerson(),personCarService.findAllPersons().get(0));
-    }
-
-    @Test
-    void save2() throws Exception {
-        clearDataBase();
-        personCarService.save(createPerson());
-        personCarService.save(createCar());
-        Assert.assertEquals(1,personCarService.findAllCars().size());
-        Assert.assertEquals(createCar().getId(),personCarService.findAllCars().get(0).getId());
-        Assert.assertEquals(createCar().getModel(),personCarService.findAllCars().get(0).getModel());
-        Assert.assertEquals(createCar().getHorsepower(),personCarService.findAllCars().get(0).getHorsepower());
-        Assert.assertEquals(createCar().getOwnerId(),personCarService.findAllCars().get(0).getOwnerId());
-    }
-
-    @Test
-    void savePerson() throws Exception {
         int size = personCarService.findAllPersons().size();
         Assert.assertEquals(1, size);
 
@@ -133,17 +113,34 @@ class PersonCarServiceImplTest {
     }
 
     @Test
+    void save2() throws Exception {
+        int size = personCarService.findAllCars().size();
+        Assert.assertEquals(1, size);
+
+        personCarService.save(createCar());
+        Assert.assertTrue(personCarService.findAllCars().size() > size);
+    }
+
+    @Test
+    void savePerson() throws Exception {
+        int size = personCarService.findAllPersons().size();
+        Assert.assertEquals(1, size);
+
+        personCarService.savePerson(createPerson());
+        Assert.assertTrue(personCarService.findAllPersons().size() > size);
+    }
+
+    @Test
     void saveCar() {
-        clearDataBase();
-        Assert.assertEquals(createCar().getId(),personCarService.saveCar(createCar()).getId());
-        Assert.assertEquals(createCar().getModel(),personCarService.saveCar(createCar()).getModel());
-        Assert.assertEquals(createCar().getHorsepower(),personCarService.saveCar(createCar()).getHorsepower());
-        Assert.assertEquals(createCar().getOwnerId(),personCarService.saveCar(createCar()).getOwnerId());
+        int size = personCarService.findAllCars().size();
+        Assert.assertEquals(1, size);
+
+        personCarService.saveCar(createCar());
+        Assert.assertTrue(personCarService.findAllCars().size() > size);
     }
 
     @Test
     void findAllPersons() throws Exception {
-        //Person person = createPerson();
         // к этому моменту в БД уэже что-то есть
         Assert.assertEquals(persons.size(), personCarService.findAllPersons().size());
 
