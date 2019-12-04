@@ -81,10 +81,14 @@ var app = new Vue({
         '<div style="display: table-cell;"><input type="text" class="form-control" placeholder="Write model" ' +
         'required="required" v-model="model" style="margin-right: 2px; margin-left: 2px; width: 152px"/></div>' +
         '<div style="display: table-cell;"><b style="margin-right: 2px; margin-left: 2px">Hp:</b></div>' +
-        '<div style="display: table-cell;"><input type="text" class="form-control" placeholder="Write horsepower" onkeyup="return checkInput(this);" ' +
-        'onchange="return checkInput(this);" required="required" v-model="horsepower" style="margin-left: 2px; width: 156px"/>' +
+        '<div style="display: table-cell;">' +
+        '   <input type="text" class="form-control" placeholder="Write horsepower" onkeyup="return checkInput(this);" ' +
+        '   onchange="return checkInput(this);" required="required" v-model="horsepower" style="margin-left: 2px; width: 156px"/>' +
         '</div><br>' +
-        'Person: <personos-list placeholder="Choose person" :personos="personos" required="required" style="width: 400px"/><br>' +
+        '<div style="display: table-cell;"><b style="margin-right: 2px;">Person:</b></div>' +
+        '<div style="display: table-cell;">' +
+        '   <personos-list placeholder="Choose person" :personos="personos" required="required" style="margin-left: 2px; width: 341px"/>' +
+        '</div><br>' +
         '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/>' +
         '</div><br>' +
         '<cars-list :cars="cars" />' +
