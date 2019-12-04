@@ -20,12 +20,12 @@ class FinalTaskApplicationTests {
 	private PersonCarController2 personCarController2;
 
 	@Test
-	public void testPersonCarController() throws Exception {
+	public void testPersonCarController() {
 		assertThat(personCarController).isNotNull();
 	}
 
 	@Test
-	public void testPersonCarController2() throws Exception {
+	public void testPersonCarController2() {
 		assertThat(personCarController2).isNotNull();
 	}
 
