@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.lanit.internship.finaltask.exceptions.BadRequestException;
+import org.lanit.internship.finaltask.exceptions.NotFoundException;
 import org.lanit.internship.finaltask.model.Car;
 import org.lanit.internship.finaltask.model.Person;
 import org.lanit.internship.finaltask.model.PersonWithCars;
@@ -73,9 +74,9 @@ class PersonCarServiceImplTest {
 
     public Car createWrongCar() {
         Car car = new Car();
-        car.setModel("Chevrolet Lacetti");
+        car.setModel("Chevrolet-");
         car.setHorsepower(160);
-        car.setOwnerId(90L);
+        car.setOwnerId(thePerson != null && thePerson.getId() != null ? thePerson.getId() : 1L);
         return car;
     }
 
@@ -180,7 +181,7 @@ class PersonCarServiceImplTest {
     //checkWrongExecution
 
     @Test
-    void personIsInvalid() throws Exception {
+    void personIsInvalidBadRequest() throws Exception {
         try {
             Person person = personCarService.personIsValid(createWrongPerson());
         } catch (BadRequestException b) {
@@ -191,26 +192,37 @@ class PersonCarServiceImplTest {
     }
 
     @Test
-    void carIsInvalid() {
+    void carIsInvalidBadRequest() {
         try {
-            Car car = personCarService.carIsValid(createWrongCar());
+            personCarService.carIsValid(createWrongCar());
         } catch (BadRequestException b) {
             Assert.assertTrue(true);
+            return;
         }
+        Assert.assertTrue(false);
     }
 
-//    @Test
-//    void getPersonWithCars() throws Exception {
-//        PersonWithCars personWithCars = personCarService.getPersonWithCars(thePerson.getId());
-//        Assert.assertEquals(thePerson.getId(),personWithCars.getId());
-//        Assert.assertEquals(thePerson.getName(),personWithCars.getName());
-//        Assert.assertEquals(thePerson.getBirthDate(),personWithCars.getBirthDate());
-//        Assert.assertEquals(1,personWithCars.getCars().size());
-//        Assert.assertEquals(theCar.getId(),personWithCars.getCars().get(0).get().getId());
-//        Assert.assertEquals(theCar.getModel(),personWithCars.getCars().get(0).get().getModel());
-//        Assert.assertEquals(theCar.getHorsepower(),personWithCars.getCars().get(0).get().getHorsepower());
-//        Assert.assertEquals(theCar.getOwnerId(),personWithCars.getCars().get(0).get().getOwnerId());
-//    }
+    @Test
+    void getPersonWithCarsNotFound() throws Exception {
+        try {
+            personCarService.getPersonWithCars(90L);
+        } catch (NotFoundException n) {
+            Assert.assertTrue(true);
+            return;
+        }
+        Assert.assertTrue(false);
+    }
+
+    @Test
+    void getPersonWithCarsBadRequest() throws Exception {
+        try {
+            personCarService.getPersonWithCars(null);
+        } catch (Exception b) {
+            Assert.assertTrue(true);
+            return;
+        }
+        Assert.assertTrue(false);
+    }
 //
 //    @Test
 //    void getStatisticsObject() {

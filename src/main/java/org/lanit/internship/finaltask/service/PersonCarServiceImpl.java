@@ -35,8 +35,7 @@ public class PersonCarServiceImpl implements PersonCarService {
 
     @Override
     public Car carIsValid(Car car) throws BadRequestException {
-        if (/*!(car.getId() instanceof Long) || car.getId() == null ||*/
-                !(car.getModel() instanceof String) || car.getModel() == null ||
+        if (!(car.getModel() instanceof String) || car.getModel() == null ||
                 getCarVendor(car).equals("") || getCarModel(car).equals("") ||
                 !(car.getHorsepower() instanceof Integer) || car.getHorsepower() == null ||
                 !(car.getOwnerId() instanceof Long) || car.getOwnerId() == null ||
@@ -63,6 +62,9 @@ public class PersonCarServiceImpl implements PersonCarService {
         PersonWithCars personWithCars = new PersonWithCars();
         if (!personRepo.findById(personid).isPresent()) {
             throw new NotFoundException();
+        }
+        if (personid == null) {
+            throw new BadRequestException();
         }
         Optional<Person> personById = personRepo.findById(personid);
         personWithCars.setId(personById.get().getId());
