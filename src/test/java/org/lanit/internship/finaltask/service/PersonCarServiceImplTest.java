@@ -89,23 +89,23 @@ class PersonCarServiceImplTest {
     @Test
     void carIsValid() {
         Car car = personCarService.carIsValid(createCar());
-        Assert.assertEquals(createCar().getId(),car.getId());
-        Assert.assertEquals(createCar().getModel(),car.getModel());
-        Assert.assertEquals(createCar().getHorsepower(),car.getHorsepower());
-        Assert.assertEquals(createCar().getOwnerId(),car.getOwnerId());
+        Assert.assertEquals(createCar().getId(), car.getId());
+        Assert.assertEquals(createCar().getModel(), car.getModel());
+        Assert.assertEquals(createCar().getHorsepower(), car.getHorsepower());
+        Assert.assertEquals(createCar().getOwnerId(), car.getOwnerId());
     }
 
     @Test
     void getPersonWithCars() throws Exception {
         PersonWithCars personWithCars = personCarService.getPersonWithCars(thePerson.getId());
-        Assert.assertEquals(thePerson.getId(),personWithCars.getId());
-        Assert.assertEquals(thePerson.getName(),personWithCars.getName());
-        Assert.assertEquals(thePerson.getBirthDate(),personWithCars.getBirthDate());
-        Assert.assertEquals(1,personWithCars.getCars().size());
-        Assert.assertEquals(theCar.getId(),personWithCars.getCars().get(0).get().getId());
-        Assert.assertEquals(theCar.getModel(),personWithCars.getCars().get(0).get().getModel());
-        Assert.assertEquals(theCar.getHorsepower(),personWithCars.getCars().get(0).get().getHorsepower());
-        Assert.assertEquals(theCar.getOwnerId(),personWithCars.getCars().get(0).get().getOwnerId());
+        Assert.assertEquals(thePerson.getId(), personWithCars.getId());
+        Assert.assertEquals(thePerson.getName(), personWithCars.getName());
+        Assert.assertEquals(thePerson.getBirthDate(), personWithCars.getBirthDate());
+        Assert.assertEquals(1, personWithCars.getCars().size());
+        Assert.assertEquals(theCar.getId(), personWithCars.getCars().get(0).get().getId());
+        Assert.assertEquals(theCar.getModel(), personWithCars.getCars().get(0).get().getModel());
+        Assert.assertEquals(theCar.getHorsepower(), personWithCars.getCars().get(0).get().getHorsepower());
+        Assert.assertEquals(theCar.getOwnerId(), personWithCars.getCars().get(0).get().getOwnerId());
     }
 
     @Test
@@ -115,9 +115,9 @@ class PersonCarServiceImplTest {
         statistics.setCarcount(1L);
         statistics.setUniquevendorcount(1L);
         Statistics statistics2 = personCarService.getStatisticsObject();
-        Assert.assertEquals(statistics.getPersoncount(),statistics2.getPersoncount());
-        Assert.assertEquals(statistics.getCarcount(),statistics2.getCarcount());
-        Assert.assertEquals(statistics.getUniquevendorcount(),statistics2.getUniquevendorcount());
+        Assert.assertEquals(statistics.getPersoncount(), statistics2.getPersoncount());
+        Assert.assertEquals(statistics.getCarcount(), statistics2.getCarcount());
+        Assert.assertEquals(statistics.getUniquevendorcount(), statistics2.getUniquevendorcount());
     }
 
     @Test
@@ -165,17 +165,14 @@ class PersonCarServiceImplTest {
     @Test
     void findAllCars() {
         Assert.assertEquals(cars.size(), personCarService.findAllCars().size());
-        Assert.assertEquals(theCar.getId(), personCarService.findAllCars().get(0).getId());
-        Assert.assertEquals(theCar.getModel(), personCarService.findAllCars().get(0).getModel());
-        Assert.assertEquals(theCar.getHorsepower(), personCarService.findAllCars().get(0).getHorsepower());
-        Assert.assertEquals(theCar.getOwnerId(), personCarService.findAllCars().get(0).getOwnerId());
+        Assert.assertEquals(1, personCarService.findAllCars().stream().filter(car -> theCar.getId().equals(car.getId())).count());
     }
 
     @Test
     void deleteAll() {
         personCarService.deleteAll();
-        Assert.assertEquals(0,personCarService.findAllCars().size());
-        Assert.assertEquals(0,personCarService.findAllPersons().size());
+        Assert.assertEquals(0, personCarService.findAllCars().size());
+        Assert.assertEquals(0, personCarService.findAllPersons().size());
     }
 
     //checkWrongExecution
@@ -231,9 +228,9 @@ class PersonCarServiceImplTest {
         statistics.setCarcount(2L);
         statistics.setUniquevendorcount(2L);
         Statistics statistics2 = personCarService.getStatisticsObject();
-        Assert.assertNotEquals(statistics.getPersoncount(),statistics2.getPersoncount());
-        Assert.assertNotEquals(statistics.getCarcount(),statistics2.getCarcount());
-        Assert.assertNotEquals(statistics.getUniquevendorcount(),statistics2.getUniquevendorcount());
+        Assert.assertNotEquals(statistics.getPersoncount(), statistics2.getPersoncount());
+        Assert.assertNotEquals(statistics.getCarcount(), statistics2.getCarcount());
+        Assert.assertNotEquals(statistics.getUniquevendorcount(), statistics2.getUniquevendorcount());
     }
 
     @Test
@@ -279,27 +276,17 @@ class PersonCarServiceImplTest {
         }
         Assert.assertTrue(false);
     }
-//
-//    @Test
-//    void findAllPersons() {
-//        Assert.assertEquals(persons.size(), personCarService.findAllPersons().size());
-//        Assert.assertEquals(1, personCarService.findAllPersons().stream().filter(person -> thePerson.getId().equals(person.getId())).count());
-//    }
-//
-//    @Test
-//    void findAllCars() {
-//        Assert.assertEquals(cars.size(), personCarService.findAllCars().size());
-//        Assert.assertEquals(theCar.getId(), personCarService.findAllCars().get(0).getId());
-//        Assert.assertEquals(theCar.getModel(), personCarService.findAllCars().get(0).getModel());
-//        Assert.assertEquals(theCar.getHorsepower(), personCarService.findAllCars().get(0).getHorsepower());
-//        Assert.assertEquals(theCar.getOwnerId(), personCarService.findAllCars().get(0).getOwnerId());
-//    }
-//
-//    @Test
-//    void deleteAll() {
-//        personCarService.deleteAll();
-//        Assert.assertEquals(0,personCarService.findAllCars().size());
-//        Assert.assertEquals(0,personCarService.findAllPersons().size());
-//    }
+
+    @Test
+    void findAllPersonsFailedTest() {
+        Assert.assertNotEquals(persons.size() + 1, personCarService.findAllPersons().size());
+        Assert.assertNotEquals(2, personCarService.findAllPersons().stream().filter(person -> thePerson.getId().equals(person.getId())).count());
+    }
+
+    @Test
+    void findAllCarsFailedTest() {
+        Assert.assertNotEquals(cars.size() + 1, personCarService.findAllCars().size());
+        Assert.assertNotEquals(2, personCarService.findAllPersons().stream().filter(person -> thePerson.getId().equals(person.getId())).count());
+    }
 
 }
