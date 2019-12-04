@@ -25,7 +25,7 @@ Vue.component('person-form', {
         '<div align="center">' +
         'Name: <input type="text" class="form-control" placeholder="Write name" v-model="name"/><br>' +
         'Birthday: <input type="date" class="form-control" v-model="birthDate"/><br>' +
-        '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/><br><br>' +
+        '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/><br>' +
         '</div>',
     methods: {
         save: function () {

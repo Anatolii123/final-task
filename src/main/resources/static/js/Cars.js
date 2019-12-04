@@ -77,9 +77,15 @@ var app = new Vue({
     },
     template: '<div align="center">' +
         '<div align="center" style="width: 400px">' +
-        '<input type="text" class="form-control" placeholder="Write model (e.g., BMW-X5)" required="required" v-model="model"/><br>' +
-        '<input type="text" class="form-control" placeholder="Write horsepower" onkeyup="return checkInput(this);" onchange="return checkInput(this);" required="required" v-model="horsepower"/><br>' +
-        '<personos-list placeholder="Choose person" :personos="personos" required="required" style="width: 400px"/><br>' +
+        '<div style="display: table-cell;">' +
+        'Model: <input type="text" class="form-control" placeholder="Write model" ' +
+        'required="required" v-model="model" style="margin-right: 2px; width: 198px"/>' +
+        '</div>' +
+        '<div style="display: table-cell;">' +
+        'Horsepower: <input type="text" class="form-control" placeholder="Write horsepower" onkeyup="return checkInput(this);" ' +
+        'onchange="return checkInput(this);" required="required" v-model="horsepower" style="margin-left: 2px; width: 198px"/><br>' +
+        '</div>' +
+        'Person: <personos-list placeholder="Choose person" :personos="personos" required="required" style="width: 400px"/><br>' +
         '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/>' +
         '</div><br>' +
         '<cars-list :cars="cars" />' +
