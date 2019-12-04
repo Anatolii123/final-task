@@ -34,7 +34,7 @@ class PersonCarController2Test {
                 .andExpect(content().json("{\n" +
                         "    \"id\":1,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"24.05.2000\"\n" +
+                        "    \"birthDate\":\"25.05.2000\"\n" +
                         "}"));
     }
 
@@ -67,7 +67,7 @@ class PersonCarController2Test {
                 .header("Content-Type","application/json").content("{\n" +
                         "    \"id\":1,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"2020-05-25\"\n" +
+                        "    \"birthDate\":\"25.05.2020\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(400));

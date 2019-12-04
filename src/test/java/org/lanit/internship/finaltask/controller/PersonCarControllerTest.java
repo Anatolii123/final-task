@@ -1,6 +1,5 @@
 package org.lanit.internship.finaltask.controller;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,11 +12,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 import javax.annotation.Resource;
 import java.sql.Date;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -134,7 +132,7 @@ class PersonCarControllerTest {
                 .andExpect(content().json("{" +
                         "\"id\":" + thePerson.getId() + "," +
                         "\"name\":\"Name\"," +
-                        "\"birthDate\":\"24.05.2000\"," +
+                        "\"birthDate\":\"25.05.2000\"," +
                         "\"cars\":[{" +
                         "   \"id\":" + theCar.getId() + "," +
                         "   \"model\":\"Lada-Kalina\"," +

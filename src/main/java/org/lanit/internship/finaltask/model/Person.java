@@ -6,8 +6,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 @Entity
 @Table
@@ -29,7 +27,6 @@ public class Person {
     }
 
     public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
