@@ -1,6 +1,9 @@
 var carApi = Vue.resource('/cars');
-
 var personoApi = Vue.resource('/persons');
+
+function checkInput(input) {
+    input.value = input.value.replace(/[^\d,]/g, '')
+};
 
 Vue.component('persono-row', {
     props: ['persono'],
@@ -75,7 +78,7 @@ var app = new Vue({
     template: '<div align="center">' +
         '<div align="center" style="width: 400px">' +
         '<input type="text" class="form-control" placeholder="Write model (e.g., BMW-X5)" required="required" v-model="model"/><br>' +
-        '<input type="text" class="form-control" placeholder="Write horsepower" required="required" v-model="horsepower"/><br>' +
+        '<input type="text" class="form-control" placeholder="Write horsepower" onkeyup="return checkInput(this);" onchange="return checkInput(this);" required="required" v-model="horsepower"/><br>' +
         '<personos-list placeholder="Choose person" :personos="personos" required="required" style="width: 400px"/><br>' +
         '<input type="button" class="btn btn-outline-primary" value="Save" @click="save"/>' +
         '</div><br>' +
