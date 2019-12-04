@@ -21,11 +21,24 @@ public class PersonCarServiceImpl implements PersonCarService {
     @Autowired
     private CarRepo carRepo;
 
+
+    @Override
+    public String getCarVendor(Car car) throws BadRequestException {
+        String vendor = car.getModel().substring(0,car.getModel().indexOf("-"));
+        return vendor;
+    }
+
+    @Override
+    public String getCarModel(Car car) throws BadRequestException {
+        String model = car.getModel().substring(car.getModel().indexOf("-") + 1);
+        return model;
+    }
+
     @Override
     public Car carIsValid(Car car) throws BadRequestException {
         if (!(car.getId() instanceof Long) || car.getId() == null ||
                 !(car.getModel() instanceof String) || car.getModel() == null ||
-                car.getVendorModel().equals("") || car.getModelModel().equals("") ||
+                getCarVendor(car).equals("") || getCarModel(car).equals("") ||
                 !(car.getHorsepower() instanceof Integer) || car.getHorsepower() == null ||
                 !(car.getOwnerId() instanceof Long) || car.getOwnerId() == null ||
                 car.getHorsepower() <= 0 || !personRepo.findById(car.getOwnerId()).isPresent() ||
@@ -69,7 +82,7 @@ public class PersonCarServiceImpl implements PersonCarService {
         statistics.setCarcount(carRepo.count());
         HashSet<String> vendors = new HashSet<String>();
         for (Car car : carRepo.findAll()) {
-            vendors.add(car.getVendorModel());
+            vendors.add(getCarVendor(car));
         }
         statistics.setUniquevendorcount((long) vendors.size());
         return statistics;

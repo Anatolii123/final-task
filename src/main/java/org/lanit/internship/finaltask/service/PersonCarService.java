@@ -7,6 +7,8 @@ import java.text.ParseException;
 import java.util.List;
 
 public interface PersonCarService {
+    String getCarVendor(Car car) throws BadRequestException;
+    String getCarModel(Car car) throws  BadRequestException;
     Car carIsValid(Car car) throws BadRequestException;
     Person personIsValid(Person person) throws BadRequestException;
     PersonWithCars getPersonWithCars(Long personid) throws ParseException;
