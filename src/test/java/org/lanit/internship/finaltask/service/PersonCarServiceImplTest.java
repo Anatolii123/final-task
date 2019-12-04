@@ -140,6 +140,8 @@ class PersonCarServiceImplTest {
 
     @Test
     void deleteAll() {
-
+        personCarService.deleteAll();
+        Assert.assertEquals(0,personCarService.findAllCars().size());
+        Assert.assertEquals(0,personCarService.findAllPersons().size());
     }
 }

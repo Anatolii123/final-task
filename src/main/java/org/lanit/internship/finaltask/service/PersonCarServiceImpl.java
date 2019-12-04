@@ -81,7 +81,7 @@ public class PersonCarServiceImpl implements PersonCarService {
         statistics.setCarcount(carRepo.count());
         HashSet<String> vendors = new HashSet<String>();
         for (Car car : carRepo.findAll()) {
-            vendors.add(getCarVendor(car));
+            vendors.add(getCarVendor(car).toLowerCase());
         }
         statistics.setUniquevendorcount((long) vendors.size());
         return statistics;
@@ -119,7 +119,7 @@ public class PersonCarServiceImpl implements PersonCarService {
 
     @Override
     public void deleteAll() {
-        personRepo.findAll().clear();
-        carRepo.findAll().clear();
+        personRepo.deleteAll();
+        carRepo.deleteAll();
     }
 }
