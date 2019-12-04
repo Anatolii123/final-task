@@ -78,30 +78,64 @@ class PersonCarServiceImplTest {
 
     @Test
     void getStatisticsObject() {
+        Statistics statistics = new Statistics();
+        statistics.setPersoncount(1L);
+        statistics.setCarcount(1L);
+        statistics.setUniquevendorcount(1L);
+        Statistics statistics2 = personCarService.getStatisticsObject();
+        Assert.assertEquals(statistics.getPersoncount(),statistics2.getPersoncount());
+        Assert.assertEquals(statistics.getCarcount(),statistics2.getCarcount());
+        Assert.assertEquals(statistics.getUniquevendorcount(),statistics2.getUniquevendorcount());
     }
 
     @Test
-    void save() {
+    void save() throws Exception {
+        clearDataBase();
+        personCarService.save(createPerson());
+        Assert.assertEquals(1,personCarService.findAllPersons().size());
+        Assert.assertEquals(createPerson(),personCarService.findAllPersons().get(0));
     }
 
     @Test
-    void savePerson() {
+    void save2() throws Exception {
+        clearDataBase();
+        personCarService.save(createPerson());
+        personCarService.save(createCar());
+        Assert.assertEquals(1,personCarService.findAllCars().size());
+        Assert.assertEquals(createCar().getId(),personCarService.findAllCars().get(0).getId());
+        Assert.assertEquals(createCar().getModel(),personCarService.findAllCars().get(0).getModel());
+        Assert.assertEquals(createCar().getHorsepower(),personCarService.findAllCars().get(0).getHorsepower());
+        Assert.assertEquals(createCar().getOwnerId(),personCarService.findAllCars().get(0).getOwnerId());
     }
 
     @Test
-    void testSave() {
+    void savePerson() throws Exception {
+        clearDataBase();
+        Assert.assertEquals(createPerson(),personCarService.savePerson(createPerson()));
     }
 
     @Test
     void saveCar() {
+        clearDataBase();
+        Assert.assertEquals(createCar().getId(),personCarService.saveCar(createCar()).getId());
+        Assert.assertEquals(createCar().getModel(),personCarService.saveCar(createCar()).getModel());
+        Assert.assertEquals(createCar().getHorsepower(),personCarService.saveCar(createCar()).getHorsepower());
+        Assert.assertEquals(createCar().getOwnerId(),personCarService.saveCar(createCar()).getOwnerId());
     }
 
     @Test
-    void findAllPersons() {
+    void findAllPersons() throws Exception {
+        Assert.assertEquals(1,personCarService.findAllPersons().size());
+        Assert.assertEquals(createPerson(),personCarService.findAllPersons().get(0));
     }
 
     @Test
     void findAllCars() {
+        Assert.assertEquals(1,personCarService.findAllCars().size());
+        Assert.assertEquals(createCar().getId(),personCarService.findAllCars().get(0).getId());
+        Assert.assertEquals(createCar().getModel(),personCarService.findAllCars().get(0).getModel());
+        Assert.assertEquals(createCar().getHorsepower(),personCarService.findAllCars().get(0).getHorsepower());
+        Assert.assertEquals(createCar().getOwnerId(),personCarService.findAllCars().get(0).getOwnerId());
     }
 
     @Test
