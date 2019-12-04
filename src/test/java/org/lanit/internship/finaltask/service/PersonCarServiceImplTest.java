@@ -1,12 +1,14 @@
 package org.lanit.internship.finaltask.service;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.lanit.internship.finaltask.model.*;
+import org.lanit.internship.finaltask.model.Car;
+import org.lanit.internship.finaltask.model.Person;
+import org.lanit.internship.finaltask.model.PersonWithCars;
+import org.lanit.internship.finaltask.model.Statistics;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -48,7 +50,6 @@ class PersonCarServiceImplTest {
 
     public Person createPerson() throws Exception {
         Person person = new Person();
-        //person.setId(1L);
         person.setName("Name");
         person.setBirthDate(Date.valueOf("2000-05-25"));
         return person;
@@ -56,7 +57,6 @@ class PersonCarServiceImplTest {
 
     public Car createCar() {
         Car car = new Car();
-        //car.setId(2L);
         car.setModel("Lada-Kalina");
         car.setHorsepower(380);
         car.setOwnerId(thePerson != null && thePerson.getId() != null ? thePerson.getId() : 1L);

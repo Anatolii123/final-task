@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.annotation.Resource;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,21 +36,33 @@ class PersonCarControllerTest {
     @Resource
     private PersonCarService personCarService;
 
-    @AfterEach
-    public void clearDataBase() {
-        personCarService.findAllPersons().clear();
-        personCarService.findAllCars().clear();
-    }
+    private Set<Person> persons = new HashSet<>();
+    private Set<Car> cars = new HashSet<>();
+    private Person thePerson;
+    private Car theCar;
 
     @BeforeEach
     public void prepareDataBase() throws Exception {
-        savePersonMethod();
-        saveCarMethod();
+        personCarService.save(createPerson());
+        persons.addAll(personCarService.findAllPersons());
+        thePerson = persons.stream().findFirst().get();
+
+        personCarService.save(createCar());
+        cars.addAll(personCarService.findAllCars());
+        theCar = cars.stream().findFirst().get();
+    }
+
+    @AfterEach
+    public void clearDataBase() {
+        personCarService.deleteAll();
+        persons.clear();
+        cars.clear();
+        thePerson = null;
+        theCar = null;
     }
 
     public Person createPerson() throws Exception {
         Person person = new Person();
-        person.setId(1L);
         person.setName("Name");
         person.setBirthDate(Date.valueOf("2000-05-25"));
         return person;
@@ -56,10 +70,9 @@ class PersonCarControllerTest {
 
     public Car createCar() throws Exception {
         Car car = new Car();
-        car.setId(2L);
         car.setModel("Lada-Kalina");
         car.setHorsepower(380);
-        car.setOwnerId(personCarService.findAllPersons().get(0).getId());
+        car.setOwnerId(thePerson != null && thePerson.getId() != null ? thePerson.getId() : 1L);
         return car;
     }
 
@@ -73,62 +86,50 @@ class PersonCarControllerTest {
 
     @Test
     void personsList() throws Exception {
-        savePersonMethod();
         this.mockMvc.perform(get("/persons"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{" +
-                        "\"id\":1," +
+                        "\"id\":" + thePerson.getId() + "," +
                         "\"name\":\"Name\"," +
                         "\"birthDate\":\"2000-05-25\"}]"));
     }
 
     @Test
     void carsList() throws Exception {
-        savePersonMethod();
-        saveCarMethod();
         this.mockMvc.perform(get("/cars"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{" +
-                        "\"id\":2," +
+                        "\"id\":" + theCar.getId() + "," +
                         "\"model\":\"Lada-Kalina\"," +
                         "\"horsepower\":380," +
-                        "\"ownerId\":1}]"));
+                        "\"ownerId\":" + thePerson.getId() + "}]"));
     }
 
     @Test
     void savePerson() throws Exception {
         this.mockMvc.perform(post("/person")
-                .header("Content-Type","application/json").content("{\n" +
+                .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":1,\n" +
                         "    \"name\":\"Name\",\n" +
                         "    \"birthDate\":\"2000-05-25\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().isOk());
-        Person person2 = personCarService.findAllPersons().get(0);
-        Person person = createPerson();
-        person.setId(personCarService.findAllPersons().get(0).getId());
-        Assert.assertEquals(person, person2);
     }
 
     @Test
     void saveCar() throws Exception {
         this.mockMvc.perform(post("/car")
-                .header("Content-Type","application/json").content("{\n" +
+                .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":2,\n" +
                         "    \"model\":\"Lada-Kalina\",\n" +
                         "    \"horsepower\":380,\n" +
-                        "    \"ownerId\":" + personCarService.findAllPersons().get(0).getId() + "\n" +
+                        "    \"ownerId\":" + thePerson.getId() + "\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().isOk());
-        Car car2 = personCarService.findAllCars().get(0);
-        Assert.assertEquals(personCarService.findAllCars().get(0).getId(), car2.getId());
-        Assert.assertEquals(createCar().getModel(), car2.getModel());
-        Assert.assertEquals(createCar().getHorsepower(), car2.getHorsepower());
-        Assert.assertEquals(personCarService.findAllPersons().get(0).getId(), car2.getOwnerId());
     }
 
     @Test
@@ -137,14 +138,14 @@ class PersonCarControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json("{" +
-                        "\"id\":1," +
+                        "\"id\":" + thePerson.getId() + "," +
                         "\"name\":\"Name\"," +
                         "\"birthDate\":\"2000-05-25\"," +
                         "\"cars\":[{" +
-                        "   \"id\":2," +
+                        "   \"id\":" + theCar.getId() + "," +
                         "   \"model\":\"Lada-Kalina\"," +
                         "   \"horsepower\":380," +
-                        "   \"ownerId\":1}]}"));
+                        "   \"ownerId\":" + thePerson.getId() + "}]}"));
     }
 
     @Test
@@ -157,7 +158,7 @@ class PersonCarControllerTest {
 
     @Test
     void clearDB() throws Exception {
-         this.mockMvc.perform(get("/clear"))
+        this.mockMvc.perform(get("/clear"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
