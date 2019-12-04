@@ -128,7 +128,7 @@ class PersonCarControllerTest {
     }
 
     @Test
-    void getPerson() throws Exception {
+    void getPersonWithCars() throws Exception {
         this.mockMvc.perform(get("/personwithcars?personid=" + personCarService.findAllPersons().get(0).getId().toString()))
                 .andDo(print())
                 .andExpect(status().isOk())

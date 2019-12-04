@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table
-@ToString(of = {"id","name","birthdate"})
+@ToString(of = {"id","name","birthDate"})
 @EqualsAndHashCode(of = {"id"})
 public class Person {
     @Id
@@ -27,6 +27,7 @@ public class Person {
     }
 
     public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
