@@ -141,7 +141,7 @@ class PersonCarServiceImplTest {
 
     @Test
     void findAllPersons() throws Exception {
-        // к этому моменту в БД уэже что-то есть
+        // к этому моменту в БД уже что-то есть
         Assert.assertEquals(persons.size(), personCarService.findAllPersons().size());
 
         //Проверим, что thePerson есть среди того, что есть в БД и ровно один
