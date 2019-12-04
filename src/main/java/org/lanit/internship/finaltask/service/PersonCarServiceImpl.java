@@ -21,7 +21,6 @@ public class PersonCarServiceImpl implements PersonCarService {
     @Autowired
     private CarRepo carRepo;
 
-
     @Override
     public String getCarVendor(Car car) throws BadRequestException {
         String vendor = car.getModel().substring(0,car.getModel().indexOf("-"));

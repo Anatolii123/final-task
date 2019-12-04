@@ -94,9 +94,7 @@ class PersonCarControllerTest {
                         "\"id\":2," +
                         "\"model\":\"Lada-Kalina\"," +
                         "\"horsepower\":380," +
-                        "\"ownerId\":1," +
-                        "\"vendorModel\":\"Lada\"," +
-                        "\"modelModel\":\"Kalina\"}]"));
+                        "\"ownerId\":1}]"));
     }
 
     @Test
@@ -146,9 +144,7 @@ class PersonCarControllerTest {
                         "   \"id\":2," +
                         "   \"model\":\"Lada-Kalina\"," +
                         "   \"horsepower\":380," +
-                        "   \"ownerId\":1," +
-                        "   \"modelModel\":\"Kalina\"," +
-                        "   \"vendorModel\":\"Lada\"}]}"));
+                        "   \"ownerId\":1}]}"));
     }
 
     @Test
