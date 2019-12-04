@@ -1,6 +1,7 @@
 package org.lanit.internship.finaltask.service;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -18,22 +21,34 @@ class PersonCarServiceImplTest {
 
     @Resource
     private PersonCarService personCarService;
+    private Set<Person> persons = new HashSet<>();
+    private Set<Car> cars = new HashSet<>();
+    private Person thePerson;
+    private Car theCar;
 
     @BeforeEach
     public void fillInDataBase() throws Exception {
         personCarService.save(createPerson());
+        persons.addAll(personCarService.findAllPersons());
+        thePerson = persons.stream().findFirst().get(); // получили конкретную сущность-человека из БД
+
         personCarService.save(createCar());
+        cars.addAll(personCarService.findAllCars());
+        theCar = cars.stream().findFirst().get(); // а теперь и конкретную сущность-машину
     }
 
     @AfterEach
     public void clearDataBase() {
-        personCarService.findAllPersons().clear();
-        personCarService.findAllCars().clear();
+        personCarService.deleteAll();
+        persons.clear();
+        cars.clear();
+        thePerson = null;
+        theCar = null;
     }
 
     public Person createPerson() throws Exception {
         Person person = new Person();
-        person.setId(1L);
+        //person.setId(1L);
         person.setName("Name");
         person.setBirthDate(Date.valueOf("2000-05-25"));
         return person;
@@ -41,10 +56,10 @@ class PersonCarServiceImplTest {
 
     public Car createCar() {
         Car car = new Car();
-        car.setId(2L);
+        //car.setId(2L);
         car.setModel("Lada-Kalina");
         car.setHorsepower(380);
-        car.setOwnerId(1L);
+        car.setOwnerId(thePerson != null && thePerson.getId() != null ? thePerson.getId() : 1L);
         return car;
     }
 
@@ -59,21 +74,21 @@ class PersonCarServiceImplTest {
 
     @Test
     void personIsValid() throws Exception {
-        Person person = personCarService.personIsValid(createPerson());
-        Assert.assertEquals(createPerson(),person);
+        Person person = personCarService.personIsValid(thePerson);
+        Assert.assertEquals(thePerson, person);
     }
 
     @Test
     void getPersonWithCars() throws Exception {
-        PersonWithCars personWithCars = personCarService.getPersonWithCars(createPerson().getId());
-        Assert.assertEquals(createPerson().getId(),personWithCars.getId());
-        Assert.assertEquals(createPerson().getName(),personWithCars.getName());
-        Assert.assertEquals(createPerson().getBirthDate(),personWithCars.getBirthDate());
+        PersonWithCars personWithCars = personCarService.getPersonWithCars(thePerson.getId());
+        Assert.assertEquals(thePerson.getId(),personWithCars.getId());
+        Assert.assertEquals(thePerson.getName(),personWithCars.getName());
+        Assert.assertEquals(thePerson.getBirthDate(),personWithCars.getBirthDate());
         Assert.assertEquals(1,personWithCars.getCars().size());
-        Assert.assertEquals(createCar().getId(),personWithCars.getCars().get(0).get().getId());
-        Assert.assertEquals(createCar().getModel(),personWithCars.getCars().get(0).get().getModel());
-        Assert.assertEquals(createCar().getHorsepower(),personWithCars.getCars().get(0).get().getHorsepower());
-        Assert.assertEquals(createCar().getOwnerId(),personWithCars.getCars().get(0).get().getOwnerId());
+        Assert.assertEquals(theCar.getId(),personWithCars.getCars().get(0).get().getId());
+        Assert.assertEquals(theCar.getModel(),personWithCars.getCars().get(0).get().getModel());
+        Assert.assertEquals(theCar.getHorsepower(),personWithCars.getCars().get(0).get().getHorsepower());
+        Assert.assertEquals(theCar.getOwnerId(),personWithCars.getCars().get(0).get().getOwnerId());
     }
 
     @Test
@@ -92,8 +107,8 @@ class PersonCarServiceImplTest {
     void save() throws Exception {
         clearDataBase();
         personCarService.save(createPerson());
-        Assert.assertEquals(1,personCarService.findAllPersons().size());
-        Assert.assertEquals(createPerson(),personCarService.findAllPersons().get(0));
+        Assert.assertEquals(1, personCarService.findAllPersons().size());
+        //Assert.assertEquals(createPerson(),personCarService.findAllPersons().get(0));
     }
 
     @Test
@@ -110,8 +125,11 @@ class PersonCarServiceImplTest {
 
     @Test
     void savePerson() throws Exception {
-        clearDataBase();
-        Assert.assertEquals(createPerson(),personCarService.savePerson(createPerson()));
+        int size = personCarService.findAllPersons().size();
+        Assert.assertEquals(1, size);
+
+        personCarService.save(createPerson());
+        Assert.assertTrue(personCarService.findAllPersons().size() > size);
     }
 
     @Test
@@ -125,17 +143,21 @@ class PersonCarServiceImplTest {
 
     @Test
     void findAllPersons() throws Exception {
-        Assert.assertEquals(1,personCarService.findAllPersons().size());
-        Assert.assertEquals(createPerson(),personCarService.findAllPersons().get(0));
+        //Person person = createPerson();
+        // к этому моменту в БД уэже что-то есть
+        Assert.assertEquals(persons.size(), personCarService.findAllPersons().size());
+
+        //Проверим, что thePerson есть среди того, что есть в БД и ровно один
+        Assert.assertEquals(1, personCarService.findAllPersons().stream().filter(person -> thePerson.getId().equals(person.getId())).count());
     }
 
     @Test
     void findAllCars() {
-        Assert.assertEquals(1,personCarService.findAllCars().size());
-        Assert.assertEquals(createCar().getId(),personCarService.findAllCars().get(0).getId());
-        Assert.assertEquals(createCar().getModel(),personCarService.findAllCars().get(0).getModel());
-        Assert.assertEquals(createCar().getHorsepower(),personCarService.findAllCars().get(0).getHorsepower());
-        Assert.assertEquals(createCar().getOwnerId(),personCarService.findAllCars().get(0).getOwnerId());
+        Assert.assertEquals(1, personCarService.findAllCars().size());
+        Assert.assertEquals(theCar.getId(), personCarService.findAllCars().get(0).getId());
+        Assert.assertEquals(theCar.getModel(), personCarService.findAllCars().get(0).getModel());
+        Assert.assertEquals(theCar.getHorsepower(), personCarService.findAllCars().get(0).getHorsepower());
+        Assert.assertEquals(theCar.getOwnerId(), personCarService.findAllCars().get(0).getOwnerId());
     }
 
     @Test
