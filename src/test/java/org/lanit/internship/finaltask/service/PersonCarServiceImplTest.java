@@ -258,23 +258,27 @@ class PersonCarServiceImplTest {
         Assert.assertTrue(false);
     }
 
-//    @Test
-//    void savePerson() throws Exception {
-//        int size = personCarService.findAllPersons().size();
-//        Assert.assertEquals(1, size);
-//
-//        personCarService.savePerson(createPerson());
-//        Assert.assertTrue(personCarService.findAllPersons().size() > size);
-//    }
-//
-//    @Test
-//    void saveCar() {
-//        int size = personCarService.findAllCars().size();
-//        Assert.assertEquals(1, size);
-//
-//        personCarService.saveCar(createCar());
-//        Assert.assertTrue(personCarService.findAllCars().size() > size);
-//    }
+    @Test
+    void savePersonFailedTest() throws Exception {
+        try {
+            personCarService.savePerson(createWrongPerson());
+        } catch (BadRequestException b) {
+            Assert.assertTrue(true);
+            return;
+        }
+        Assert.assertTrue(false);
+    }
+
+    @Test
+    void saveCarFailedTest() {
+        try {
+            personCarService.saveCar(createWrongCar());
+        } catch (BadRequestException b) {
+            Assert.assertTrue(true);
+            return;
+        }
+        Assert.assertTrue(false);
+    }
 //
 //    @Test
 //    void findAllPersons() {
