@@ -7,7 +7,6 @@ import org.lanit.internship.finaltask.controller.PersonCarController2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -28,10 +27,6 @@ class FinalTaskApplicationTests {
 	@Test
 	public void testPersonCarController2() throws Exception {
 		assertThat(personCarController2).isNotNull();
-	}
-
-	@Test
-	void contextLoads() throws Exception {
 	}
 
 }
