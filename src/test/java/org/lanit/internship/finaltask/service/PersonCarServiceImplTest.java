@@ -26,7 +26,7 @@ class PersonCarServiceImplTest {
     }
 
     @AfterEach
-    public void clearDataBase() throws Exception {
+    public void clearDataBase() {
         personCarService.findAllPersons().clear();
         personCarService.findAllCars().clear();
     }
@@ -69,6 +69,11 @@ class PersonCarServiceImplTest {
         Assert.assertEquals(createPerson().getId(),personWithCars.getId());
         Assert.assertEquals(createPerson().getName(),personWithCars.getName());
         Assert.assertEquals(createPerson().getBirthDate(),personWithCars.getBirthDate());
+        Assert.assertEquals(1,personWithCars.getCars().size());
+        Assert.assertEquals(createCar().getId(),personWithCars.getCars().get(0).get().getId());
+        Assert.assertEquals(createCar().getModel(),personWithCars.getCars().get(0).get().getModel());
+        Assert.assertEquals(createCar().getHorsepower(),personWithCars.getCars().get(0).get().getHorsepower());
+        Assert.assertEquals(createCar().getOwnerId(),personWithCars.getCars().get(0).get().getOwnerId());
     }
 
     @Test
