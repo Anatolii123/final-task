@@ -2,7 +2,6 @@ package org.lanit.internship.finaltask.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
 import javax.persistence.*;
 
 @Entity
