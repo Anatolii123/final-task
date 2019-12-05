@@ -42,7 +42,7 @@ class PersonCarControllerTest {
     private Car theCar;
 
     @BeforeEach
-    public void prepareDataBase() throws Exception {
+    public void prepareDataBase() {
         personCarService.save(createPerson());
         persons.addAll(personCarService.findAllPersons());
         thePerson = persons.stream().findFirst().get();
@@ -61,7 +61,7 @@ class PersonCarControllerTest {
         theCar = null;
     }
 
-    public Person createPerson() throws Exception {
+    public Person createPerson() {
         Person person = new Person();
         person.setId(1L);
         Calendar calendar = Calendar.getInstance();
@@ -73,7 +73,7 @@ class PersonCarControllerTest {
         return person;
     }
 
-    public Person createChild() throws Exception {
+    public Person createChild() {
         Person person = new Person();
         person.setId(2L);
         Calendar calendar = Calendar.getInstance();
@@ -85,7 +85,7 @@ class PersonCarControllerTest {
         return person;
     }
 
-    public Car createCar() throws Exception {
+    public Car createCar() {
         Car car = new Car();
         car.setId(1L);
         car.setModel("Lada-Kalina");
