@@ -116,6 +116,16 @@ class PersonCarServiceImplTest {
     }
 
     @Test
+    void getNewPersonId() {
+        Assert.assertEquals(Long.valueOf(2),personCarService.getNewPersonId());
+    }
+
+    @Test
+    void getNewCarId() {
+        Assert.assertEquals(Long.valueOf(2),personCarService.getNewCarId());
+    }
+
+    @Test
     void getStatisticsObject() {
         Statistics statistics = new Statistics();
         statistics.setPersoncount(1L);
