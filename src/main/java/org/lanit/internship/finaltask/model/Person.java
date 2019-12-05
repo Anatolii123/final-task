@@ -3,8 +3,6 @@ package org.lanit.internship.finaltask.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.lanit.internship.finaltask.exceptions.BadRequestException;
-
 import javax.persistence.*;
 import java.util.Date;
 
