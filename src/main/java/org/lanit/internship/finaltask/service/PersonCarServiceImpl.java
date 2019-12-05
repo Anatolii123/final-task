@@ -34,7 +34,7 @@ public class PersonCarServiceImpl implements PersonCarService {
 
     @Override
     public Person personIsValid(Person person) throws BadRequestException {
-        if (person.getId() == null || personRepo.findById(person.getId()).isPresent() ||
+        if (personRepo.findById(person.getId()).isPresent() ||
                 !(person.getName() instanceof String) || person.getName() == null ||
                 !(person.getBirthDate() instanceof Date) || person.getBirthDate() == null ||
                 !person.getBirthDate().before(new Date())) {

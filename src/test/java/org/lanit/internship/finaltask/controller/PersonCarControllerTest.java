@@ -10,10 +10,12 @@ import org.lanit.internship.finaltask.service.PersonCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -62,17 +64,19 @@ class PersonCarControllerTest {
 
     public Person createPerson() throws Exception {
         Person person = new Person();
-        Date date = new Date();
-        date.setYear(100);
-        date.setMonth(04);
-        date.setDate(26);
+        person.setId(1L);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, 2000);
+        calendar.set(Calendar.MONTH, Calendar.MAY);
+        calendar.set(Calendar.DAY_OF_MONTH, 25);
         person.setName("Name");
-        person.setBirthDate(date);
+        person.setBirthDate(calendar.getTime());
         return person;
     }
 
     public Car createCar() throws Exception {
         Car car = new Car();
+        car.setId(1L);
         car.setModel("Lada-Kalina");
         car.setHorsepower(380);
         car.setOwnerId(thePerson != null && thePerson.getId() != null ? thePerson.getId() : 1L);
@@ -191,13 +195,13 @@ class PersonCarControllerTest {
     void getPersonNotFound() throws Exception {
         this.mockMvc.perform(get("/personwithcars?personid=90"))
                 .andDo(print())
-                .andExpect(status().is(404));
+                .andExpect(status().is(HttpStatus.NOT_FOUND.value()));
     }
 
     @Test
     void getPersonBadRequest() throws Exception {
         this.mockMvc.perform(get("/personwithcars?personid="))
                 .andDo(print())
-                .andExpect(status().is(400));
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
     }
 }
