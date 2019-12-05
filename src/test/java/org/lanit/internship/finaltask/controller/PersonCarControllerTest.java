@@ -429,7 +429,7 @@ class PersonCarControllerTest {
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
 
-        this.mockMvc.perform(get("/personwithcars?personid=asxasdasdasasxa"))
+        this.mockMvc.perform(get("/personwithcars?personid=asxasdasdasasxa")) // !(personId instanceof Long)
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
     }
