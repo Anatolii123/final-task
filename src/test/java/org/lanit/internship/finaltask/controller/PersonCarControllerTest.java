@@ -206,6 +206,15 @@ class PersonCarControllerTest {
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
 
+        this.mockMvc.perform(post("/person") // !(name instanceof String)
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"name\":\"dasdaasd23asdasxas\",\n" +
+                        "    \"birthDate\":\"25.05.2000\"\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
         this.mockMvc.perform(post("/person") // birthDate == null
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":2,\n" +
