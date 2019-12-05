@@ -28,9 +28,6 @@ public class Person {
     }
 
     public void setId(Long id) {
-        if (id == null) {
-            throw new BadRequestException();
-        }
         this.id = id;
     }
 
@@ -43,7 +40,7 @@ public class Person {
     }
 
     public Date getBirthDate() {
-        return this.birthDate;
+        return birthDate;
     }
 
     public void setBirthDate(Date birthDate) {
