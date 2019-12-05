@@ -174,7 +174,7 @@ class PersonCarControllerTest {
                         "    \"birthDate\":\"25.05.2020\"\n" +
                         "}"))
                 .andDo(print())
-                .andExpect(status().is(400));
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
     }
 
     @Test
@@ -187,7 +187,7 @@ class PersonCarControllerTest {
                         "    \"ownerId\":" + thePerson.getId() + "\n" +
                         "}"))
                 .andDo(print())
-                .andExpect(status().is(400));
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
     }
 
     @Test
