@@ -41,6 +41,16 @@ class PersonCarController2Test {
                         "}"));
     }
 
+    public ResultActions carSave() throws Exception {
+        return this.mockMvc.perform(post("/2/car")
+                .header("Content-Type","application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"model\":\"Lada-Kalina\",\n" +
+                        "    \"horsepower\":380,\n" +
+                        "    \"ownerId\":1\n" +
+                        "}"));
+    }
+
     @Test
     void savePerson() throws Exception {
         personSave()
@@ -56,13 +66,7 @@ class PersonCarController2Test {
     @Test
     void saveCar() throws Exception {
         personSave();
-        this.mockMvc.perform(post("/2/car")
-                .header("Content-Type","application/json").content("{\n" +
-                        "    \"id\":2,\n" +
-                        "    \"model\":\"Lada-Kalina\",\n" +
-                        "    \"horsepower\":380,\n" +
-                        "    \"ownerId\":1\n" +
-                        "}"))
+        carSave()
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\n" +
@@ -101,6 +105,25 @@ class PersonCarController2Test {
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
+    void getNewPersonId() throws Exception {
+        personSave();
+        this.mockMvc.perform(get("/2/newPersonId"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string("2"));
+    }
+
+    @Test
+    void getNewCarId() throws Exception {
+        personSave();
+        carSave();
+        this.mockMvc.perform(get("/2/newCarId"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string("3"));
     }
 
 }
