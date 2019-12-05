@@ -132,7 +132,7 @@ class PersonCarControllerTest {
 
     @Test
     void getPersonWithCars() throws Exception {
-        this.mockMvc.perform(get("/personwithcars?personid=" + personCarService.findAllPersons().get(0).getId().toString()))
+        this.mockMvc.perform(get("/personwithcars?personid=" + thePerson.getId().toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json("{" +
@@ -167,11 +167,11 @@ class PersonCarControllerTest {
 
     @Test
     void savePersonBadRequest() throws Exception {
-        this.mockMvc.perform(post("/person")
+        this.mockMvc.perform(post("/person") // дата рождения в будущем
                 .header("Content-Type", "application/json").content("{\n" +
-                        "    \"id\":1,\n" +
+                        "    \"id\":2,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"25.05.2020\"\n" +
+                        "    \"birthDate\":\"2000-05-25\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
