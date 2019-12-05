@@ -22,10 +22,11 @@ public class Car {
     private Long ownerId;
 
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Long id) {
+        this.id = id;
     }
 
     public String getModel() {
@@ -37,7 +38,7 @@ public class Car {
     }
 
     public Integer getHorsepower() {
-        return this.horsepower;
+        return horsepower;
     }
 
     public void setHorsepower(Integer horsepower) {
