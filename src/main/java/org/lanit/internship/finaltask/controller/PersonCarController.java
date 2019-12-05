@@ -116,7 +116,8 @@ public class PersonCarController {
         personCarService.deleteAll();
     }
 
-    @ExceptionHandler({com.fasterxml.jackson.databind.exc.InvalidFormatException.class, com.fasterxml.jackson.core.JsonParseException.class})
+    @ExceptionHandler({com.fasterxml.jackson.databind.exc.InvalidFormatException.class, com.fasterxml.jackson.core.JsonParseException.class,
+            org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class})
     public void handleException() {
         throw new BadRequestException();
     }

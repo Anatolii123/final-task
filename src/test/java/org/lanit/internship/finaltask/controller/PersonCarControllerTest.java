@@ -73,6 +73,18 @@ class PersonCarControllerTest {
         return person;
     }
 
+    public Person createChild() throws Exception {
+        Person person = new Person();
+        person.setId(2L);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, 2010);
+        calendar.set(Calendar.MONTH, Calendar.MAY);
+        calendar.set(Calendar.DAY_OF_MONTH, 25);
+        person.setName("Name");
+        person.setBirthDate(calendar.getTime());
+        return person;
+    }
+
     public Car createCar() throws Exception {
         Car car = new Car();
         car.setId(1L);
@@ -351,6 +363,16 @@ class PersonCarControllerTest {
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
 
+        this.mockMvc.perform(post("/car") // !(ownerId instanceof Long)
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"model\":\"Lada-Kalina\",\n" +
+                        "    \"horsepower\":380,\n" +
+                        "    \"ownerId\":dasdasxasdasd\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
         this.mockMvc.perform(post("/car") // horsepower <= 0
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":2,\n" +
@@ -360,18 +382,54 @@ class PersonCarControllerTest {
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/car") // Ранее передавался валидный объект с таким id
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":1,\n" +
+                        "    \"model\":\"Lada-Kalina\",\n" +
+                        "    \"horsepower\":380,\n" +
+                        "    \"ownerId\":" + thePerson.getId() + "\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/car") // Person с Id=ownerId не существует
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"model\":\"Lada-Kalina\",\n" +
+                        "    \"horsepower\":380,\n" +
+                        "    \"ownerId\":90\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.personCarService.save(createChild());
+
+        this.mockMvc.perform(post("/car") // Person с Id=ownerId младше 18 лет
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"model\":\"Lada-Kalina\",\n" +
+                        "    \"horsepower\":380,\n" +
+                        "    \"ownerId\":2\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
     }
 
     @Test
-    void getPersonNotFound() throws Exception {
+    void getPersonWithCarsNotFound() throws Exception {
         this.mockMvc.perform(get("/personwithcars?personid=90"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()));
     }
 
     @Test
-    void getPersonBadRequest() throws Exception {
-        this.mockMvc.perform(get("/personwithcars?personid="))
+    void getPersonWithCarsBadRequest() throws Exception {
+        this.mockMvc.perform(get("/personwithcars?personid=")) // personId == null
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(get("/personwithcars?personid=asxasdasdasasxa"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
     }
