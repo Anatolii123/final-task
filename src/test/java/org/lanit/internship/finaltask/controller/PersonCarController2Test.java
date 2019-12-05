@@ -3,6 +3,7 @@ package org.lanit.internship.finaltask.controller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.lanit.internship.finaltask.service.PersonCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import javax.annotation.Resource;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -24,6 +27,9 @@ class PersonCarController2Test {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Resource
+    private PersonCarService personCarService;
 
     @AfterEach
     void clearDB() throws Exception {
@@ -77,6 +83,25 @@ class PersonCarController2Test {
                         "}"));
     }
 
+    @Test
+    void getNewPersonId() throws Exception {
+        personSave();
+        this.mockMvc.perform(get("/2/newPersonId"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string("2"));
+    }
+
+    @Test
+    void getNewCarId() throws Exception {
+        personSave();
+        carSave();
+        this.mockMvc.perform(get("/2/newCarId"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string("3"));
+    }
+
     /**
      *WrongExecutionTests
      **/
@@ -107,23 +132,23 @@ class PersonCarController2Test {
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
     }
 
-    @Test
-    void getNewPersonId() throws Exception {
-        personSave();
-        this.mockMvc.perform(get("/2/newPersonId"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string("2"));
-    }
+    /**
+     * Mercedes-Benz, Rolls-Royce - vendors
+     *
+     */
 
     @Test
-    void getNewCarId() throws Exception {
+    void saveCarWrongVendor() throws Exception {
         personSave();
-        carSave();
-        this.mockMvc.perform(get("/2/newCarId"))
+        carSave()
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("3"));
+                .andExpect(content().json("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"model\":\"Mercedes-Benz-A Sedan\",\n" +
+                        "    \"horsepower\":163,\n" +
+                        "    \"ownerId\":1\n" +
+                        "}"));
     }
 
 }
