@@ -166,12 +166,39 @@ class PersonCarControllerTest {
      **/
 
     @Test
-    void savePersonBadRequest() throws Exception {
+    void savePersonBadRequests() throws Exception {
+        this.mockMvc.perform(post("/person") // id == null
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":,\n" +
+                        "    \"name\":\"Name\",\n" +
+                        "    \"birthDate\":\"25.05.2000\"\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/person") // !(id instanceof Long)
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":xasxasdasd,\n" +
+                        "    \"name\":\"Name\",\n" +
+                        "    \"birthDate\":\"25.05.2000\"\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/person") // name == null
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"name\":,\n" +
+                        "    \"birthDate\":\"25.05.2000\"\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
         this.mockMvc.perform(post("/person") // дата рождения в будущем
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":2,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"2000-05-25\"\n" +
+                        "    \"birthDate\":\"25.05.2020\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));

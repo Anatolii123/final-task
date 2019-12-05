@@ -1,5 +1,6 @@
 package org.lanit.internship.finaltask.controller;
 
+import org.lanit.internship.finaltask.exceptions.BadRequestException;
 import org.lanit.internship.finaltask.model.Car;
 import org.lanit.internship.finaltask.model.Person;
 import org.lanit.internship.finaltask.model.PersonWithCars;
@@ -113,5 +114,10 @@ public class PersonCarController {
     @GetMapping(value = "/clear")
     public void clearDB() {
         personCarService.deleteAll();
+    }
+
+    @ExceptionHandler({com.fasterxml.jackson.databind.exc.InvalidFormatException.class, com.fasterxml.jackson.core.JsonParseException.class})
+    public void handleException() {
+        throw new BadRequestException();
     }
 }
