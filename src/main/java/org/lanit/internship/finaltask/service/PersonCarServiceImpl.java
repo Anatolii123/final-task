@@ -47,8 +47,7 @@ public class PersonCarServiceImpl implements PersonCarService {
     public Car carIsValid(Car car) throws BadRequestException {
         if (!(car.getModel() instanceof String) || car.getModel() == null ||
                 carRepo.findById(car.getId()).isPresent() ||
-                !car.getModel().contains("-") || getCarVendor(car).equals("") ||
-                getCarModel(car).equals("") || getCarModel(car).contains("-") ||
+                !car.getModel().contains("-") || getCarVendor(car).equals("") || getCarModel(car).equals("") ||
                 !(car.getHorsepower() instanceof Integer) || car.getHorsepower() == null ||
                 !(car.getOwnerId() instanceof Long) || car.getOwnerId() == null ||
                 car.getHorsepower() <= 0 || !personRepo.findById(car.getOwnerId()).isPresent() ||
