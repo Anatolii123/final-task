@@ -194,7 +194,43 @@ class PersonCarControllerTest {
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
 
-        this.mockMvc.perform(post("/person") // дата рождения в будущем
+//        this.mockMvc.perform(post("/person") // !(name instanceof String)
+//                .header("Content-Type", "application/json").content("{\n" +
+//                        "    \"id\":2,\n" +
+//                        "    \"name\":23,\n" +
+//                        "    \"birthDate\":\"25.05.2000\"\n" +
+//                        "}"))
+//                .andDo(print())
+//                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/person") // birthDate == null
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"name\":\"Name\",\n" +
+                        "    \"birthDate\":\"\"\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/person") // !(birthDate instanceof Date)
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"name\":\"Name\",\n" +
+                        "    \"birthDate\":dsaxsdasxasxaxs\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/person") // birthDate.format != "dd.MM.yyyy"
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"name\":\"Name\",\n" +
+                        "    \"birthDate\":\"2000-05-25\"\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/person") // Дата рождения в будущем
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":2,\n" +
                         "    \"name\":\"Name\",\n" +
@@ -202,11 +238,70 @@ class PersonCarControllerTest {
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/person") // Ранее передавался валидный объект с таким id
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":1,\n" +
+                        "    \"name\":\"Name\",\n" +
+                        "    \"birthDate\":\"25.05.2000\"\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
     }
 
     @Test
-    void saveCarBadRequest() throws Exception {
-        this.mockMvc.perform(post("/car")
+    void saveCarBadRequests() throws Exception {
+        this.mockMvc.perform(post("/car") // id == null
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":,\n" +
+                        "    \"model\":\"Lada-Kalina\",\n" +
+                        "    \"horsepower\":380,\n" +
+                        "    \"ownerId\":" + thePerson.getId() + "\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/car") // !(id instanceof Long)
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":asdasxasdasxas,\n" +
+                        "    \"model\":\"Lada-Kalina\",\n" +
+                        "    \"horsepower\":380,\n" +
+                        "    \"ownerId\":" + thePerson.getId() + "\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/car") // model == null
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"model\":,\n" +
+                        "    \"horsepower\":380,\n" +
+                        "    \"ownerId\":" + thePerson.getId() + "\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/car") // model.format != "vendor-model"
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"model\":BMW,\n" +
+                        "    \"horsepower\":380,\n" +
+                        "    \"ownerId\":" + thePerson.getId() + "\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/car") // vendor пустой
+                .header("Content-Type", "application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"model\":-X5,\n" +
+                        "    \"horsepower\":380,\n" +
+                        "    \"ownerId\":" + thePerson.getId() + "\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
+        this.mockMvc.perform(post("/car") // horsepower <= 0
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":2,\n" +
                         "    \"model\":\"Lada-Kalina\",\n" +

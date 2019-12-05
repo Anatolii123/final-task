@@ -36,7 +36,7 @@ public class PersonCarController2 {
         return id;
     }
 
-    @ExceptionHandler({com.fasterxml.jackson.databind.exc.InvalidFormatException.class})
+    @ExceptionHandler({com.fasterxml.jackson.databind.exc.InvalidFormatException.class, com.fasterxml.jackson.core.JsonParseException.class})
     public void handleException() {
         throw new BadRequestException();
     }
