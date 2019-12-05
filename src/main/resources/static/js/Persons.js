@@ -1,4 +1,5 @@
 var personApi = Vue.resource('/persons');
+var personsId = Vue.resource('/2/newPersonId');
 
 Vue.component('person-row', {
     props: ['person'],
@@ -39,12 +40,16 @@ Vue.component('person-form', {
                 this.birthDate.substr(5,2) + '.' +
                 this.birthDate.substr(0,4);
             this.birthDate = birthday;
-            var person = {id: 5, name: this.name, birthDate: this.birthDate};
-            this.$http.post('http://localhost:8080/2/person', person).then(response => {
-                this.persons.push(response.body);
+            personsId.get().then(
+                response => {
+                this.id = response.body;
+                    var person = {id: this.id, name: this.name, birthDate: this.birthDate};
+                    this.$http.post('http://localhost:8080/2/person', person).then(result => {
+                        this.persons.push(result.body);
+                    });
+                    this.name = '';
+                    this.birthDate = ''
             });
-            this.name = '';
-            this.birthDate = ''
         }
     }
 });

@@ -1,5 +1,6 @@
 var carApi = Vue.resource('/cars');
 var personoApi = Vue.resource('/persons');
+var carId = Vue.resource('/2/newCarId')
 
 function checkInput(input) {
     input.value = input.value.replace(/[^\d,]/g, '')
@@ -95,13 +96,17 @@ var app = new Vue({
         '</div>',
     methods: {
         save: function () {
-            var car = {id: 5, model: this.model, horsepower: this.horsepower, ownerId: this.$children[0].ownerId};
-            this.$http.post('http://localhost:8080/2/car', car).then(response => {
-                this.cars.push(response.body);
-                this.model = '';
-                this.horsepower = '';
-            });
-            this.ownerId = '';
+            carId.get().then(
+                response => {
+                    this.id = response.body;
+                    var car = {id: this.id, model: this.model, horsepower: this.horsepower, ownerId: this.$children[0].ownerId};
+                    this.$http.post('http://localhost:8080/2/car', car).then(response => {
+                        this.cars.push(response.body);
+                        this.model = '';
+                        this.horsepower = '';
+                    });
+                    this.ownerId = '';
+                });
         }
     },
     data: {

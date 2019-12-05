@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface PersonRepo extends JpaRepository<Person, Long> {
     Optional<Person> findById(Long id);
+    Optional<Person> findFirstByIdOrderByIdDesc(Long id);
 }

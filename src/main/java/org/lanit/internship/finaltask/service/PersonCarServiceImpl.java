@@ -5,11 +5,11 @@ import org.lanit.internship.finaltask.exceptions.NotFoundException;
 import org.lanit.internship.finaltask.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonCarServiceImpl implements PersonCarService {
@@ -75,6 +75,26 @@ public class PersonCarServiceImpl implements PersonCarService {
         List<Optional<Car>> carsByOwnerId = carRepo.findByOwnerId(personid);
         personWithCars.setCars(carsByOwnerId);
         return personWithCars;
+    }
+
+    @Override
+    public Long getNewPersonId() {
+        List<Long> ids = new ArrayList<>();
+        for (int i = 0; i < personRepo.findAll().size(); i++) {
+            ids.add(personRepo.findAll().get(i).getId());
+        }
+
+        return Collections.max(ids) + 1;
+    }
+
+    @Override
+    public Long getNewCarId() {
+        List<Long> ids = new ArrayList<Long>();
+        for (int i = 0; i < carRepo.findAll().size(); i++) {
+            ids.add(carRepo.findAll().get(i).getId());
+        }
+
+        return Collections.max(ids) + 1;
     }
 
     @Override

@@ -4,10 +4,7 @@ import org.lanit.internship.finaltask.model.Car;
 import org.lanit.internship.finaltask.model.Person;
 import org.lanit.internship.finaltask.service.PersonCarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/2")
@@ -24,6 +21,18 @@ public class PersonCarController2 {
     @PostMapping(value = "/car")
     public Car saveCar(@RequestBody Car car) {
         return personCarService.saveCar(car);
+    }
+
+    @GetMapping(value = "/newPersonId")
+    public Long getNewPersonId() {
+        Long id = personCarService.getNewPersonId();
+        return id;
+    }
+
+    @GetMapping(value = "/newCarId")
+    public Long getNewCarId() {
+        Long id = personCarService.getNewCarId();
+        return id;
     }
 
 }
