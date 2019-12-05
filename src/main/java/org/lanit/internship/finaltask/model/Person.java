@@ -3,6 +3,7 @@ package org.lanit.internship.finaltask.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.lanit.internship.finaltask.exceptions.BadRequestException;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -27,6 +28,9 @@ public class Person {
     }
 
     public void setId(Long id) {
+        if (id == null) {
+            throw new BadRequestException();
+        }
         this.id = id;
     }
 
