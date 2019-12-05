@@ -52,6 +52,7 @@ class PersonCarServiceImplTest {
 
     public Person createPerson() throws Exception {
         Person person = new Person();
+        person.setId(1L);
         person.setName("Name");
         person.setBirthDate(Date.valueOf("2000-05-25"));
         return person;
@@ -59,6 +60,7 @@ class PersonCarServiceImplTest {
 
     public Car createCar() {
         Car car = new Car();
+        car.setId(1L);
         car.setModel("Lada-Kalina");
         car.setHorsepower(380);
         car.setOwnerId(thePerson != null && thePerson.getId() != null ? thePerson.getId() : 1L);
@@ -67,6 +69,7 @@ class PersonCarServiceImplTest {
 
     public Person createWrongPerson() throws Exception {
         Person person = new Person();
+        person.setId(2L);
         person.setName("Ivan");
         person.setBirthDate(Date.valueOf("2027-01-06"));
         return person;
@@ -74,6 +77,7 @@ class PersonCarServiceImplTest {
 
     public Car createWrongCar() {
         Car car = new Car();
+        car.setId(2L);
         car.setModel("Chevrolet-");
         car.setHorsepower(160);
         car.setOwnerId(thePerson != null && thePerson.getId() != null ? thePerson.getId() : 1L);
@@ -81,13 +85,16 @@ class PersonCarServiceImplTest {
     }
 
     @Test
-    void personIsValid() {
-        Person person = personCarService.personIsValid(thePerson);
-        Assert.assertEquals(thePerson, person);
+    void personIsValid() throws Exception {
+        clearDataBase();
+        Person person = personCarService.personIsValid(createPerson());
+        Assert.assertEquals(createPerson(), person);
     }
 
     @Test
-    void carIsValid() {
+    void carIsValid() throws Exception {
+        clearDataBase();
+        personCarService.save(createPerson());
         Car car = personCarService.carIsValid(createCar());
         Assert.assertEquals(createCar().getId(), car.getId());
         Assert.assertEquals(createCar().getModel(), car.getModel());
@@ -122,38 +129,32 @@ class PersonCarServiceImplTest {
 
     @Test
     void save() throws Exception {
-        int size = personCarService.findAllPersons().size();
-        Assert.assertEquals(1, size);
-
+        clearDataBase();
         personCarService.save(createPerson());
-        Assert.assertTrue(personCarService.findAllPersons().size() > size);
+        Assert.assertTrue(personCarService.findAllPersons().size() == 1);
     }
 
     @Test
-    void save2() {
-        int size = personCarService.findAllCars().size();
-        Assert.assertEquals(1, size);
-
+    void save2() throws Exception {
+        clearDataBase();
+        personCarService.save(createPerson());
         personCarService.save(createCar());
-        Assert.assertTrue(personCarService.findAllCars().size() > size);
+        Assert.assertTrue(personCarService.findAllCars().size() == 1);
     }
 
     @Test
     void savePerson() throws Exception {
-        int size = personCarService.findAllPersons().size();
-        Assert.assertEquals(1, size);
-
-        personCarService.savePerson(createPerson());
-        Assert.assertTrue(personCarService.findAllPersons().size() > size);
+        clearDataBase();
+        Assert.assertEquals(createPerson(),personCarService.savePerson(createPerson()));
+        Assert.assertTrue(personCarService.findAllPersons().size() == 1);
     }
 
     @Test
-    void saveCar() {
-        int size = personCarService.findAllCars().size();
-        Assert.assertEquals(1, size);
-
+    void saveCar() throws Exception {
+        clearDataBase();
+        personCarService.save(createPerson());
         personCarService.saveCar(createCar());
-        Assert.assertTrue(personCarService.findAllCars().size() > size);
+        Assert.assertTrue(personCarService.findAllCars().size() == 1);
     }
 
     @Test

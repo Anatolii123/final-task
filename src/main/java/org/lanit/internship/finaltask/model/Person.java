@@ -12,7 +12,6 @@ import java.util.Date;
 @EqualsAndHashCode(of = {"id"})
 public class Person {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", nullable = false, precision = 0)
     private Long id;
     @Column(name = "NAME", nullable = false, length = 45)

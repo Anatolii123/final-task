@@ -110,7 +110,7 @@ class PersonCarControllerTest {
     void savePerson() throws Exception {
         this.mockMvc.perform(post("/person")
                 .header("Content-Type", "application/json").content("{\n" +
-                        "    \"id\":1,\n" +
+                        "    \"id\":2,\n" +
                         "    \"name\":\"Name\",\n" +
                         "    \"birthDate\":\"25.05.2000\"\n" +
                         "}"))

@@ -10,7 +10,6 @@ import javax.persistence.*;
 @EqualsAndHashCode(of = {"id"})
 public class Car {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", nullable = false, precision = 0)
     private Long id;
     @Column(name = "MODEL", nullable = false, precision = 0)
