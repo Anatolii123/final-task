@@ -1,5 +1,7 @@
 package org.lanit.internship.finaltask.model;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,7 +10,7 @@ public class PersonDTO {
     private String id;
     private String name;
     private String birthdate;
-    private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy 05:00:00");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     public PersonDTO fromPerson(Person person) {
         this.id = person.getId().toString();
@@ -22,6 +24,11 @@ public class PersonDTO {
      */
     public Person toPerson() throws ParseException {
         //тут все валидации, включаяя пустоту id и name == null, а также невалидную дату
+        try {
+            sdf.parse(this.birthdate);
+        } catch (ParseException p) {
+            return null;
+        }
         if (this.id == null || this.id.equals("") || this.name == null || this.birthdate == null ||
                 Integer.parseInt(this.birthdate.substring(0, 1)) > 31 ||
                 Integer.parseInt(this.birthdate.substring(3, 4)) > 12 ||
