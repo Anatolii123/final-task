@@ -1,5 +1,6 @@
 package org.lanit.internship.finaltask.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import javax.persistence.*;
@@ -71,6 +72,20 @@ public class Car {
 
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
+    }
+
+    @Transient
+    @JsonIgnore
+    public String getVendorModel() {
+        String vendor = this.model.substring(0,this.model.indexOf("-"));
+        return vendor;
+    }
+
+    @Transient
+    @JsonIgnore
+    public String getModelModel() {
+        String model = this.model.substring(this.model.indexOf("-") + 1, this.model.length());
+        return model;
     }
 
 }

@@ -103,9 +103,6 @@ public class PersonCarController {
     public void savePerson(@RequestBody PersonDTO personDTO) throws NoSuchFieldException, IllegalAccessException, ParseException {
         try {
             Person person = personDTO.toPerson();
-            if(person == null){
-                throw new BadRequestException();
-            }
             personCarService.save(person);
         } catch (NullPointerException n) {
             throw new BadRequestException();
@@ -114,8 +111,14 @@ public class PersonCarController {
         }
     }
 
+//    @PostMapping(value = "/car")
+//    public void saveCar(@RequestBody Car car) throws ParseException {
+//        personCarService.save(car);
+//    }
+
     @PostMapping(value = "/car")
-    public void saveCar(@RequestBody Car car) throws ParseException {
+    public void saveCar(@RequestBody CarDTO carDTO) throws ParseException {
+        Car car = carDTO.toCar();
         personCarService.save(car);
     }
 
