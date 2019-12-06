@@ -184,7 +184,7 @@ class PersonCarControllerTest {
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"25.05.2000\"\n" +
+                        "    \"birthdate\":\"25.05.2000\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
@@ -193,7 +193,7 @@ class PersonCarControllerTest {
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":xasxasdasd,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"25.05.2000\"\n" +
+                        "    \"birthdate\":\"25.05.2000\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
@@ -202,16 +202,7 @@ class PersonCarControllerTest {
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":2,\n" +
                         "    \"name\":,\n" +
-                        "    \"birthDate\":\"25.05.2000\"\n" +
-                        "}"))
-                .andDo(print())
-                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
-
-        this.mockMvc.perform(post("/person") // !(name instanceof String)
-                .header("Content-Type", "application/json").content("{\n" +
-                        "    \"id\":2,\n" +
-                        "    \"name\":23,\n" +
-                        "    \"birthDate\":\"25.05.2000\"\n" +
+                        "    \"birthdate\":\"25.05.2000\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
@@ -220,7 +211,7 @@ class PersonCarControllerTest {
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":2,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"\"\n" +
+                        "    \"birthdate\":\"\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
@@ -229,7 +220,7 @@ class PersonCarControllerTest {
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":2,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":dsaxsdasxasxaxs\n" +
+                        "    \"birthdate\":dsaxsdasxasxaxs\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
@@ -238,7 +229,7 @@ class PersonCarControllerTest {
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":2,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"2000-05-25\"\n" +
+                        "    \"birthdate\":\"2000-05-25\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
@@ -247,7 +238,7 @@ class PersonCarControllerTest {
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":2,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"25.05.2020\"\n" +
+                        "    \"birthdate\":\"25.05.2020\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
@@ -256,7 +247,7 @@ class PersonCarControllerTest {
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":1,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"25.05.2000\"\n" +
+                        "    \"birthdate\":\"25.05.2000\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));

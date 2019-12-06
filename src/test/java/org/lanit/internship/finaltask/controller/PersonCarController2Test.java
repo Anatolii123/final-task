@@ -44,7 +44,7 @@ class PersonCarController2Test {
                 .header("Content-Type","application/json").content("{\n" +
                         "    \"id\":1,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"25.05.2000\"\n" +
+                        "    \"birthdate\":\"25.05.2000\"\n" +
                         "}"));
     }
 
@@ -133,7 +133,7 @@ class PersonCarController2Test {
                 .header("Content-Type","application/json").content("{\n" +
                         "    \"id\":1,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"25.05.2020\"\n" +
+                        "    \"birthdate\":\"25.05.2020\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
