@@ -18,8 +18,8 @@ public interface PersonCarService {
     Statistics getStatisticsObject();
     void save(Person person) throws NoSuchFieldException, IllegalAccessException, ParseException;
     Person savePerson(Person person) throws NoSuchFieldException, IllegalAccessException, ParseException;
-    void save(Car car) throws ParseException;
-    Car saveCar(Car car) throws ParseException;
+    void save(Car car);
+    Car saveCar(Car car);
     List<Person> findAllPersons();
     List<Car> findAllCars();
     void deleteAll();

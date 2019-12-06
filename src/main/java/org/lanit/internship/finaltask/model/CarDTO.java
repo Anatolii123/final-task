@@ -1,10 +1,5 @@
 package org.lanit.internship.finaltask.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.Transient;
-import java.util.Date;
-
 public class CarDTO {
     private String id;
     private String model;

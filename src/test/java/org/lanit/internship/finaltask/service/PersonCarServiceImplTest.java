@@ -267,8 +267,6 @@ class PersonCarServiceImplTest {
         } catch (BadRequestException b) {
             Assert.assertTrue(true);
             return;
-        } catch (ParseException p) {
-            Assert.assertTrue(false);
         }
         Assert.assertTrue(false);
     }
@@ -291,8 +289,6 @@ class PersonCarServiceImplTest {
         } catch (BadRequestException b) {
             Assert.assertTrue(true);
             return;
-        } catch (ParseException p) {
-            Assert.assertTrue(false);
         }
         Assert.assertTrue(false);
     }

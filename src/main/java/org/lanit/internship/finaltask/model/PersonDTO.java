@@ -24,12 +24,8 @@ public class PersonDTO {
      */
     public Person toPerson() throws ParseException, NullPointerException {
         //тут все валидации, включаяя пустоту id и name == null, а также невалидную дату
-        try {
-            sdf.parse(this.birthdate);
-        } catch (ParseException p) {
-            return null;
-        }
         if (this.id == null || this.id.equals("") || this.name == null || this.birthdate == null ||
+                !this.birthdate.matches("(0[1-9]|[12][0-9]|3[01])[\\.](0[1-9]|1[012])[\\.](19|20)\\d\\d") ||
                 Integer.parseInt(this.birthdate.substring(0, 2)) > 31 ||
                 Integer.parseInt(this.birthdate.substring(3, 5)) > 12 ||
                 !(sdf.parse(this.birthdate).before(new Date()))) {
