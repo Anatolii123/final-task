@@ -52,9 +52,9 @@ class PersonCarServiceImplTest {
 
     public Person createPerson() throws Exception {
         Person person = new Person();
-        person.setId(1L);
+        person.setId(Long.valueOf(1L).toString());
         person.setName("Name");
-        person.setBirthDate(Date.valueOf("2000-05-25"));
+        person.setBirthdate(Date.valueOf("2000-05-25"));
         return person;
     }
 
@@ -63,15 +63,15 @@ class PersonCarServiceImplTest {
         car.setId(1L);
         car.setModel("Lada-Kalina");
         car.setHorsepower(380);
-        car.setOwnerId(thePerson != null && thePerson.getId() != null ? thePerson.getId() : 1L);
+        car.setOwnerId(thePerson != null && thePerson.getId() != null ? Long.valueOf(thePerson.getId()) : 1L);
         return car;
     }
 
     public Person createWrongPerson() throws Exception {
         Person person = new Person();
-        person.setId(2L);
+        person.setId(Long.valueOf(2L).toString());
         person.setName("Ivan");
-        person.setBirthDate(Date.valueOf("2027-01-06"));
+        person.setBirthdate(Date.valueOf("2027-01-06"));
         return person;
     }
 
@@ -80,7 +80,7 @@ class PersonCarServiceImplTest {
         car.setId(2L);
         car.setModel("Chevrolet-");
         car.setHorsepower(160);
-        car.setOwnerId(thePerson != null && thePerson.getId() != null ? thePerson.getId() : 1L);
+        car.setOwnerId(thePerson != null && thePerson.getId() != null ? Long.valueOf(thePerson.getId()) : 1L);
         return car;
     }
 
@@ -104,10 +104,10 @@ class PersonCarServiceImplTest {
 
     @Test
     void getPersonWithCars() throws Exception {
-        PersonWithCars personWithCars = personCarService.getPersonWithCars(thePerson.getId());
+        PersonWithCars personWithCars = personCarService.getPersonWithCars(Long.valueOf(thePerson.getId()));
         Assert.assertEquals(thePerson.getId(), personWithCars.getId());
         Assert.assertEquals(thePerson.getName(), personWithCars.getName());
-        Assert.assertEquals(thePerson.getBirthDate(), personWithCars.getBirthDate());
+        Assert.assertEquals(thePerson.getBirthdate(), personWithCars.getBirthdate());
         Assert.assertEquals(1, personWithCars.getCars().size());
         Assert.assertEquals(theCar.getId(), personWithCars.getCars().get(0).get().getId());
         Assert.assertEquals(theCar.getModel(), personWithCars.getCars().get(0).get().getModel());

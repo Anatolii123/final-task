@@ -5,11 +5,10 @@ import org.lanit.internship.finaltask.exceptions.NotFoundException;
 import org.lanit.internship.finaltask.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class PersonCarServiceImpl implements PersonCarService {
@@ -22,7 +21,7 @@ public class PersonCarServiceImpl implements PersonCarService {
 
     @Override
     public String getCarVendor(Car car) throws BadRequestException {
-        String vendor = car.getModel().substring(0,car.getModel().indexOf("-"));
+        String vendor = car.getModel().substring(0, car.getModel().indexOf("-"));
         return vendor;
     }
 
@@ -33,11 +32,15 @@ public class PersonCarServiceImpl implements PersonCarService {
     }
 
     @Override
-    public Person personIsValid(Person person) throws BadRequestException {
-        if (personRepo.findById(person.getId()).isPresent() || !(person.getName() instanceof String) ||
-                person.getName() == null || !person.getName().matches("^[A-Za-zА-Яа-яёЁ-]*$") ||
-                !(person.getBirthDate() instanceof Date) || person.getBirthDate() == null ||
-                !person.getBirthDate().before(new Date())) {
+    public Person personIsValid(Person person) throws BadRequestException, NoSuchFieldException, IllegalAccessException {
+        Field field = person.getClass().getDeclaredField("name");
+        field.setAccessible(true);
+        String name = (String) field.get(person);
+        if (person.getId() == null ||
+                (person.getId().equals("") ? true : personRepo.findById(person.getId().toString()).isPresent()) ||
+                !(person.getName() instanceof String) || name == null ||
+                !(person.getBirthdate() instanceof Date) || person.getBirthdate() == null ||
+                !person.getBirthdate().before(new Date())) {
             throw new BadRequestException();
         }
         return person;
@@ -50,9 +53,9 @@ public class PersonCarServiceImpl implements PersonCarService {
                 !car.getModel().contains("-") || getCarVendor(car).equals("") || getCarModel(car).equals("") ||
                 !(car.getHorsepower() instanceof Integer) || car.getHorsepower() == null ||
                 !(car.getOwnerId() instanceof Long) || car.getOwnerId() == null ||
-                car.getHorsepower() <= 0 || !personRepo.findById(car.getOwnerId()).isPresent() ||
-                (new java.util.Date().getYear() - personRepo.findById(car.getOwnerId())
-                        .orElseThrow(BadRequestException::new).getBirthDate().getYear() < 18)) {
+                car.getHorsepower() <= 0 || !personRepo.findById(car.getOwnerId().toString()).isPresent() ||
+                (new java.util.Date().getYear() - personRepo.findById(car.getOwnerId().toString())
+                        .orElseThrow(BadRequestException::new).getBirthdate().getYear() < 18)) {
             throw new BadRequestException();
         }
         return car;
@@ -64,14 +67,14 @@ public class PersonCarServiceImpl implements PersonCarService {
         if (personid == null) {
             throw new BadRequestException();
         }
-        if (!personRepo.findById(personid).isPresent()) {
+        if (!personRepo.findById(personid.toString()).isPresent()) {
             throw new NotFoundException();
         }
 
-        Optional<Person> personById = personRepo.findById(personid);
-        personWithCars.setId(personById.get().getId());
+        Optional<Person> personById = personRepo.findById(personid.toString());
+        personWithCars.setId(personById.get().getId().toString());
         personWithCars.setName(personById.get().getName());
-        personWithCars.setBirthDate(personById.get().getBirthDate());
+        personWithCars.setBirthdate(personById.get().getBirthdate());
         List<Optional<Car>> carsByOwnerId = carRepo.findByOwnerId(personid);
         personWithCars.setCars(carsByOwnerId);
         return personWithCars;
@@ -81,7 +84,7 @@ public class PersonCarServiceImpl implements PersonCarService {
     public Long getNewPersonId() {
         List<Long> ids = new ArrayList<>();
         for (int i = 0; i < personRepo.findAll().size(); i++) {
-            ids.add(personRepo.findAll().get(i).getId());
+            ids.add(Long.valueOf(personRepo.findAll().get(i).getId()));
         }
 
         return Collections.max(ids) + 1;
@@ -111,12 +114,12 @@ public class PersonCarServiceImpl implements PersonCarService {
     }
 
     @Override
-    public void save(Person person) {
+    public void save(Person person) throws NoSuchFieldException, IllegalAccessException {
         personRepo.save(personIsValid(person));
     }
 
     @Override
-    public Person savePerson(Person person) {
+    public Person savePerson(Person person) throws NoSuchFieldException, IllegalAccessException {
         return personRepo.save(personIsValid(person));
     }
 

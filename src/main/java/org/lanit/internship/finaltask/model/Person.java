@@ -1,6 +1,7 @@
 package org.lanit.internship.finaltask.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import javax.persistence.*;
@@ -8,27 +9,30 @@ import java.util.Date;
 
 @Entity
 @Table
-@ToString(of = {"id","name","birthDate"})
+@ToString(of = {"id","name","birthdate"})
 @EqualsAndHashCode(of = {"id"})
 public class Person {
     @Id
-    @Column(name = "ID", nullable = false, precision = 0)
-    private Long id;
-    @Column(name = "NAME", nullable = false, length = 45)
+    @Column(name = "ID", nullable = true, precision = 0)
+    private String id;
+    @Column(name = "NAME", nullable = true, length = 45)
     private String name;
     @JsonFormat(pattern = "dd.MM.yyyy")
-    @Column(name = "BIRTH_DATE", nullable = false)
-    private Date birthDate;
+    @Column(name = "BIRTH_DATE", nullable = true)
+    private Date birthdate;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     public String getName() {
+        if (name == null) {
+            return "";
+        }
         return name;
     }
 
@@ -36,12 +40,12 @@ public class Person {
         this.name = name;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public Date getBirthdate() {
+        return birthdate;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
     }
 
     @Override
@@ -53,16 +57,16 @@ public class Person {
 
         if (id != person.id) return false;
         if (name != null ? !name.equals(person.name) : person.name != null) return false;
-        if (birthDate != null ? !birthDate.equals(person.birthDate) : person.birthDate != null) return false;
+        if (birthdate != null ? !birthdate.equals(person.birthdate) : person.birthdate != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (Long.valueOf(id) ^ (Long.valueOf(id) >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
+        result = 31 * result + (birthdate != null ? birthdate.hashCode() : 0);
         return result;
     }
 }

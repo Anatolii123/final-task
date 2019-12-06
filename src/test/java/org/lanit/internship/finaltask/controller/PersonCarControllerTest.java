@@ -42,7 +42,7 @@ class PersonCarControllerTest {
     private Car theCar;
 
     @BeforeEach
-    public void prepareDataBase() {
+    public void prepareDataBase() throws NoSuchFieldException, IllegalAccessException {
         personCarService.save(createPerson());
         persons.addAll(personCarService.findAllPersons());
         thePerson = persons.stream().findFirst().get();
@@ -63,25 +63,25 @@ class PersonCarControllerTest {
 
     public Person createPerson() {
         Person person = new Person();
-        person.setId(1L);
+        person.setId(Long.valueOf(1L).toString());
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, 2000);
         calendar.set(Calendar.MONTH, Calendar.MAY);
         calendar.set(Calendar.DAY_OF_MONTH, 25);
         person.setName("Name");
-        person.setBirthDate(calendar.getTime());
+        person.setBirthdate(calendar.getTime());
         return person;
     }
 
     public Person createChild() {
         Person person = new Person();
-        person.setId(2L);
+        person.setId(Long.valueOf(2L).toString());
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, 2010);
         calendar.set(Calendar.MONTH, Calendar.MAY);
         calendar.set(Calendar.DAY_OF_MONTH, 25);
         person.setName("Name");
-        person.setBirthDate(calendar.getTime());
+        person.setBirthdate(calendar.getTime());
         return person;
     }
 
@@ -90,7 +90,7 @@ class PersonCarControllerTest {
         car.setId(1L);
         car.setModel("Lada-Kalina");
         car.setHorsepower(380);
-        car.setOwnerId(thePerson != null && thePerson.getId() != null ? thePerson.getId() : 1L);
+        car.setOwnerId(thePerson != null && thePerson.getId() != null ? Long.valueOf(thePerson.getId()) : 1L);
         return car;
     }
 
@@ -102,7 +102,7 @@ class PersonCarControllerTest {
                 .andExpect(content().json("[{" +
                         "\"id\":" + thePerson.getId() + "," +
                         "\"name\":\"Name\"," +
-                        "\"birthDate\":\"25.05.2000\"}]"));
+                        "\"birthdate\":\"25.05.2000\"}]"));
     }
 
     @Test
@@ -122,8 +122,8 @@ class PersonCarControllerTest {
         this.mockMvc.perform(post("/person")
                 .header("Content-Type", "application/json").content("{\n" +
                         "    \"id\":2,\n" +
-                        "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"25.05.2000\"\n" +
+                        "    \"name\":\"\",\n" +
+                        "    \"birthdate\":\"25.05.2000\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().isOk());

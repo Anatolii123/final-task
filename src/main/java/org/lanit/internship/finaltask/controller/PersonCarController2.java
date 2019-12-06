@@ -15,7 +15,7 @@ public class PersonCarController2 {
     private PersonCarService personCarService;
 
     @PostMapping(value = "/person")
-    public Person savePerson(@RequestBody Person person) {
+    public Person savePerson(@RequestBody Person person) throws NoSuchFieldException, IllegalAccessException {
         return personCarService.savePerson(person);
     }
 
