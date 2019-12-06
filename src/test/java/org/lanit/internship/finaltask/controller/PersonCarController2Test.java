@@ -1,5 +1,6 @@
 package org.lanit.internship.finaltask.controller;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -53,6 +54,26 @@ class PersonCarController2Test {
                         "    \"id\":2,\n" +
                         "    \"model\":\"Lada-Kalina\",\n" +
                         "    \"horsepower\":380,\n" +
+                        "    \"ownerId\":1\n" +
+                        "}"));
+    }
+
+    public ResultActions nissanXTrailSave() throws Exception {
+        return this.mockMvc.perform(post("/2/car")
+                .header("Content-Type","application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"model\":\"Nissan-X-Trail\",\n" +
+                        "    \"horsepower\":163,\n" +
+                        "    \"ownerId\":1\n" +
+                        "}"));
+    }
+
+    public ResultActions mercedesBenzSave() throws Exception {
+        return this.mockMvc.perform(post("/2/car")
+                .header("Content-Type","application/json").content("{\n" +
+                        "    \"id\":2,\n" +
+                        "    \"model\":\"Mercedes-Benz-A Sedan\",\n" +
+                        "    \"horsepower\":163,\n" +
                         "    \"ownerId\":1\n" +
                         "}"));
     }
@@ -133,22 +154,35 @@ class PersonCarController2Test {
     }
 
     /**
-     * Mercedes-Benz, Rolls-Royce - vendors
+     * Nissan - X-Trail - Car
+     *
+     */
+
+    @Test
+    void saveCarDifficultModel() throws Exception {
+        personSave();
+        nissanXTrailSave()
+                .andDo(print())
+                .andExpect(status().isOk());
+        Assert.assertEquals("Nissan",personCarService.getCarVendor(personCarService.findAllCars().get(0)));
+        Assert.assertEquals("X-Trail",personCarService.getCarModel(personCarService.findAllCars().get(0)));
+    }
+
+    /**
+     * Mercedes-Benz - vendor
      *
      */
 
     @Test
     void saveCarWrongVendor() throws Exception {
         personSave();
-        carSave()
+        mercedesBenzSave()
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\n" +
-                        "    \"id\":2,\n" +
-                        "    \"model\":\"Mercedes-Benz-A Sedan\",\n" +
-                        "    \"horsepower\":163,\n" +
-                        "    \"ownerId\":1\n" +
-                        "}"));
+                .andExpect(status().isOk());
+        Assert.assertNotEquals("Mercedes-Benz",personCarService.getCarVendor(personCarService.findAllCars().get(0)));
+        Assert.assertEquals("Mercedes",personCarService.getCarVendor(personCarService.findAllCars().get(0)));
+        Assert.assertNotEquals("A Sedan",personCarService.getCarModel(personCarService.findAllCars().get(0)));
+        Assert.assertEquals("Benz-A Sedan",personCarService.getCarModel(personCarService.findAllCars().get(0)));
     }
 
 }
