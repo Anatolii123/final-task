@@ -1,16 +1,14 @@
 package org.lanit.internship.finaltask.controller;
 
 import org.lanit.internship.finaltask.exceptions.BadRequestException;
-import org.lanit.internship.finaltask.model.Car;
-import org.lanit.internship.finaltask.model.Person;
-import org.lanit.internship.finaltask.model.PersonWithCars;
-import org.lanit.internship.finaltask.model.Statistics;
+import org.lanit.internship.finaltask.model.*;
 import org.lanit.internship.finaltask.service.PersonCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("")
@@ -86,18 +84,32 @@ public class PersonCarController {
         return personCarService.findAllPersons();
     }
 
+//    @GetMapping("/persons")
+//    public List<PersonDTO> personsList() {
+//        return personCarService.findAllPersons().stream().map(person -> (new PersonDTO()).fromPerson(person)).collect(Collectors.toList());
+//    }
+
     @GetMapping("/cars")
     public List<Car> carsList() {
         return personCarService.findAllCars();
     }
 
+//    @PostMapping(value = "/person")
+//    public void savePerson(@RequestBody Person person) throws NoSuchFieldException, IllegalAccessException, ParseException {
+//        personCarService.save(person);
+//    }
+
     @PostMapping(value = "/person")
-    public void savePerson(@RequestBody Person person) throws NoSuchFieldException, IllegalAccessException {
+    public void savePerson(@RequestBody PersonDTO personDTO) throws NoSuchFieldException, IllegalAccessException, ParseException {
+        Person person = personDTO.toPerson();
+        if(person == null){
+            throw new BadRequestException();
+        }
         personCarService.save(person);
     }
 
     @PostMapping(value = "/car")
-    public void saveCar(@RequestBody Car car) {
+    public void saveCar(@RequestBody Car car) throws ParseException {
         personCarService.save(car);
     }
 

@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.sql.Date;
+import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -52,7 +53,7 @@ class PersonCarServiceImplTest {
 
     public Person createPerson() throws Exception {
         Person person = new Person();
-        person.setId(Long.valueOf(1L).toString());
+        person.setId(1L);
         person.setName("Name");
         person.setBirthdate(Date.valueOf("2000-05-25"));
         return person;
@@ -69,7 +70,7 @@ class PersonCarServiceImplTest {
 
     public Person createWrongPerson() throws Exception {
         Person person = new Person();
-        person.setId(Long.valueOf(2L).toString());
+        person.setId(2L);
         person.setName("Ivan");
         person.setBirthdate(Date.valueOf("2027-01-06"));
         return person;
@@ -208,6 +209,8 @@ class PersonCarServiceImplTest {
         } catch (BadRequestException b) {
             Assert.assertTrue(true);
             return;
+        } catch (ParseException p) {
+            Assert.assertTrue(false);
         }
         Assert.assertTrue(false);
     }
@@ -264,6 +267,8 @@ class PersonCarServiceImplTest {
         } catch (BadRequestException b) {
             Assert.assertTrue(true);
             return;
+        } catch (ParseException p) {
+            Assert.assertTrue(false);
         }
         Assert.assertTrue(false);
     }
@@ -286,6 +291,8 @@ class PersonCarServiceImplTest {
         } catch (BadRequestException b) {
             Assert.assertTrue(true);
             return;
+        } catch (ParseException p) {
+            Assert.assertTrue(false);
         }
         Assert.assertTrue(false);
     }

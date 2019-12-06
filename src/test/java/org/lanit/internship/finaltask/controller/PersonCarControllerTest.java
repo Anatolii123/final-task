@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,7 +43,7 @@ class PersonCarControllerTest {
     private Car theCar;
 
     @BeforeEach
-    public void prepareDataBase() throws NoSuchFieldException, IllegalAccessException {
+    public void prepareDataBase() throws NoSuchFieldException, IllegalAccessException, ParseException {
         personCarService.save(createPerson());
         persons.addAll(personCarService.findAllPersons());
         thePerson = persons.stream().findFirst().get();
@@ -63,7 +64,7 @@ class PersonCarControllerTest {
 
     public Person createPerson() {
         Person person = new Person();
-        person.setId(Long.valueOf(1L).toString());
+        person.setId(1L);
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, 2000);
         calendar.set(Calendar.MONTH, Calendar.MAY);
@@ -75,7 +76,7 @@ class PersonCarControllerTest {
 
     public Person createChild() {
         Person person = new Person();
-        person.setId(Long.valueOf(2L).toString());
+        person.setId(2L);
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, 2010);
         calendar.set(Calendar.MONTH, Calendar.MAY);

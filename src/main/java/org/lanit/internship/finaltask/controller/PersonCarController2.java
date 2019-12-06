@@ -7,6 +7,8 @@ import org.lanit.internship.finaltask.service.PersonCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+
 @RestController
 @RequestMapping("/2")
 public class PersonCarController2 {
@@ -15,12 +17,12 @@ public class PersonCarController2 {
     private PersonCarService personCarService;
 
     @PostMapping(value = "/person")
-    public Person savePerson(@RequestBody Person person) throws NoSuchFieldException, IllegalAccessException {
+    public Person savePerson(@RequestBody Person person) throws NoSuchFieldException, IllegalAccessException, ParseException {
         return personCarService.savePerson(person);
     }
 
     @PostMapping(value = "/car")
-    public Car saveCar(@RequestBody Car car) {
+    public Car saveCar(@RequestBody Car car) throws ParseException {
         return personCarService.saveCar(car);
     }
 

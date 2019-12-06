@@ -1,10 +1,13 @@
 package org.lanit.internship.finaltask.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
@@ -14,18 +17,18 @@ import java.util.Date;
 public class Person {
     @Id
     @Column(name = "ID", nullable = true, precision = 0)
-    private String id;
+    private Long id;
     @Column(name = "NAME", nullable = true, length = 45)
     private String name;
     @JsonFormat(pattern = "dd.MM.yyyy")
     @Column(name = "BIRTH_DATE", nullable = true)
     private Date birthdate;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -64,7 +67,7 @@ public class Person {
 
     @Override
     public int hashCode() {
-        int result = (int) (Long.valueOf(id) ^ (Long.valueOf(id) >>> 32));
+        int result = (int) (Long.valueOf(id) ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (birthdate != null ? birthdate.hashCode() : 0);
         return result;
