@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.*;
 
@@ -103,12 +102,12 @@ public class PersonCarServiceImpl implements PersonCarService {
     }
 
     @Override
-    public void save(Person person) throws NoSuchFieldException, IllegalAccessException, ParseException {
+    public void save(Person person) {
         personRepo.save(personIsValid(person));
     }
 
     @Override
-    public Person savePerson(Person person) throws NoSuchFieldException, IllegalAccessException, ParseException {
+    public Person savePerson(Person person) {
         return personRepo.save(personIsValid(person));
     }
 
