@@ -89,11 +89,6 @@ public class PersonCarController {
         return personCarService.findAllCars();
     }
 
-//    @PostMapping(value = "/person")
-//    public void savePerson(@RequestBody Person person) throws NoSuchFieldException, IllegalAccessException, ParseException {
-//        personCarService.save(person);
-//    }
-
     @PostMapping(value = "/person")
     public void savePerson(@RequestBody PersonDTO personDTO) throws ParseException {
         Person person = personDTO.toPerson();
