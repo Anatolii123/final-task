@@ -16,8 +16,8 @@ public interface PersonCarService {
     Long getNewPersonId();
     Long getNewCarId();
     Statistics getStatisticsObject();
-    void save(Person person) throws NoSuchFieldException, IllegalAccessException, ParseException;
-    Person savePerson(Person person) throws NoSuchFieldException, IllegalAccessException, ParseException;
+    void save(Person person);
+    Person savePerson(Person person);
     void save(Car car);
     Car saveCar(Car car);
     List<Person> findAllPersons();
