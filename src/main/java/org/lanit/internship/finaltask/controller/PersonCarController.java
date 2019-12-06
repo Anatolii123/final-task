@@ -111,11 +111,6 @@ public class PersonCarController {
         }
     }
 
-//    @PostMapping(value = "/car")
-//    public void saveCar(@RequestBody Car car) throws ParseException {
-//        personCarService.save(car);
-//    }
-
     @PostMapping(value = "/car")
     public void saveCar(@RequestBody CarDTO carDTO) throws ParseException {
         Car car = carDTO.toCar();
