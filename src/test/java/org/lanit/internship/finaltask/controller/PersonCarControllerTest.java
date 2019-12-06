@@ -151,7 +151,7 @@ class PersonCarControllerTest {
                 .andExpect(content().json("{" +
                         "\"id\":" + thePerson.getId() + "," +
                         "\"name\":\"Name\"," +
-                        "\"birthDate\":\"25.05.2000\"," +
+                        "\"birthdate\":\"25.05.2000\"," +
                         "\"cars\":[{" +
                         "   \"id\":" + theCar.getId() + "," +
                         "   \"model\":\"Lada-Kalina\"," +
