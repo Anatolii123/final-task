@@ -19,14 +19,12 @@ public class PersonCarController2 {
     private PersonCarService personCarService;
 
     @PostMapping(value = "/person")
-    public Person savePerson(@RequestBody PersonDTO personDTO) throws ParseException {
-        Person person = personDTO.toPerson();
+    public Person savePerson(@RequestBody Person person) throws ParseException {
         return personCarService.savePerson(person);
     }
 
     @PostMapping(value = "/car")
-    public Car saveCar(@RequestBody CarDTO carDTO) {
-        Car car = carDTO.toCar();
+    public Car saveCar(@RequestBody Car car) {
         return personCarService.saveCar(car);
     }
 
