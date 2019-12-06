@@ -80,8 +80,8 @@ public class PersonCarController {
     private PersonCarService personCarService;
 
     @GetMapping("/persons")
-    public List<PersonDTO> personsList() {
-        return personCarService.findAllPersons().stream().map(person -> (new PersonDTO()).fromPerson(person)).collect(Collectors.toList());
+    public List<Person> personsList() {
+        return personCarService.findAllPersons();
     }
 
     @GetMapping("/cars")

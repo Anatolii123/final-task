@@ -13,7 +13,7 @@ public class PersonDTO {
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     public PersonDTO fromPerson(Person person) {
-        this.id = person.getId().toString();
+        this.id = String.valueOf(person.getId()).trim();
         this.name = person.getName() != null ? person.getName() : "";
         this.birthdate = sdf.format(person.getBirthdate());
         return this;

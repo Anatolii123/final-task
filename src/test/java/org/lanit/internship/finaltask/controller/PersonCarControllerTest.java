@@ -101,7 +101,7 @@ class PersonCarControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{" +
-                        "\"id\":" + thePerson.getId() + "," +
+                        "\"id\":" + thePerson.getId() + "\n," +
                         "\"name\":\"Name\"," +
                         "\"birthdate\":\"25.05.2000\"}]"));
     }
