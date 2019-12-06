@@ -30,8 +30,8 @@ public class PersonDTO {
             return null;
         }
         if (this.id == null || this.id.equals("") || this.name == null || this.birthdate == null ||
-                Integer.parseInt(this.birthdate.substring(0, 1)) > 31 ||
-                Integer.parseInt(this.birthdate.substring(3, 4)) > 12 ||
+                Integer.parseInt(this.birthdate.substring(0, 2)) > 31 ||
+                Integer.parseInt(this.birthdate.substring(3, 5)) > 12 ||
                 !(sdf.parse(this.birthdate).before(new Date()))) {
             return null;
         }

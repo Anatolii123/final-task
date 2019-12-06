@@ -109,6 +109,8 @@ public class PersonCarController {
             personCarService.save(person);
         } catch (NullPointerException n) {
             throw new BadRequestException();
+        } catch (BadRequestException b) {
+            throw new BadRequestException();
         }
     }
 
