@@ -34,15 +34,13 @@ public class PersonDTO {
         Person person = new Person();
         try {
             person.setId(Long.valueOf(this.id));
-        } catch (NumberFormatException n) {
-            person.setId(null);
-        }
-        person.setName(this.name);
-        try {
             person.setBirthdate(DateUtils.addHours(sdf.parse(this.birthdate), 5));
+        } catch (NumberFormatException n) {
+            return null;
         } catch (NullPointerException n) {
             return null;
         }
+        person.setName(this.name);
         return person;
     }
 
