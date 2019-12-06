@@ -86,7 +86,7 @@ class PersonCarController2Test {
                 .andExpect(content().json("{\n" +
                         "    \"id\":1,\n" +
                         "    \"name\":\"Name\",\n" +
-                        "    \"birthDate\":\"25.05.2000\"\n" +
+                        "    \"birthdate\":\"25.05.2000\"\n" +
                         "}"));
     }
 
