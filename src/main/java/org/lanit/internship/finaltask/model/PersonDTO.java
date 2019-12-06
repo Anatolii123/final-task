@@ -22,7 +22,7 @@ public class PersonDTO {
     /**
      * @return если данные в каком-то месте не валидны,то возвращаем null
      */
-    public Person toPerson() throws ParseException {
+    public Person toPerson() throws ParseException, NullPointerException {
         //тут все валидации, включаяя пустоту id и name == null, а также невалидную дату
         try {
             sdf.parse(this.birthdate);
@@ -42,7 +42,11 @@ public class PersonDTO {
             person.setId(null);
         }
         person.setName(this.name);
-        person.setBirthdate(DateUtils.addHours(sdf.parse(this.birthdate), 5));
+        try {
+            person.setBirthdate(DateUtils.addHours(sdf.parse(this.birthdate), 5));
+        } catch (NullPointerException n) {
+            return null;
+        }
         return person;
     }
 

@@ -101,11 +101,15 @@ public class PersonCarController {
 
     @PostMapping(value = "/person")
     public void savePerson(@RequestBody PersonDTO personDTO) throws NoSuchFieldException, IllegalAccessException, ParseException {
-        Person person = personDTO.toPerson();
-        if(person == null){
+        try {
+            Person person = personDTO.toPerson();
+            if(person == null){
+                throw new BadRequestException();
+            }
+            personCarService.save(person);
+        } catch (NullPointerException n) {
             throw new BadRequestException();
         }
-        personCarService.save(person);
     }
 
     @PostMapping(value = "/car")
